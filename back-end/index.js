@@ -8,13 +8,25 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors({
-    origin: "http:/localhost: 4000",
-    Credentials: true
+    origin: "http://localhost:3000",
+    credentials: true
 }))
 
 app.get("/", (req, res) =>
 {
-    res.send("Working here");
+    console.log("Sent Data");
+    res.json({ name: "Tokayev" });
+})
+
+app.post("/data", (req, res) =>
+{
+    const data = req.body;
+
+    console.log(data);
+
+    const greetings = "Hello " + data.name;
+
+    res.json({message: greetings});
 })
 
 

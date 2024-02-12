@@ -1,0 +1,73 @@
+/* || RESET -----------------------------------------------------------------------------*/
+*, *::after, *::before{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+img{
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+input, button, textarea, a{
+    font-family: inherit;
+}
+
+textarea{
+    resize: none;
+}
+
+/* || VARIABLES -------------------------------------------------------------------------*/
+:root{
+    /* FONTS */
+    --FONT_FAMILY: 'Courier New', Courier, monospace;
+    --FONT_SIZE_P: 1.2rem;
+    /* COLORS */
+    --HEADER_BGCOLOR: #161A30;
+    --MAIN_BGCOLOR: #31304D;
+    --BGCOLOR: #3f3d63;
+    /* BORDERS */
+
+    /* STANDARD PADDING */
+}
+
+/* || BLACK THEME OVERRDES --------------------------------------------------------------*/
+
+
+/* || UTILITY CLASSES -------------------------------------------------------------------*/
+
+
+/* || GENERAL STYLES --------------------------------------------------------------------*/
+
+
+/* || HEADER ----------------------------------------------------------------------------*/
+
+
+/* || FOOTER ----------------------------------------------------------------------------*/
+
+
+/* || BODY ------------------------------------------------------------------------------*/
+
+
+/* || TEMPLATE --------------------------------------------------------------------------*/
+
+
+/* || MEDIA -----------------------------------------------------------------------------*/
+/* || SMALL */
+@media screen and (max-width: 576px){
+}
+
+/* || MEDIUM */
+@media screen and (min-width: 768px){
+    
+}
+/* || LARGE */
+@media screen and (min-width: 992px){
+    
+}
+/* || XL */
+@media screen and (min-width: 1200px){
+    
+}
