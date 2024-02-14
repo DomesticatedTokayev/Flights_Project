@@ -5,10 +5,13 @@ import "./styles/style.css";
 
 import Header from "./components/Header.js";
 import Footer from "./components/Footer.js";
+import SignIn from "./components/SignIn.js";
 
 const baseURL = "http://localhost:4000";
 
 function App() {
+
+
 
   //const [data, setData] = useState(null);
 
@@ -38,7 +41,7 @@ function App() {
   return (
     <>
       <Header/>
-      
+      <SignIn/>
       <Footer/>
       </>
   );
