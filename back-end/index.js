@@ -126,10 +126,12 @@ app.get("/free", (req, res)=>
 
 app.get("/auth", auth, (req, res)=>
 {
+    //console.log(req.headers.authorization);
+
     if (req.user)
     {
         //User found
-        console.log(req.user);
+        // console.log(req.user);
         //Redirect as required
         res.json({ message: "Premium" });
     }

@@ -1,10 +1,14 @@
 import { useState } from "react";
 import React from "react";
 import axios from "axios";
+// import Cookies from "universal-cookie";
+// const cookies = new Cookies();
+import { useAuth } from "./AuthProvider";
+
 
 function SignIn()
 {
-    const [registered, setRegistered] = useState(false);
+    const auth = useAuth();
 
     const [login, setLogin] = useState({
         email: "",
@@ -67,7 +71,8 @@ function SignIn()
         axios(configuration)
             .then((result) => {
                 console.log(result)
-                setRegistered(true)
+                // On registration, redirect to sign-in
+                window.location.href = "/sign-in";
             })
             .catch((error) => {
                 console.log(error)
@@ -77,6 +82,8 @@ function SignIn()
 
     const handleSubmitLogin = (e) => {
         e.preventDefault();
+
+
 
         const configuration = {
             method: "post",
@@ -90,6 +97,10 @@ function SignIn()
         axios(configuration)
             .then((result) => {
                 console.log(result)
+                //  Set the cookie (Makes the cookie available at "/" path. Thus, all pages)
+                auth.storeToken(result.data.token);
+                //cookies.set("TOKEN", result.data.token, { path: "/" });
+                window.location.href = "/";
             })
             .catch((err) => {
                 console.log(err)
