@@ -25,10 +25,10 @@ function AccountSubscription() {
     }, []);
 
     {
-        return <header>
+        return <main>
             <h2>This is Account Subscription</h2>
             <h3>Message: {message}</h3>
-        </header>
+        </main>
     }
 }
 

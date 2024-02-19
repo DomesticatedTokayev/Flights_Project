@@ -3,7 +3,7 @@ import React from "react";
 import axios from "axios";
 // import Cookies from "universal-cookie";
 // const cookies = new Cookies();
-import { useAuth } from "./AuthProvider";
+import { useAuth } from "../hooks/AuthProvider";
 
 
 function SignIn()
@@ -108,7 +108,7 @@ function SignIn()
         
     }
 
-    return <footer>
+    return <main>
         <div className="register">
         <h1>Register</h1>
         <form onSubmit={(e)=>handleSubmitRegister(e)}> 
@@ -154,7 +154,7 @@ function SignIn()
           <button type="submit">Submit</button>
         </form>
       </div>
-    </footer>
+    </main>
 }
 
 export default SignIn;

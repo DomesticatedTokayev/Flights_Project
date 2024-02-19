@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Fugaz+One&family=Nunito&display=swap');
+
 /* || RESET -----------------------------------------------------------------------------*/
 *, *::after, *::before{
     margin: 0;
@@ -23,9 +25,10 @@ textarea{
 :root{
     /* FONTS */
     --FONT_FAMILY: 'Courier New', Courier, monospace;
+    --FF-HEADINGS: "Fugaz One", cursive;
     --FONT_SIZE_P: 1.2rem;
     /* COLORS */
-    --HEADER_BGCOLOR: #161A30;
+    --HEADER_BGCOLOR: lightblue;
     --MAIN_BGCOLOR: #31304D;
     --BGCOLOR: #3f3d63;
     /* BORDERS */
@@ -40,15 +43,203 @@ textarea{
 
 
 /* || GENERAL STYLES --------------------------------------------------------------------*/
+body{
+    background-color: lightgrey;
+    padding: 0;
+    margin: 0;
+}
 
+header{
+    background-color: var(--HEADER_BGCOLOR);
+    border-bottom: solid black 5px;
+    width: 100%;
+
+}
+
+main{
+    background-color: white;
+
+    max-width: 1200px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 15px 10px;
+}
+
+footer{
+    background-color: var(--HEADER_BGCOLOR);
+    height: 80px;
+}
+
+h1, h2, h3{
+    font-family: var(--FF-HEADINGS);
+}
+
+h1{
+    font-size: 2rem;
+}
+
+h2{
+    font-size: 1.8rem;
+}
+
+h3{
+    font-size: 1.6rem;
+}
+
+p, a{
+    font-size: 1.2rem;
+}
+
+input, select{
+    font-size: 1.1rem;
+}
+
+p, a, button, input, label, select{
+    font-family: var(--FF-HEADINGS);
+    color: black;
+}
+
+a
+{
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+button{
+    font-size: 1.1rem;
+}
+
+a:hover,
+a:focus-visible,
+button:hover,
+button:focus-visible
+{
+    color: grey;
+}
+
+a:active,
+button:active
+{
+    color: lightgray;
+}
+
+::placeholder{
+    color: black;
+}
 
 /* || HEADER ----------------------------------------------------------------------------*/
+.header{
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
 
+    padding: 15px 8px;
+    margin: 0 10px;
+
+    /* position: absolute; */
+}
+
+.header__navigation{
+    display: flex;
+    justify-content: row;
+    gap: 10px;
+}
+
+.header__signin_button{
+    border: none;
+    background-color: transparent;
+    font-size:  1.2rem;
+    color: black;
+    font-weight: bold;
+}
 
 /* || FOOTER ----------------------------------------------------------------------------*/
 
 
-/* || BODY ------------------------------------------------------------------------------*/
+/* || HOME ------------------------------------------------------------------------------*/
+.home{
+    background-color: lightgreen;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+
+    /* gap: 20px */
+}
+
+.home__gallery{
+    background-color: var(--HEADER_BGCOLOR);
+    width: 100%;
+    height: 20px;
+    margin-bottom: 20px;
+}
+
+.home__search{
+    background-color: var(--HEADER_BGCOLOR);
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.home__destinations{
+    background-color: var(--HEADER_BGCOLOR);
+    width: 100%;
+    height: 40px;
+    margin-bottom: 20px;
+}
+
+.home__examples{
+    background-color: var(--HEADER_BGCOLOR);
+    width: 100%;
+    height: 40px;
+    margin-bottom: 20px;
+}
+
+
+
+/* || SEARCH FORM --------------------------------------------------------------------------*/
+.search{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px;
+    padding-bottom: 20px;
+}
+
+.search h2{
+    margin-bottom: 15px;
+}
+
+.search__inputs{
+    width: 100%;
+}
+
+.search div{
+    display: grid;
+    grid-row: 2;
+    column-gap: 5px;
+}
+.search div h2{
+    text-align: center;
+}
+
+.search__inputs input, select{
+    margin-bottom: 10px;
+    height: 40px;
+    padding: 5px;
+}
+
+.search button{
+    height: 45px;
+    background-color: orange;
+    border-radius: 80px;
+    align-content: center;
+    margin-top: 10px;
+}
 
 
 /* || TEMPLATE --------------------------------------------------------------------------*/
@@ -57,6 +248,27 @@ textarea{
 /* || MEDIA -----------------------------------------------------------------------------*/
 /* || SMALL */
 @media screen and (max-width: 576px){
+
+    /* Use javascript to swap with this when using mobile*/
+    .header__navigation{
+        background-color: rgba(255, 255, 255, 0.9);
+        width: 300px;
+        height: 100%;
+        right: 0;
+        z-index: 100;
+        position: fixed;
+        padding: 20px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: end;
+    }
+    
+    .search div{
+        display: flex;
+        flex-direction: column;
+    }
 }
 
 /* || MEDIUM */

@@ -2,9 +2,9 @@ import React from "react";
 
 function Account()
 {
-    return <header>
+    return <main>
         <h2>This is Account</h2>
-    </header>
+    </main>
 }
 
 export default Account;

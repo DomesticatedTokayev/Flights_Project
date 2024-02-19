@@ -2,9 +2,9 @@ import React from "react";
 
 function FlightSearch()
 {
-    return <header>
+    return <main>
         <h2>This is Flight Search</h2>
-    </header>
+    </main>
 }
 
 export default FlightSearch;
