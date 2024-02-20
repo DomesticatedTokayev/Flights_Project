@@ -250,7 +250,7 @@ button:active
 @media screen and (max-width: 576px){
 
     /* Use javascript to swap with this when using mobile*/
-    .header__navigation{
+    /* .header__navigation{
         background-color: rgba(255, 255, 255, 0.9);
         width: 300px;
         height: 100%;
@@ -263,7 +263,7 @@ button:active
         flex-direction: column;
         justify-content: start;
         align-items: end;
-    }
+    } */
     
     .search div{
         display: flex;

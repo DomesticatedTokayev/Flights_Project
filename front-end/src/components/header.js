@@ -20,6 +20,7 @@ function Header()
     }
 
     // Use link as button
+    // Also has menu sliding
     //https://www.w3schools.com/howto/howto_js_sidenav.asp
 
     return <header>
@@ -35,7 +36,7 @@ function Header()
                 <a href="/">Home</a>
                 <a href="/free">Free</a>
                 <a href="/auth">Auth</a>
-                {auth.token ? <a href="javascript:void(0)" onClick={()=>LogOut()}>Log-out</a> : <a href="/sign-in">Sign-In</a>}
+                {auth.token ? <a onClick={() => LogOut()}>Log-out</a> : <a href="/sign-in">Sign-In</a>}
             </section>
             {/* <div className="sidemenu"> */}
 

@@ -27,10 +27,12 @@ function App() {
         <Header />
             <BrowserRouter>
               <Routes>
-              <Route path="/" element={<Home/>}/>
+              <Route path="/" element={<Home />} />
+              {/* Enable when authentication is required */}
               <Route element={<ProtectedRoutes />}>
                 <Route path="/auth" element={<CustomFlights/>}/>
               </Route>
+              {/* <Route path="/auth" element={<CustomFlights/>}/> */}
               <Route path="/sign-in" element={<SignIn />} />
               <Route path="/free" element={<AccountSubscription />} />
               </Routes>
