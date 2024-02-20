@@ -54,6 +54,14 @@ header{
     border-bottom: solid black 5px;
     width: 100%;
 
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    
+    padding: 15px 8px;
+    margin: 0 10px;
 }
 
 main{
@@ -128,16 +136,8 @@ button:active
 }
 
 /* || HEADER ----------------------------------------------------------------------------*/
-.header{
+.header__landscape{
     height: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    align-content: center;
-
-    padding: 15px 8px;
-    margin: 0 10px;
 
     /* position: absolute; */
 }
@@ -154,6 +154,32 @@ button:active
     font-size:  1.2rem;
     color: black;
     font-weight: bold;
+}
+
+/* || HEADER SIDEBAR --------------------------------------------------------------------*/
+.header__portrait{
+    display: none;
+    height: 100%;
+    width: 50%;
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    right: 0;
+    background-color: white;
+    overflow-x: hidden;
+    transform: 0.5s;
+    padding: 20px;
+
+}
+
+.header__portrait .header__navigation{
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
+
+.open_sidemenu{
+    display: none;
 }
 
 /* || FOOTER ----------------------------------------------------------------------------*/
@@ -248,22 +274,13 @@ button:active
 /* || MEDIA -----------------------------------------------------------------------------*/
 /* || SMALL */
 @media screen and (max-width: 576px){
+    .open_sidemenu{
+        display: block;
+    }
 
-    /* Use javascript to swap with this when using mobile*/
-    /* .header__navigation{
-        background-color: rgba(255, 255, 255, 0.9);
-        width: 300px;
-        height: 100%;
-        right: 0;
-        z-index: 100;
-        position: fixed;
-        padding: 20px;
-
-        display: flex;
-        flex-direction: column;
-        justify-content: start;
-        align-items: end;
-    } */
+    .header__landscape{
+        display: none;
+    }
     
     .search div{
         display: flex;

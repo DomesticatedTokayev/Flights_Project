@@ -1,49 +1,46 @@
 import React from "react";
+import HeaderLinks from "./HeaderLinks";
+import UseOutsideClick from "../hooks/UseOutsideClick";
 //import Cookies from "universal-cookie";
 //const cookie = new Cookies();
-import { useAuth } from "../hooks/AuthProvider";
-
 
 function Header()
 {
-   // const token = cookie.get("TOKEN");
-    const auth = useAuth();
-
-    console.log(auth.token);
-
-    function LogOut() {
-        //  Destroy the cookie
-        auth.removeToken();
-        //cookie.remove("TOKEN", { path: "/" })
-        //  Redirect user to home page
-        window.location.href = "/";
-    }
-
     // Use link as button
     // Also has menu sliding
     //https://www.w3schools.com/howto/howto_js_sidenav.asp
+    function toggleSideMenu(setting)
+    {
+        const sideMenu = document.getElementById("sideBar");
+        const currentDisplay = sideMenu.style.display = setting;
+    }
 
-    return <header>
-        <div className="header">
-            <h1>This is a Header</h1>
+    function closeSideMenu() {
+        toggleSideMenu("none");
+    }
 
-            {/* Place the links in a function, and have seperate elements for desktop and mobile screens */}
-            {/* Then hide and unhide as required */}
-            <section className="header__navigation">
-                <div className="hidden">
-                    <button>X</button>
-                </div>
-                <a href="/">Home</a>
-                <a href="/free">Free</a>
-                <a href="/auth">Auth</a>
-                {auth.token ? <a onClick={() => LogOut()}>Log-out</a> : <a href="/sign-in">Sign-In</a>}
-            </section>
-            {/* <div className="sidemenu"> */}
+    const ref = UseOutsideClick(closeSideMenu);
 
-            {/* </div> */}
-        </div>
+    const handleHeaderClick = (event) => {
+        event.stopPropagation();
+    }
 
-        
+    return <header className="header">
+        <>
+        <h1>This is a Header</h1>
+            <div ref={ref} className="header__portrait" id="sideBar" onClick={handleHeaderClick}>
+                <button onClick={()=>toggleSideMenu("none")}>X</button>
+                <HeaderLinks/>
+            </div>
+
+            <div className="header__landscape">
+                <HeaderLinks/>
+            </div>
+
+            <div className="open_sidemenu">
+                <button onClick={()=>toggleSideMenu("block")}>Open</button>
+            </div>
+        </>
     </header>
 }
 
