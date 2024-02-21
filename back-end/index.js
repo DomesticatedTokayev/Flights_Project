@@ -4,6 +4,8 @@ import jwt from "jsonwebtoken";
 import auth, {hello} from "./auth.js"
 import cors from "cors";
 
+import {searchLocation, searchFlight} from "./flightSearch.js";
+
 const port = 4000;
 const app = express();
 
@@ -26,6 +28,17 @@ let database = [{
 }
 ];
 
+
+// const cityCode = await searchLocation("London");
+
+// if (cityCode !== null)
+// {
+//     console.log(cityCode);
+// } else {
+//     console.log("Error: code not found");
+// }
+
+await searchFlight("LON","PRG", "01/04/2024", "03/05/2024", "GBP", 200, 3, 14, 0, 1);
 
 //console.log(database.find(o => o.email === "Tokaye"));
 //console.log(database.findIndex(o => o.email === "Hank"));
