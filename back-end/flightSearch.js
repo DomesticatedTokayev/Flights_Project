@@ -20,7 +20,7 @@ export async function searchLocation(city)
     const searchURL = url.format({
         pathname: LOCATION_API,
         query: {
-            term: "London",
+            term: city,
         }
     });
 
@@ -39,12 +39,15 @@ export async function searchLocation(city)
 
 export async function searchFlight(flyFrom, flyTo, dateFrom, dateTo, currency = "GBP", maxPrice, minNights, maxNights, returnOneCheapestFlight = 0, maxStoppovers = 0)
 {
+    const originIATA = await searchLocation(flyFrom);
+    const destinationIATA =  await searchLocation(flyTo);
+
     // Set URL and config
     const searchURL = url.format({
         pathname: SEARCH_API,
         query: {
-            fly_from: flyFrom,
-            fly_to: flyTo,
+            fly_from: originIATA,
+            fly_to: destinationIATA,
             date_from: dateFrom, //"01/04/2024"
             date_to: dateTo, //"03/05/2024"
 
@@ -66,22 +69,43 @@ export async function searchFlight(flyFrom, flyTo, dateFrom, dateTo, currency = 
         }
     });
 
-  
-
-    // try {
+        let flightData = [];
 
         await axios.get(searchURL, config)
         .then((result) => {
-            console.log(result.data);
-    
+            //console.log(result.data.data);
+
+            let numOfFlights = result.data.data.length;
+
+            for (let i = 0; i < numOfFlights; i++)
+            {
+                let flight = {
+                    originCountry: result.data.data[i].countryFrom.name,
+                    originCity: result.data.data[i].cityFrom,
+                    originAirport: result.data.data[i].flyFrom,
+
+                    destinationCountry: result.data.data[i].countryTo.name,
+                    destinationCity: result.data.data[i].cityTo,
+                    destinationAirport: result.data.data[i].flyTo,
+                    price: result.data.data[i].price,
+                    
+                    localDeparture: result.data.data[i].local_departure,
+                    localArrival: result.data.data[i].local_arrival,
+
+                    nights: result.data.data[i].nightsInDest,
+
+                };
+
+                flightData.push(flight);
+
+                // Warning! -----------------------------------------------------------------------
+                // Returning from '.then' always returns undefined
+            }
         })
         .catch((error) => {
-             console.log("Error: ", error.response.data.error);
+            console.log("Error: ", error.response.data.error);
+            return null;
         })
     
-        
-    // } catch (error)
-    // {
-    //     console.log("Error:", error);
-    // }
+        return flightData;
 }

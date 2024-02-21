@@ -8,7 +8,7 @@ function Search(props) {
         destination: "",
         from: "",
         to: "",
-        return: "",
+        return: "return",
         maxPrice: "",
         minStay: "",
         maxStay: "",
@@ -24,7 +24,6 @@ function Search(props) {
     function submitSearch(event)
     {
         event.preventDefault();
-
         props.onSearch(data);
     }
 

@@ -1,11 +1,12 @@
 import React from "react";
 import Search from "../components/SearchForm";
+import getFlight from "../hooks/GetFlights";
 
 function Home()
 {
     function handleSearch(props)
     {
-        console.log(props);
+        getFlight(props);
     }
 
 

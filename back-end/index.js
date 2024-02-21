@@ -38,7 +38,7 @@ let database = [{
 //     console.log("Error: code not found");
 // }
 
-await searchFlight("LON","PRG", "01/04/2024", "03/05/2024", "GBP", 200, 3, 14, 0, 1);
+//await searchFlight("LON","PRG", "01/04/2024", "03/05/2024", "GBP", 200, 3, 14, 0, 1);
 
 //console.log(database.find(o => o.email === "Tokaye"));
 //console.log(database.findIndex(o => o.email === "Hank"));
@@ -132,6 +132,40 @@ app.post("/login", (req, res) => {
     }
 });
 
+// Search for cheap flights
+app.post("/searchflights/", async (req, res) => {
+    const searchData = req.query;
+
+    await searchFlight(
+        searchData.origin,
+        searchData.destination,
+        searchData.from,
+        searchData.to,
+        "GBP",
+        searchData.maxprice,
+        searchData.minstay,
+        searchData.maxstay,
+        0,
+        0,
+    ).then((result) => {
+        res.status(200).json(result);
+    }).catch ((error) => {
+        //console.log(error); 
+        res.status(404).send(error);
+    });
+
+
+    // if (Object.keys(searchData).length !== 0)
+    // {
+    //     res.status(200).send("Data received");
+        
+    // } else {
+    //     res.status(404).send("Data not found");
+    // }
+    
+});
+
+// TESTS -----------------------------------------------------------------------------------------------------
 app.get("/free", (req, res)=>
 {
     res.json({ message: "Freeloader" });
