@@ -139,8 +139,6 @@ app.post("/searchflights/", async (req, res) => {
     let originIATA = "";
     let destinationIATA = "";
 
-    let numOfFlighsLimit = 1;
-
     try {
         originIATA = await searchLocation(searchData.origin);
         destinationIATA =  await searchLocation(searchData.destination);
@@ -166,7 +164,7 @@ app.post("/searchflights/", async (req, res) => {
             searchData.return,
             1,
             0,
-            numOfFlighsLimit
+            searchData.outputLimit,
         ).then((result) => {
             if (result.length > 0)
             {

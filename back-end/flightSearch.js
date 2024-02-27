@@ -122,7 +122,7 @@ export async function searchFlight(flyFrom, flyTo, dateFrom, dateTo, currency = 
         }
     });
 
-    let searchURL = withReturn === "true" ? searchURL_WithReturn :  searchURL_OneWay
+    let searchURL = withReturn === "return" ? searchURL_WithReturn :  searchURL_OneWay
     let flightData = [];
 
     await axios.get(searchURL, config)
@@ -150,8 +150,9 @@ export async function searchFlight(flyFrom, flyTo, dateFrom, dateTo, currency = 
                 link: result.data.data[i].deep_link,
             };
 
-            if (withReturn === "true")
+            if (withReturn === "return")
             {
+               // console.log(result.data.data[i]);
                 flight.returnLocalDepartire = result.data.data[i].route[1].utc_departure;
                 flight.returnLocalArrival = result.data.data[i].route[1].utc_arrival;
                 flight.return = true;

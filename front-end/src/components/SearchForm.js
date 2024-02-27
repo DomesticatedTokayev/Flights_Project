@@ -12,6 +12,7 @@ function Search(props) {
         maxPrice: "",
         minStay: "",
         maxStay: "",
+        outputLimit: props.outputLimit
     });
 
     function updateSearch(event)
@@ -35,7 +36,7 @@ function Search(props) {
                 <input onChange={updateSearch} type="text" name="destination" placeholder="Destination" value={data.destination} required></input>
                 <div className="search__form">
                     <label htmlFor="from">From</label>
-                    <input onChange={updateSearch} type="date" name="from" id="from" placeholder="From" value={data.from}></input>
+                    <input onChange={updateSearch} type="date" name="from" id="from" placeholder="From" value={data.from} required></input>
                 </div>
                 <div className="search__form">
                     <label htmlFor="to">To</label>
@@ -45,7 +46,7 @@ function Search(props) {
                     <option value="return">Return</option>
                     <option value="oneway">One-way</option>
                 </select>
-                <input onChange={updateSearch} type="text" name="maxPrice" placeholder="Max price" value={data.maxPrice}></input>
+                <input onChange={updateSearch} type="text" name="maxPrice" placeholder="Max price" value={data.maxPrice} required></input>
                 <input onChange={updateSearch} type="text" name="minStay" placeholder="Min Stay" value={data.minStay}></input>
                 <input onChange={updateSearch} type="text" name="maxStay" placeholder="Max Stay" value={data.maxStay}></input>
             </div>

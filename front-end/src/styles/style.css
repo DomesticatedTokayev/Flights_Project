@@ -34,6 +34,12 @@ textarea{
     /* BORDERS */
 
     /* STANDARD PADDING */
+    --STANDARD_PADDING: 0 20px 0 20px; 
+    --STANDARD_PADDING_HORIZONTAL: 10px; 
+
+    /* STANDARD MARGIN */
+    --STANDARD_MARGIN: 10px 0 10px 0; 
+    --STANDARD_MARGIN_HORIZONTAL: 20px; 
 }
 
 /* || BLACK THEME OVERRDES --------------------------------------------------------------*/
@@ -68,14 +74,15 @@ main{
     background-color: white;
 
     max-width: 1200px;
-    min-height: 100vh;
+    /* min-height: 100vh; */
     margin: 0 auto;
     padding: 15px 10px;
 }
 
 footer{
     background-color: var(--HEADER_BGCOLOR);
-    height: 80px;
+    height: 100px;
+    bottom: 0;
 }
 
 h1, h2, h3{
@@ -188,43 +195,74 @@ button:active
 /* || HOME ------------------------------------------------------------------------------*/
 .home{
     background-color: lightgreen;
-    height: 100vh;
+    /* height: 100vh; */
 
     display: flex;
     flex-direction: column;
     justify-content: start;
     align-items: center;
 
-    /* gap: 20px */
+    /* gap: 10px */
 }
 
 .home__gallery{
     background-color: var(--HEADER_BGCOLOR);
     width: 100%;
     height: 20px;
-    margin-bottom: 20px;
+    margin: var(--STANDARD_MARGIN);
+    padding-inline: var(--STANDARD_PADDING_HORIZONTAL);
 }
 
 .home__search{
     background-color: var(--HEADER_BGCOLOR);
     width: 100%;
-    margin-bottom: 20px;
+    margin: var(--STANDARD_MARGIN);
+    padding-inline: var(--STANDARD_PADDING_HORIZONTAL);
 }
 
 .home__destinations{
     background-color: var(--HEADER_BGCOLOR);
     width: 100%;
-    height: 40px;
-    margin-bottom: 20px;
+    /* min-height: 80px; */
+    margin: var(--STANDARD_MARGIN);
+    padding-inline: var(--STANDARD_PADDING_HORIZONTAL);
+
+    display: grid;
+    grid-template-areas: "a a";
+    grid-auto-columns: 50%;
+    justify-content: center;
+ 
 }
 
 .home__examples{
     background-color: var(--HEADER_BGCOLOR);
     width: 100%;
-    height: 40px;
-    margin-bottom: 20px;
+    min-height: 100px;
+    margin: var(--STANDARD_MARGIN);
+    padding-inline: var(--STANDARD_PADDING_HORIZONTAL);
 }
 
+/* || FLIGHT -------------------------------------------------------------------------------*/
+
+.flight{
+    background-color: white;
+    margin: 10px 10px;
+}
+
+.flight div{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.flight__info{
+    align-content: space-between;
+}
+
+.flight__dest{
+    display: flex;
+    flex-direction: column;
+}
 
 
 /* || SEARCH FORM --------------------------------------------------------------------------*/
@@ -268,6 +306,7 @@ button:active
 }
 
 
+
 /* || TEMPLATE --------------------------------------------------------------------------*/
 
 
@@ -285,6 +324,10 @@ button:active
     .search div{
         display: flex;
         flex-direction: column;
+    }
+
+    .home__destinations{
+        display: block;
     }
 }
 
