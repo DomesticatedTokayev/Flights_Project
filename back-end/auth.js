@@ -16,19 +16,11 @@ export default async (req, res, next) => {
         req.user = user;
         // Pass down functionality to the endpoint
         next();
-    } catch (error)
-    {
+    } catch (error) {
         // res.status(401).json({
         //     error: new Error("Invalid request"),
         //     message: error.message
         // })
         next();
-    }
+    };
 }
-
-export function hello()
-{
-    console.log("hello")
-};
-
-//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjEsImVtYWlsIjoiVG9rYXlldiIsImlhdCI6MTcwNzkyMDkxMCwiZXhwIjoxNzA4MDA3MzEwfQ.Tt6PneXjGmqh9X8fzzTOhMhkXTWeFl0XSZpVM1cDFYw

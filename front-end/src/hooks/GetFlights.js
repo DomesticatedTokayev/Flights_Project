@@ -13,12 +13,14 @@ import axios from "axios";
 
 export default async function getFlight(props) {
     
+    let withReturn = props.return === "return" ? true : false;
+
     const query = {
         origin: props.origin,
         destination: props.destination,
         from: props.from,
         to: props.to,
-        return: props.return,
+        return: withReturn,
         maxprice: props.maxPrice,
         minstay: props.minStay,
         maxstay: props.maxStay,
@@ -30,12 +32,12 @@ export default async function getFlight(props) {
         params: query
     }
 
-    console.log(configuration);
-
     axios(configuration)
         .then(result => {
             console.log(result);
         }).catch(error => {
             console.log(error);
-    })
+        })
+    
+    
 }

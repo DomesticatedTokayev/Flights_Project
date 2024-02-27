@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import jwt from "jsonwebtoken";
-import auth, {hello} from "./auth.js"
+import auth from "./auth.js"
 import cors from "cors";
 
 import {searchLocation, searchFlight} from "./flightSearch.js";
@@ -136,23 +136,52 @@ app.post("/login", (req, res) => {
 app.post("/searchflights/", async (req, res) => {
     const searchData = req.query;
 
-    await searchFlight(
-        searchData.origin,
-        searchData.destination,
-        searchData.from,
-        searchData.to,
-        "GBP",
-        searchData.maxprice,
-        searchData.minstay,
-        searchData.maxstay,
-        0,
-        0,
-    ).then((result) => {
-        res.status(200).json(result);
-    }).catch ((error) => {
-        //console.log(error); 
+    let originIATA = "";
+    let destinationIATA = "";
+
+    let numOfFlighsLimit = 1;
+
+    try {
+        originIATA = await searchLocation(searchData.origin);
+        destinationIATA =  await searchLocation(searchData.destination);
+    } catch (error) {
+        console.log(error);
         res.status(404).send(error);
-    });
+    }
+
+    if (originIATA.error === null || destinationIATA.error === null)
+    {
+        console.log("Location not found");
+        res.status(400).send("Location not found");
+    } else {
+        await searchFlight(
+            originIATA,
+            destinationIATA,
+            searchData.from,
+            searchData.to,
+            "GBP",
+            searchData.maxprice,
+            searchData.minstay,
+            searchData.maxstay,
+            searchData.return,
+            1,
+            0,
+            numOfFlighsLimit
+        ).then((result) => {
+            if (result.length > 0)
+            {
+                res.status(200).json(result);
+                
+                
+            } else {
+                // No flights found
+                res.status(204).send("No flights found");
+            }
+        }).catch((error) => {
+            //console.log(error); 
+            res.status(400).send(error);
+        });
+    }
 
 
     // if (Object.keys(searchData).length !== 0)
