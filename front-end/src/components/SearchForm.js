@@ -4,14 +4,14 @@ import { useState } from "react"
 function Search(props) {
 
     const [data, setData] = useState({
-        origin: "",
-        destination: "",
+        origin: "London",
+        destination: "Spain",
         from: "",
         to: "",
         return: "return",
-        maxPrice: "",
-        minStay: "",
-        maxStay: "",
+        maxPrice: "300",
+        minStay: "3",
+        maxStay: "14",
         outputLimit: props.outputLimit
     });
 
@@ -51,7 +51,7 @@ function Search(props) {
                 <input onChange={updateSearch} type="text" name="maxStay" placeholder="Max Stay" value={data.maxStay}></input>
             </div>
         </div>
-        <button type="submit">Search</button>
+        <button className="button" type="submit">Search</button>
     </form>;
 }
 

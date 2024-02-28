@@ -9,11 +9,14 @@ function Home()
 
     async function handleSearch(props)
     {
+        //Show loading widget
+        
         const data = await getFlight(props);
         setFlights(data.data);
         console.log(flights);
+        
+        //Remove loading widget
     }
-
 
 
     return <main>
@@ -26,12 +29,25 @@ function Home()
                 <Search onSearch={handleSearch} outputLimit={10} />
             </div>
             <div className="home__destinations">        
-                {/* {flights && flights.map((item, index) => {
-                    return <Flight key={index} destName={item.destinationCountry} />
-                })} */}
+                {flights && flights.map((item, index) => {
+                    return <Flight
+                        key={index}
+                        originCountry={item.originCountry}
+                        destinationCountry={item.destinationCountry}
+                        originCity={item.originCity}
+                        destinationCity={item.destinationCity}
+                        nights={item.nights}
+                        return={item.return} 
+                        price={item.price}
+                        link={item.link}
+                        />
+                })}
+                {/* <Flight destName={"Spain"} nights={8} />
                 <Flight destName={"Spain"}/>
                 <Flight destName={"Spain"}/>
                 <Flight destName={"Spain"}/>
+                <Flight destName={"Spain"}/>
+                <Flight destName={"Spain"}/> */}
           
             </div>
            

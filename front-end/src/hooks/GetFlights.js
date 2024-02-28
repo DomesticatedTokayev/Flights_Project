@@ -1,16 +1,5 @@
 import axios from "axios";
 
-/*
-    origin: "",
-    destination: "",
-    from: "",
-    to: "",
-    return: "",
-    maxPrice: "",
-    minStay: "",
-    maxStay: "",
-*/
-
 export default async function getFlight(props) {
     
     //let withReturn = props.return === "return" ? true : false;

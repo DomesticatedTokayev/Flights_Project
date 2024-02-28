@@ -133,6 +133,18 @@ export async function searchFlight(flyFrom, flyTo, dateFrom, dateTo, currency = 
 
         for (let i = 0; i < numOfFlights; i++)
         {
+            // let time = new Date(result.data.data[i].route[0].local_departure);
+            // console.log(`local Departire: ${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padEnd(2, '0')}`);
+
+            // time = new Date(result.data.data[i].route[0].local_arrival);
+            // console.log(`local Arrival: ${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padEnd(2, '0')}`);
+
+            // let date = new Date(result.data.data[i].route[0].local_departure);
+            // console.log(`Departure Date: ${ date.getDate().toString().padEnd(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`);
+            
+            // date = new Date(result.data.data[i].route[0].local_arrival);
+            // console.log(`Arrival Date: ${date.getDate().toString().padEnd(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`);
+
             let flight = {
                 originCountry: result.data.data[i].countryFrom.name,
                 originCity: result.data.data[i].route[0].cityFrom,

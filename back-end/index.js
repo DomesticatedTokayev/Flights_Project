@@ -28,7 +28,6 @@ let database = [{
 }
 ];
 
-
 // const cityCode = await searchLocation("London");
 
 // if (cityCode !== null)
