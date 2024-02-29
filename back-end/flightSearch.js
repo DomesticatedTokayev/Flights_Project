@@ -157,6 +157,7 @@ export async function searchFlight(flyFrom, flyTo, dateFrom, dateTo, currency = 
                 localDeparture: result.data.data[i].route[0].local_departure,
                 localArrival: result.data.data[i].route[0].local_arrival,
                 
+                return: false,
                 
                 price: result.data.data[i].price,
                 link: result.data.data[i].deep_link,
