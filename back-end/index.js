@@ -28,19 +28,38 @@ let database = [{
 }
 ];
 
-// const cityCode = await searchLocation("London");
-
-// if (cityCode !== null)
-// {
-//     console.log(cityCode);
-// } else {
-//     console.log("Error: code not found");
-// }
-
-//await searchFlight("LON","PRG", "01/04/2024", "03/05/2024", "GBP", 200, 3, 14, 0, 1);
-
-//console.log(database.find(o => o.email === "Tokaye"));
-//console.log(database.findIndex(o => o.email === "Hank"));
+let database2 = [
+    {
+        originCountry: "London",
+        destinationCountry: "Spain",
+        from: "02/03/2024",
+        to: "10/04/2024",
+        maxPrice: 100,
+        return: true,
+        minStay: 7,
+        maxStay: 14,
+    },
+    {
+        originCountry: "London",
+        destinationCountry: "France",
+        from: "02/03/2024",
+        to: "10/04/2024",
+        maxPrice: 80,
+        return: true,
+        minStay: 7,
+        maxStay: 14,
+    },
+    {
+        originCountry: "Birmingham",
+        destinationCountry: "Germany",
+        from: "02/03/2024",
+        to: "10/04/2024",
+        maxPrice: 120,
+        return: true,
+        minStay: 14,
+        maxStay: 21,
+    }
+]
 
 app.get("/", (req, res) =>
 {
@@ -179,16 +198,19 @@ app.post("/searchflights/", async (req, res) => {
             res.status(400).send(error);
         });
     }
+});
 
+app.get("/custom", auth, (req, res) => {
+    if (req.user)
+    {
+        const userID = req.user.userID;
 
-    // if (Object.keys(searchData).length !== 0)
-    // {
-    //     res.status(200).send("Data received");
-        
-    // } else {
-    //     res.status(404).send("Data not found");
-    // }
-    
+        res.status(200).json({data: database2});
+    }
+    else {
+        res.status(200).send("User not found");
+    }
+
 });
 
 // TESTS -----------------------------------------------------------------------------------------------------
@@ -199,13 +221,9 @@ app.get("/free", (req, res)=>
 
 app.get("/auth", auth, (req, res)=>
 {
-    //console.log(req.headers.authorization);
-
     if (req.user)
     {
-        //User found
-        // console.log(req.user);
-        //Redirect as required
+
         res.json({ message: "Premium" });
     }
     else
@@ -213,6 +231,7 @@ app.get("/auth", auth, (req, res)=>
         res.status(404).json({ error: "not authenticated" });
     }
 })
+
 
 app.listen(port, (err) => {
     err ? console.log("Error starting server", err) : console.log("Server running on port", port);

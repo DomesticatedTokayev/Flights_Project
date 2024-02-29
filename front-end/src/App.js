@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter,  Routes, Route } from "react-router-dom";
-import axios from "axios";
 import "./styles/style.css";
 import ProtectedRoutes from "./hooks/ProtectedRoutes.js";
 
@@ -28,11 +27,9 @@ function App() {
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Home />} />
-                {/* Enable when authentication is required */}
                 <Route element={<ProtectedRoutes />}>
-                  <Route path="/auth" element={<CustomFlights/>}/>
+                  <Route path="/custom" element={<CustomFlights />} />
                 </Route>
-                {/* <Route path="/auth" element={<CustomFlights/>}/> */}
                 <Route path="/sign-in" element={<SignIn />} />
                 <Route path="/free" element={<AccountSubscription />} />
               </Routes>

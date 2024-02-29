@@ -53,9 +53,6 @@ function Search(props) {
         </div>
 
         <button className="button" type="submit">{props.isSearching ?<div className="loader_slot"><div className="loader"></div></div> : "Search"}</button>
-
-        {/* <div className="loader"></div> */}        
-        {/* {props.isSearching ?<div className="loader"></div> : <button className="button" type="submit">Search</button>} */}
     </form>;
 }
 

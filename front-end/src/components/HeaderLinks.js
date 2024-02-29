@@ -20,6 +20,7 @@ function HeaderLinks()
         <a href="/">Home</a>
         <a href="/free">Free</a>
         <a href="/auth">Auth</a>
+        <a href="/custom">Custom Flights</a>
         {auth.token ? <a onClick={() => LogOut()}>Log-out</a> : <a href="/sign-in">Sign-In</a>}
     </section>;
     

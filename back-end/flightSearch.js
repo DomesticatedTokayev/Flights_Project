@@ -47,27 +47,6 @@ export async function searchLocation(city)
 
 export async function searchFlight(flyFrom, flyTo, dateFrom, dateTo, currency = "GBP", maxPrice, minNights, maxNights, withReturn, returnOneCheapestFlight = 0, maxStoppovers = 0, limit = 10)
 {
-    // let originIATA
-    // let destinationIATA
-
-    // try {
-    //     originIATA = await searchLocation(flyFrom);
-    //     // console.log(originIATA, destinationIATA);
-    // } catch (error){
-    //     //console.log(error.message);
-    //     throw new Error(error);
-    // }
-    
-    // try {
-    //     destinationIATA = await searchLocation(flyTo);
-    //     // console.log(originIATA, destinationIATA);
-    // } catch (error){
-    //     //console.log(error.message);
-    //     throw new Error(error);
-    // }
-
- 
-
     // Set URL and config
     const searchURL_WithReturn = url.format({
         pathname: SEARCH_API,

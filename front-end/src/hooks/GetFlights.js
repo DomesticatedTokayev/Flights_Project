@@ -2,8 +2,6 @@ import axios from "axios";
 
 export default async function getFlight(props) {
     
-    //let withReturn = props.return === "return" ? true : false;
-
     const query = {
         origin: props.origin,
         destination: props.destination,
@@ -26,11 +24,11 @@ export default async function getFlight(props) {
 
     await axios(configuration)
         .then(result => {
-            data = result;
-            
+            data = result.data;
         }).catch(error => {
             console.log(error);
         })
     
     return data;
 }
+

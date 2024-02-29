@@ -3,14 +3,13 @@ import Search from "../components/SearchForm";
 import getFlight from "../hooks/GetFlights";
 import Flight from "../components/Flight.js";
 
-
-
+import image from "../images/Skyscraper.jpg";
 
 function Home()
 {
     const [flights, setFlights] = React.useState([]);
     const [searching, setSearching] = React.useState(false);
-
+    const [hasSearched, setHasSearched] = React.useState(false);
 
     // Put this function into a seperate file (Make it usable else ware)
     async function handleSearch(props)
@@ -19,35 +18,27 @@ function Home()
         setSearching(true);
 
         let data;
-
         // Only send requrests once while loading
-        if (!searching)
-        {
-            data = await getFlight(props);
-        }
+        !searching && (data = await getFlight(props));
 
-        setFlights(data.data);
+        setFlights(data);
+
+        setHasSearched(true);
   
         // Stop loading icon
         setSearching(false);
     }
 
 
-
-
     return <main>
         <div className="home">
-    
-            <div className="home__gallery">
-
-            </div>
-             <div className="home__search">
+            <img className="home__image" src={image} alt="Plane and skyscraper image"></img>
+            <div className="home__search">
                 <Search onSearch={handleSearch} outputLimit={10} isSearching={searching} />
             </div>
             <div className={flights.length > 1 ? "home__destinations grid_layout" : "home__destinations block_layout"}>
-                {/* { flights.length < 0 && <h3>No flights found!</h3>} */}
+                {(hasSearched === true && flights.length <= 0) && <h3 className="align-center">No flights found!</h3>}
                 {flights && flights.map((item, index) => {
-                    console.log(item.UTCDeparture);
                     return <Flight
                         key={index}
                         originCountry={item.originCountry}
@@ -63,19 +54,13 @@ function Home()
                         price={item.price}
                         link={item.link}
                         />
-                })}
-                {/* <Flight destName={"Spain"} nights={8} />
-                <Flight destName={"Spain"}/>
-                <Flight destName={"Spain"}/>
-                <Flight destName={"Spain"}/>
-                <Flight destName={"Spain"}/>
-                <Flight destName={"Spain"}/> */}
-          
+                })}          
             </div>
-           
-            <div className="home__examples">
+            <div className="home__gallery">
 
             </div>
+            {/* <div className="home__examples">
+            </div> */}
         </div>
     </main>
 }

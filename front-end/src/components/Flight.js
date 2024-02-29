@@ -1,30 +1,12 @@
 import React from "react";
-
-function parseDate(fullDate)
-{
-    let date = new Date(fullDate);
-
-    let data = {
-        hour: date.getHours().toString().padStart(2, '0'),
-        minutes: date.getMinutes().toString().padEnd(2, '0'),
-        day: date.getDate().toString().padEnd(2, '0'),
-        month: (date.getMonth() + 1).toString().padStart(2, '0'),
-        year: date.getFullYear()
-    };
-
-    return data;
-}
+import parseDate from "./DateAndTimeParser";
 
 function Flight(props) {
 
-    //console.log(props.utcDeparture);
-
+    // Place this into its own component -----------------------------------------------------------------------
     const { hour: departureHour, minutes: departureMinutes } = parseDate(props.utcDeparture);
     const { hour: arrivalHour, minutes: arrivalMinutes } = parseDate(props.utcArrival);
-    
-    //const { day: arrivalDay, month: arrivalMonth, year: arrivalYear} = parseDate(props.utcArrival);
     const { day: departureDay, month: departureMonth, year: departureYear} = parseDate(props.utcDeparture);
-    
 
     //Return
     const { hour: returnArrivalHour, minutes: returnArrivalMinutes } = props.return && parseDate(props.returnUtcArrival);
@@ -35,20 +17,20 @@ function Flight(props) {
 
     return <div className="flight">
         <div className="flight__dates">
-            {props.return ?
-                <>
-                    <div className="date text-gap">
-                        <p>{departureDay}/{departureMonth}/{departureYear}</p>
-                        <p>-</p>
-                        <p>{returnDepartureDay}/{returnDepartureMonth}/{returnDepartureYear}</p>
-                    </div>
-                    <div className="nights text-gap">
-                        <p className="grey-text">{props.nights ? props.nights : 10}</p>
-                        <p className="grey-text">nights</p>
-                    </div>
-                </> :
-                    <p className="one-way_date align-center">{departureDay}/{departureMonth}/{departureYear}</p>
-            }   
+         {props.return ?
+        <>
+            <div className="date text-gap">
+                <p>{departureDay}/{departureMonth}/{departureYear}</p>
+                <p>-</p>
+                <p>{returnDepartureDay}/{returnDepartureMonth}/{returnDepartureYear}</p>
+            </div>
+            <div className="nights text-gap">
+                <p className="grey-text">{props.nights ? props.nights : 10}</p>
+                <p className="grey-text">nights</p>
+            </div>
+        </> :
+            <p className="one-way_date align-center">{departureDay}/{departureMonth}/{departureYear}</p>
+        }   
         </div>
         <div className="flight__info">
             <div className="flight__dest">
@@ -92,9 +74,24 @@ function Flight(props) {
         </div>
         <div className="flight__buttons text-gap">
             <a href={props.link} target="_blank" rel="noreferrer noopener"><button className="button">View Flight</button></a>
-            <a><button className="button">Save Destination</button></a>
+            <a><button className="button">Save</button></a>
         </div>
     </div>
 }
 
 export default Flight;
+
+// {props.return ?
+//     <>
+//         <div className="date text-gap">
+//             <p>{departureDay}/{departureMonth}/{departureYear}</p>
+//             <p>-</p>
+//             <p>{returnDepartureDay}/{returnDepartureMonth}/{returnDepartureYear}</p>
+//         </div>
+//         <div className="nights text-gap">
+//             <p className="grey-text">{props.nights ? props.nights : 10}</p>
+//             <p className="grey-text">nights</p>
+//         </div>
+//     </> :
+//         <p className="one-way_date align-center">{departureDay}/{departureMonth}/{departureYear}</p>
+// }   
