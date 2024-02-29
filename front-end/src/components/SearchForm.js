@@ -51,7 +51,11 @@ function Search(props) {
                 <input onChange={updateSearch} type="text" name="maxStay" placeholder="Max Stay" value={data.maxStay}></input>
             </div>
         </div>
-        <button className="button" type="submit">Search</button>
+
+        <button className="button" type="submit">{props.isSearching ?<div className="loader_slot"><div className="loader"></div></div> : "Search"}</button>
+
+        {/* <div className="loader"></div> */}        
+        {/* {props.isSearching ?<div className="loader"></div> : <button className="button" type="submit">Search</button>} */}
     </form>;
 }
 

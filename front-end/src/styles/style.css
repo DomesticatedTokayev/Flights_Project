@@ -58,6 +58,7 @@ textarea{
 .line-break{
     width: 90%;
     border-top: 1px dashed grey;
+    margin: 10px 0;
 }
 
 .grey-text{
@@ -66,6 +67,34 @@ textarea{
 
 .align-center{
     text-align: center;
+}
+
+.loader_slot{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.loader {
+    border: 8px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 8px solid orange;
+    width: 30px;
+    height: 30px;
+    /* Safari*/
+    /* -webkit-animation: spin 2s linear infinite;  */
+    animation: spin 2s linear infinite;
+}
+
+/* Safari*/
+/* #-webkit-keyframes spin {
+    0%  -webkit-transform: rotate(0deg); 
+    100% { -webkit-transform: rotate(360deg); }
+} */
+
+@keyframes spin {
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(360deg);}
 }
 
 /* || GENERAL STYLES --------------------------------------------------------------------*/
@@ -94,7 +123,7 @@ main{
     background-color: white;
 
     max-width: 1200px;
-    /* min-height: 100vh; */
+    min-height: 100vh;
     margin: 0 auto;
     padding: 15px 10px;
 }
@@ -247,12 +276,19 @@ button:active
     margin: var(--STANDARD_MARGIN);
     padding-inline: var(--STANDARD_PADDING_HORIZONTAL);
 
+}
+
+.grid_layout{
     display: grid;
     grid-template-areas: "a a";
     grid-auto-columns: 50%;
     justify-content: center;
- 
 }
+
+.block_layout{
+    display: block;
+}
+
 
 .home__examples{
     background-color: var(--HEADER_BGCOLOR);

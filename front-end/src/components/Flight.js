@@ -1,28 +1,49 @@
 import React from "react";
 
-function Flight(props)
+function parseDate(fullDate)
 {
-    function processDate() {
-        
-    }
+    let date = new Date(fullDate);
 
+    let data = {
+        hour: date.getHours().toString().padStart(2, '0'),
+        minutes: date.getMinutes().toString().padEnd(2, '0'),
+        day: date.getDate().toString().padEnd(2, '0'),
+        month: (date.getMonth() + 1).toString().padStart(2, '0'),
+        year: date.getFullYear()
+    };
+
+    return data;
+}
+
+function Flight(props) {
+    const { hour: departureHour, minutes: departureMinutes } = parseDate(props.utcDeparture);
+    const { hour: arrivalHour, minutes: arrivalMinutes } = parseDate(props.utcArrival);
+    
+    //const { day: arrivalDay, month: arrivalMonth, year: arrivalYear} = parseDate(props.utcArrival);
+    const { day: departureDay, month: departureMonth, year: departureYear} = parseDate(props.utcDeparture);
+    
+    //Return
+    const { hour: returnArrivalHour, minutes: returnArrivalMinutes } = props.return && parseDate(props.returnUtcArrival);
+    const { hour: returnDepartureHour, minutes: returnDepartureMinutes } = props.return && parseDate(props.returnUtcDeparture);
+    const { day: returnDepartureDay, month: returnDepartureMonth, year: returnDepartureYear } = props.return && parseDate(props.returnUtcDeparture);
+        
+    
 
     return <div className="flight">
         <div className="flight__dates">
             {props.return ?
                 <>
                     <div className="date text-gap">
-                        <p>11/04/2024</p>
+                        <p>{departureDay}/{departureMonth}/{departureYear}</p>
                         <p>-</p>
-                        <p>23/04/2024</p>
+                        <p>{returnDepartureDay}/{returnDepartureMonth}/{returnDepartureYear}</p>
                     </div>
                     <div className="nights text-gap">
                         <p className="grey-text">{props.nights ? props.nights : 10}</p>
                         <p className="grey-text">nights</p>
                     </div>
-                </>
-                :
-                    <p className="one-way_date align-center">11/04/2024</p>
+                </> :
+                    <p className="one-way_date align-center">{departureDay}/{departureMonth}/{departureYear}</p>
             }   
         </div>
         <div className="flight__info">
@@ -31,13 +52,13 @@ function Flight(props)
                     <div>
                         <p className="country grey-text">{props.originCountry ? props.originCountry : "Origin"}</p>
                         <p className="city">{props.originCity ? props.originCity : "Origin"}</p>
-                        <p className="time grey-text">08:30</p>
+                        <p className="time grey-text">{departureHour}:{departureMinutes}</p>
                     </div>
                     <span className="arrow material-symbols-outlined grey-text">east</span>
                     <div>
                     <p className="country grey-text">{props.destinationCountry ? props.destinationCountry : "Origin"}</p>
                         <p className="city">{props.destinationCity ? props.destinationCity : "Destination"}</p>
-                        <p className="time grey-text">08:30</p>
+                        <p className="time grey-text">{arrivalHour}:{arrivalMinutes}</p>
                     </div>
                 </div>
                 {props.return && <>
@@ -48,13 +69,13 @@ function Flight(props)
                     <div>
                     <p className="country grey-text">{props.destinationCountry ? props.destinationCountry : "Origin"}</p>
                         <p className="city">{props.destinationCity ? props.destinationCity : "Origin"}</p>
-                        <p className="time grey-text">08:30</p>
+                        <p className="time grey-text">{returnDepartureHour}:{returnDepartureMinutes}</p>
                     </div>
                     <span className="arrow material-symbols-outlined grey-text">east</span>
                     <div>
                     <p className="country grey-text">{props.originCountry ? props.originCountry : "Origin"}</p>
                         <p className="city">{props.originCity ? props.originCity : "Destination"}</p>
-                        <p className="time grey-text">08:30</p>
+                        <p className="time grey-text">{returnArrivalHour}:{returnArrivalMinutes}</p>
                     </div>
                 </div>
                 </>}
