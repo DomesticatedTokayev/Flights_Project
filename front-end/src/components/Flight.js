@@ -16,12 +16,16 @@ function parseDate(fullDate)
 }
 
 function Flight(props) {
+
+    //console.log(props.utcDeparture);
+
     const { hour: departureHour, minutes: departureMinutes } = parseDate(props.utcDeparture);
     const { hour: arrivalHour, minutes: arrivalMinutes } = parseDate(props.utcArrival);
     
     //const { day: arrivalDay, month: arrivalMonth, year: arrivalYear} = parseDate(props.utcArrival);
     const { day: departureDay, month: departureMonth, year: departureYear} = parseDate(props.utcDeparture);
     
+
     //Return
     const { hour: returnArrivalHour, minutes: returnArrivalMinutes } = props.return && parseDate(props.returnUtcArrival);
     const { hour: returnDepartureHour, minutes: returnDepartureMinutes } = props.return && parseDate(props.returnUtcDeparture);

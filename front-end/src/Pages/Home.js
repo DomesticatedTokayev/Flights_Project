@@ -8,8 +8,6 @@ import Flight from "../components/Flight.js";
 
 function Home()
 {
-    const [showcaseFlights, setShowcaseFlights] = React.useState([]);
-
     const [flights, setFlights] = React.useState([]);
     const [searching, setSearching] = React.useState(false);
 
@@ -29,7 +27,7 @@ function Home()
         }
 
         setFlights(data.data);
-
+  
         // Stop loading icon
         setSearching(false);
     }
@@ -47,17 +45,19 @@ function Home()
                 <Search onSearch={handleSearch} outputLimit={10} isSearching={searching} />
             </div>
             <div className={flights.length > 1 ? "home__destinations grid_layout" : "home__destinations block_layout"}>
+                {/* { flights.length < 0 && <h3>No flights found!</h3>} */}
                 {flights && flights.map((item, index) => {
+                    console.log(item.UTCDeparture);
                     return <Flight
                         key={index}
                         originCountry={item.originCountry}
                         destinationCountry={item.destinationCountry}
                         originCity={item.originCity}
                         destinationCity={item.destinationCity}
-                        utcDeparture={item.UTCDeparture}
-                        utcArrival={item.UTCArrival}
-                        returnUtcDeparture={item.returnUTCDeparture}
-                        returnUtcArrival={item.returnUTCArrival}
+                        utcDeparture={item.utcDeparture}
+                        utcArrival={item.utcArrival}
+                        returnUtcDeparture={item.returnUtcDeparture}
+                        returnUtcArrival={item.returnUtcArrival}
                         nights={item.nights}
                         return={item.return} 
                         price={item.price}
