@@ -19,9 +19,11 @@ function CustomFlight() {
 
     async function getData() {
 
+       //setFlights([]);
+
         const configuration = {
             method: "get",
-            url: "http://localhost:4000/custom", //https://run.mocky.io/v3/d6155d63-938f-484c-8d87-6f918f126cd4 //"http://localhost:4000/custom"
+            url: "http://localhost:4000/custom",
             headers: {
                 Authorization: `Bearer ${auth.token}`,
             },
@@ -30,33 +32,45 @@ function CustomFlight() {
         let temp = [];
         await axios(configuration)
             .then((result) => {
-                console.log("test", result.data.data);
-                temp = result.data.data;
-                console.log("in", temp);
-                setFlights(temp);
+                temp = result.data;
+
+                setFlights(temp); // Doesn't work
+
+                // temp.map((value) => {
+                //     flights.push(value);
+                // });
             })
             .catch((error) => {
                 console.log(error);
                 error = new Error();
             });
-            
-          
-           // console.log("out", flights);
-
+        
+        
+        //console.log(flights);
     }
 
     return <main>
         <div className="custom">
-            { console.log("in return", flights)}
             {(flights.length > 0) && 
             <>
                 {flights.map((item, index) => {
                     return <FlightCard 
-                        key={index}/> 
+                        key={index}
+                        originCountry = {item.originCountry}
+                        originCity = {item.originCity}
+                        destinationCountry = {item.destinationCountry}
+                        destinationCity = {item.destinationCity}
+                        from={item.from}
+                        to={item.to}
+                        minStay={item.minStay}
+                        maxStay={item.maxStay}
+                        return={item.return}
+                        maxPrice={item.maxPrice}
+                    />
                 })}
             </>
             }
-            {/* <button onClick={getData}>load</button> */}
+
 
         </div>
     </main>

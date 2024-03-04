@@ -55,6 +55,11 @@ textarea{
     gap: 7px;
 }
 
+.break{
+    display: flex;
+    justify-content: center;
+}
+
 .line-break{
     width: 90%;
     border-top: 1px dashed grey;
@@ -346,24 +351,27 @@ button:active
     margin-bottom: 15px;
 }
 
-.flight__dest{
+.destinations{
     /* display: flex; */
     flex-direction: column;
     flex-grow: 3;
 }
-/* .flight__dest  */
+
 .countries{
     display: flex; 
     flex-direction: row;
     justify-content: space-around;
+    align-content: center;
+    width: 100%;
 }
-/* .flight__dest  */
+
 
 .countries div{
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
-/* .flight__dest  */
+
 
 .countries div p {
     width: 100%;
@@ -381,9 +389,8 @@ button:active
     align-items: center;
     }
 
-    /* .flight__dest */
 
-.flight__dest .time, .country{
+.destinations .time, .country{
     width: 100%;
     display: flex;
     justify-content: center;
@@ -457,51 +464,103 @@ button:active
 .custom{
     display: flex;
     flex-direction: column;
+    gap: 10px;
 }
 
 .card{
-    background: red;
-    margin-bottom: 10px;
-    height: 220px;
+    background: white;
+
+    border: 2px solid black;
+    border-radius: 20px;
+
+    /* margin-bottom: 10px; */
+    min-height: 220px;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    flex-basis: auto;
+    padding: 10px 20px;
+
+    /* flex-basis: auto; */
 }
 
-.card div{
+.col{
     height: 100%;
-
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .card__directions{
-    flex:3;
-    background-color: green;
+    flex:4;
+}
+
+.card__directions .city{
+    font-size: 0.9rem;
+}
+
+.card__directions .country{
+    font-size: 1.4rem;
 }
 
 .card__dates{
-    flex:2;
-    background-color: yellow;
-    
+    flex:3;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+
 }
+
+.card_dates p{
+    /* width: 100%; */
+    height: 100%;
+}
+
+.date_time{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.gap{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
 
 .card__price{
     flex:2;
-    background-color: green;
-    
+    text-align: center;
+}
+
+.card__price .price{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.card__price .price p{
+    font-size: 3rem;
 }
 
 .card__options{
     flex:1;
-    background-color: yellow;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    /* align-content: space-evenly; */
 
 }
-
+.card__options .button{
+    min-width: 150px;
+}
 
 /* || MEDIA -----------------------------------------------------------------------------*/
 /* || SMALL */
@@ -526,14 +585,7 @@ button:active
     .loader_slot{
       align-items: center;
     }
-
-    .card{
-        flex-direction: column;
-    }
-
-    .card div{
-        width: 100%;
-    }
+ 
 }
 
 /* || MEDIUM */
@@ -542,6 +594,32 @@ button:active
         display: block;
         align-items: space-between;
     }
+
+    .card{
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .card div{
+        width: 100%;
+    }
+
+    .card__dates{
+        flex-direction: row;
+    }
+
+    .dates p, .times p{
+        text-align: center;
+    }
+
+    .card__directions{
+        max-width: 60%;
+    }
+
+    .card__options{
+        flex-direction: row;
+    }
+
 }
 /* || LARGE */
 @media screen and (min-width: 992px){

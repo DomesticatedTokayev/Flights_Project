@@ -27,7 +27,7 @@ function Home()
   
         // Stop loading icon
         setSearching(false);
-    }
+    };
 
 
     return <main>

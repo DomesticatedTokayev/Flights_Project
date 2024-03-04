@@ -33,8 +33,8 @@ function Flight(props) {
         }   
         </div>
         <div className="flight__info">
-            <div className="flight__dest">
-                <div className="countries ">
+            <div className="destinations">
+                <div className="countries">
                     <div>
                         <p className="country grey-text">{props.originCountry ? props.originCountry : "Origin"}</p>
                         <p className="city">{props.originCity ? props.originCity : "Origin"}</p>
@@ -48,7 +48,7 @@ function Flight(props) {
                     </div>
                 </div>
                 {props.return && <>
-                    <div>
+                    <div className="break">
                     <hr className="line-break"></hr>
                 </div>
                 <div className="countries text-gap">

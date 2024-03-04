@@ -31,7 +31,9 @@ let database = [{
 let database2 = [
     {
         originCountry: "London",
+        originCity: "Luton",
         destinationCountry: "Spain",
+        destinationCity: "Barcelona",
         from: "02/03/2024",
         to: "10/04/2024",
         maxPrice: 100,
@@ -41,7 +43,9 @@ let database2 = [
     },
     {
         originCountry: "London",
+        originCity: null,
         destinationCountry: "France",
+        destinationCity: null,
         from: "02/03/2024",
         to: "10/04/2024",
         maxPrice: 80,
@@ -51,14 +55,28 @@ let database2 = [
     },
     {
         originCountry: "Birmingham",
+        originCity: null,
         destinationCountry: "Germany",
+        destinationCity: null,
         from: "02/03/2024",
         to: "10/04/2024",
         maxPrice: 120,
         return: true,
         minStay: 14,
         maxStay: 21,
-    }
+    }, {
+        originCountry: "Birmingham",
+        originCity: null,
+        destinationCountry: "Germany",
+        destinationCity: null,
+        from: "02/03/2024",
+        to: "10/04/2024",
+        maxPrice: 120,
+        return: false,
+        minStay: 14,
+        maxStay: 21,
+    },
+
 ]
 
 app.get("/", (req, res) =>
@@ -205,7 +223,7 @@ app.get("/custom", auth, (req, res) => {
     {
         const userID = req.user.userID;
 
-        res.status(200).json({data: database2});
+        res.status(200).json(database2);
     }
     else {
         res.status(200).send("User not found");
