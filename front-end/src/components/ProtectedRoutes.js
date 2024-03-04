@@ -3,7 +3,7 @@ import {Navigate, Outlet } from "react-router-dom";
 // import Cookies from "universal-cookie";
 // const cookies = new Cookies();
 
-import { useAuth } from "./AuthProvider";
+import { useAuth } from "../hooks/AuthProvider";
 
 function ProtectedRoutes() {
    

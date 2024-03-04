@@ -1,12 +1,20 @@
 import React from "react";
 import Search from "../components/SearchForm";
-import getFlight from "../hooks/GetFlights";
+import getFlight from "../components/GetFlights.js";
 import Flight from "../components/Flight.js";
 
 import image from "../images/Skyscraper.jpg";
 
+// UseContext test
+import { useTopAccess } from "../Tests/TopAccessProvider.js";
+
 function Home()
 {
+    // UseContext test
+    const data = useTopAccess();
+
+    data.PrintAlert("YEs");
+
     const [flights, setFlights] = React.useState([]);
     const [searching, setSearching] = React.useState(false);
     const [hasSearched, setHasSearched] = React.useState(false);

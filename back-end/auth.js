@@ -15,12 +15,10 @@ export default async (req, res, next) => {
         // Pass the user down to the endpoint here
         req.user = user;
         // Pass down functionality to the endpoint
-        next();
     } catch (error) {
-        // res.status(401).json({
-        //     error: new Error("Invalid request"),
-        //     message: error.message
-        // })
+        console.log(error);
+    } finally
+    {
         next();
-    };
+    }
 }

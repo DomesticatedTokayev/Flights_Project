@@ -126,7 +126,7 @@ app.post("/register", (req, res) => {
     res.status(200).send("New user created")
 });
 
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
     //Get details from body
     let username = req.body.email;
     let password = req.body.password;
@@ -146,7 +146,7 @@ app.post("/login", (req, res) => {
             //User succesfully loged-in
             
             //Create a random token to send back
-            const token = jwt.sign(
+            const token = await jwt.sign(
                 {
                     userID: tempDetails.id,
                     email: tempDetails.email,

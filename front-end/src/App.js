@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter,  Routes, Route } from "react-router-dom";
 import "./styles/style.css";
-import ProtectedRoutes from "./hooks/ProtectedRoutes.js";
+import ProtectedRoutes from "./components/ProtectedRoutes.js";
 
 import AuthProvider from "./hooks/AuthProvider.js";
 
@@ -10,7 +10,11 @@ import Footer from "./components/Footer.js";
 import SignIn from "./Pages/SignIn.js";
 import Home from "./Pages/Home.js";
 import CustomFlights from "./Pages/CustomFlights.js";
+import Account from "./Pages/Account.js";
 import AccountSubscription from "./Pages/AccountSubscription.js"
+
+// Context Test
+import TopAccess from "./Tests/TopAccessProvider.js";
 
 //  Resources used to link back-end and front-end
 //https://dev.to/miracool/how-to-manage-user-authentication-with-react-js-3ic5
@@ -22,20 +26,23 @@ const baseURL = "http://localhost:4000";
 function App() {
 
   return (
-      <AuthProvider>
-        <Header />
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route element={<ProtectedRoutes />}>
-                  <Route path="/custom" element={<CustomFlights />} />
-                </Route>
-                <Route path="/sign-in" element={<SignIn />} />
-                <Route path="/free" element={<AccountSubscription />} />
-              </Routes>
-            </BrowserRouter>  
-        <Footer />
-      </AuthProvider>
+  <AuthProvider>
+    <TopAccess>
+      <Header />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/free" element={<AccountSubscription />} />
+            <Route element={<ProtectedRoutes />}>   
+              <Route path="/custom" element={<CustomFlights />} />
+              <Route path="/account" element={<Account/>} />
+            </Route>
+          </Routes>
+        </BrowserRouter>  
+      <Footer />
+      </TopAccess>
+    </AuthProvider>
   );
 }
 

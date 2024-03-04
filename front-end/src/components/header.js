@@ -1,6 +1,6 @@
 import React from "react";
 import HeaderLinks from "./HeaderLinks";
-import UseOutsideClick from "../hooks/UseOutsideClick";
+import UseOutsideClick from "./UseOutsideClick";
 //import Cookies from "universal-cookie";
 //const cookie = new Cookies();
 
