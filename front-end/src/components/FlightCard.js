@@ -1,7 +1,28 @@
 import React from "react";
 
+///
+// Disable save button when in custom flights
+
 function FlightCard(props)
 {
+    const [id, setID] = React.useState();
+
+
+    React.useEffect(() => {
+        setID(props.id);
+    }, []);
+
+
+    function handleEdit() {
+        // Send flight data (So additional api calls are not required)
+        props.handleEdit(id);
+    }
+
+    function handleSearch() {
+        //Send flight data
+        props.handleSearch();
+    }
+
     return <div className="card">
         <div className="col card__directions">
             <div className="destinations">
@@ -63,8 +84,8 @@ function FlightCard(props)
             </div>
         </div>
         <div className="col card__options">
-             <button className="button">Search</button>
-             <button className="button">Edit</button>
+             <button className="button" onClick={handleSearch}>Search</button>
+            <button className="button" onClick={handleEdit}>Edit</button>
         </div>
     </div>
 }

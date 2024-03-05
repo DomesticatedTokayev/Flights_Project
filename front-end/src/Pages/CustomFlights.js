@@ -4,12 +4,31 @@ import axios from "axios";
 // const cookies = new Cookies();
  import { useAuth } from "../hooks/AuthProvider.js";
 import FlightCard from "../components/FlightCard.js";
+import Flight from "../components/Flight.js";
+
+
+import UseOutsideClick from "../components/UseOutsideClick.js";
 
 function CustomFlight() {
-    const [flights, setFlights] = useState([]);
-
 
     const auth = useAuth();
+
+    const [customFlights, setcustomFlights] = useState([]);
+    const [flights, setFlights] = useState([{
+        id: 1,
+        originCountry:"United Kingdom",
+        destinationCountry:"Spain",
+        originCity: "London",
+        destinationCity: "Barcelona",
+        utcDeparture:"2024*03-02",
+        utcArrival: "2024-06-20",
+        returnUtcDeparture: "2024*03-02",
+        returnUtcArrival: "2024-06-20",
+        nights:7,
+        return: "return",
+        price:50,
+        link: "https://www.google.com",
+    }]);
 
     useEffect(() => {
 
@@ -18,8 +37,6 @@ function CustomFlight() {
     }, []);
 
     async function getData() {
-
-       //setFlights([]);
 
         const configuration = {
             method: "get",
@@ -33,8 +50,7 @@ function CustomFlight() {
         await axios(configuration)
             .then((result) => {
                 temp = result.data;
-
-                setFlights(temp); // Doesn't work
+                setcustomFlights(temp);
 
                 // temp.map((value) => {
                 //     flights.push(value);
@@ -44,18 +60,62 @@ function CustomFlight() {
                 console.log(error);
                 error = new Error();
             });
-        
-        
-        //console.log(flights);
     }
+
+    // Put this into its own function (Repeating code!)
+    function toggleSideMenu(setting)
+    {
+        const sideMenu = document.getElementById("custom__sidebar");
+        sideMenu.style.display = setting;
+
+        // On close, delete flight data
+    }
+
+    function closeSideMenu()
+    {
+        toggleSideMenu("none");
+        // On close, delete flight data
+    }
+
+    const ref = UseOutsideClick(closeSideMenu);
+
+    const handleSideBarClick = (event) => {
+        // console.log(event);
+        // Doesn't Work
+        //event.stopPropogation();
+    }
+
+    function handleOpenMenu() {
+        toggleSideMenu("block");
+    }
+
+    function handleSearch(flightID)
+    {
+        // get data
+        // set searching icon on button
+        // use axios to search for flights
+        // Show side menu with flight data
+        handleOpenMenu()
+    }
+
+
+    // Put this into custom flights. But call it from here
+    function handleEdit(flightID) {
+        //Either send id or flight data
+
+        window.location.href = `editflight?flightid=${flightID}`;
+        
+    }
+    
 
     return <main>
         <div className="custom">
-            {(flights.length > 0) && 
+            {(customFlights.length > 0) && 
             <>
-                {flights.map((item, index) => {
+                {customFlights.map((item, index) => {
                     return <FlightCard 
-                        key={index}
+                        key={item.id}
+                        id={item.id}
                         originCountry = {item.originCountry}
                         originCity = {item.originCity}
                         destinationCountry = {item.destinationCountry}
@@ -66,12 +126,35 @@ function CustomFlight() {
                         maxStay={item.maxStay}
                         return={item.return}
                         maxPrice={item.maxPrice}
+                        handleSearch={handleSearch}
+                        handleEdit={handleEdit}
                     />
                 })}
             </>
             }
 
-
+            <div ref={ref} className="custom__sidebar sidebar" id="custom__sidebar" onClick={handleSideBarClick}>
+                <button onClick={() => toggleSideMenu("none")}>X</button>
+        
+                {flights.map((item, index) => {
+                    return <Flight
+                    key={item.id}
+                    originCountry={item.originCountry}
+                    destinationCountry={item.destinationCountry}
+                    originCity={item.originCity}
+                    destinationCity={item.destinationCity}
+                    utcDeparture={item.utcDeparture}
+                    utcArrival={item.utcArrival}
+                    returnUtcDeparture={item.returnUtcDeparture}
+                    returnUtcArrival={item.returnUtcArrival}
+                    nights={item.nights}
+                    return={item.return} 
+                    price={item.price}
+                    link={item.link}
+                />
+                })
+                }
+            </div>
         </div>
     </main>
 }

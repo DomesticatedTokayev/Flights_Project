@@ -1,6 +1,6 @@
 import React from "react";
-import Search from "../components/SearchForm";
-import getFlight from "../components/GetFlights.js";
+import SearchForm from "../components/SearchForm";
+import SearchFlights from "../components/SearchFlights.js";
 import Flight from "../components/Flight.js";
 
 import image from "../images/Skyscraper.jpg";
@@ -12,37 +12,44 @@ function Home()
 {
     // UseContext test
     const data = useTopAccess();
-
-    data.PrintAlert("YEs");
+    //data.PrintAlert("YEs");
 
     const [flights, setFlights] = React.useState([]);
     const [searching, setSearching] = React.useState(false);
     const [hasSearched, setHasSearched] = React.useState(false);
 
-    // Put this function into a seperate file (Make it usable else ware)
     async function handleSearch(props)
     {
         // Start loading icon (On search button)
         setSearching(true);
-
         let data;
         // Only send requrests once while loading
-        !searching && (data = await getFlight(props));
-
+        !searching && (data = await SearchFlights(props));
         setFlights(data);
-
         setHasSearched(true);
-  
         // Stop loading icon
         setSearching(false);
     };
+
 
 
     return <main>
         <div className="home">
             <img className="home__image" src={image} alt="Plane and skyscraper image"></img>
             <div className="home__search">
-                <Search onSearch={handleSearch} outputLimit={10} isSearching={searching} />
+                <SearchForm             
+                    origin="London"
+                    destination="Spain"
+                    from="2024-03-20"
+                    to="2024-05-20"
+                    return="return"
+                    maxPrice="300"
+                    minStay="3"
+                    maxStay="14"
+                    outputLimit={10}
+                    onSearch={handleSearch}   
+                    isSearching={searching} 
+                    />
             </div>
             <div className={flights.length > 1 ? "home__destinations grid_layout" : "home__destinations block_layout"}>
                 {(hasSearched === true && flights.length <= 0) && <h3 className="align-center">No flights found!</h3>}

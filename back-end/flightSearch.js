@@ -1,5 +1,4 @@
 import axios from "axios";
-import { error } from "console";
 import url from "url";
 
 const TEQUILA_API = "3T6eGI3mD8RdWEX_0-cmOWdyqldErA1l";

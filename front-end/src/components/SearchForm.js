@@ -4,16 +4,17 @@ import { useState } from "react"
 function Search(props) {
 
     const [data, setData] = useState({
-        origin: "London",
-        destination: "Spain",
-        from: "",
-        to: "",
-        return: "return",
-        maxPrice: "300",
-        minStay: "3",
-        maxStay: "14",
+        origin: props.origin,
+        destination: props.destination,
+        from: props.from,
+        to: props.to,
+        return: props.return,
+        maxPrice: props.maxPrice,
+        minStay: props.minStay,
+        maxStay: props.maxStay,
         outputLimit: props.outputLimit
     });
+
 
     function updateSearch(event)
     {
@@ -27,6 +28,9 @@ function Search(props) {
         event.preventDefault();
         props.onSearch(data);
     }
+
+    React.useEffect(() => {
+    },[])
 
     return <form className="search" onSubmit={(e) => (submitSearch(e))}>
         <div>

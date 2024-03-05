@@ -15,6 +15,7 @@ import AccountSubscription from "./Pages/AccountSubscription.js"
 
 // Context Test
 import TopAccess from "./Tests/TopAccessProvider.js";
+import EditCustomFlight from "./Pages/EditCustomFlight.js";
 
 //  Resources used to link back-end and front-end
 //https://dev.to/miracool/how-to-manage-user-authentication-with-react-js-3ic5
@@ -36,6 +37,7 @@ function App() {
             <Route path="/free" element={<AccountSubscription />} />
             <Route element={<ProtectedRoutes />}>   
               <Route path="/custom" element={<CustomFlights />} />
+              <Route path="/editflight" element={<EditCustomFlight />} />
               <Route path="/account" element={<Account/>} />
             </Route>
           </Routes>

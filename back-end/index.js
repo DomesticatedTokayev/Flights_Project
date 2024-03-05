@@ -30,41 +30,45 @@ let database = [{
 
 let database2 = [
     {
+        id: 1,
         originCountry: "London",
         originCity: "Luton",
         destinationCountry: "Spain",
         destinationCity: "Barcelona",
-        from: "02/03/2024",
-        to: "10/04/2024",
+        from: "2024-03-20",
+        to: "2024-05-20",
         maxPrice: 100,
         return: true,
         minStay: 7,
         maxStay: 14,
     },
     {
+        id: 2,
         originCountry: "London",
         originCity: null,
         destinationCountry: "France",
         destinationCity: null,
-        from: "02/03/2024",
-        to: "10/04/2024",
+        from: "2024-03-20",
+        to: "2024-05-20",
         maxPrice: 80,
         return: true,
         minStay: 7,
         maxStay: 14,
     },
     {
+        id: 3,
         originCountry: "Birmingham",
         originCity: null,
         destinationCountry: "Germany",
         destinationCity: null,
-        from: "02/03/2024",
-        to: "10/04/2024",
+        from: "2024-03-20",
+        to: "2024-05-20",
         maxPrice: 120,
         return: true,
         minStay: 14,
         maxStay: 21,
     }, {
+        id: 4,
         originCountry: "Birmingham",
         originCity: null,
         destinationCountry: "Germany",
@@ -73,8 +77,6 @@ let database2 = [
         to: "10/04/2024",
         maxPrice: 120,
         return: false,
-        minStay: 14,
-        maxStay: 21,
     },
 
 ]
@@ -231,6 +233,19 @@ app.get("/custom", auth, (req, res) => {
 
 });
 
+app.get("/flight", auth, (req, res) => {
+
+    if (req.user)
+    {
+        const id = req.query.flightid;
+        // Temp: Return test data
+        res.status(200).json(database2[0]);     
+    }
+    else {
+        res.status(404);
+    }
+})
+
 // TESTS -----------------------------------------------------------------------------------------------------
 app.get("/free", (req, res)=>
 {
@@ -241,7 +256,6 @@ app.get("/auth", auth, (req, res)=>
 {
     if (req.user)
     {
-
         res.json({ message: "Premium" });
     }
     else

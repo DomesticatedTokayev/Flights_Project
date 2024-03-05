@@ -9,10 +9,12 @@ function Header()
     // Use link as button
     // Also has menu sliding
     //https://www.w3schools.com/howto/howto_js_sidenav.asp
+
+    // Put this into its own script (Share with custom flights search)
     function toggleSideMenu(setting)
     {
         const sideMenu = document.getElementById("sideBar");
-        const currentDisplay = sideMenu.style.display = setting;
+        sideMenu.style.display = setting;
     }
 
     function closeSideMenu() {
@@ -28,7 +30,7 @@ function Header()
     return <header className="header">
         <>
         <h1>This is a Header</h1>
-            <div ref={ref} className="header__portrait" id="sideBar" onClick={handleHeaderClick}>
+            <div ref={ref} className="sidebar" id="sideBar" onClick={handleHeaderClick}>
                 <button onClick={()=>toggleSideMenu("none")}>X</button>
                 <HeaderLinks/>
             </div>

@@ -1,7 +1,9 @@
 import axios from "axios";
 
-export default async function getFlight(props) {
+export default async function SearchFlights(props) {
     
+    // Add cities and countries (If city is valid, send city, else send country)
+
     const query = {
         origin: props.origin,
         destination: props.destination,
@@ -17,7 +19,7 @@ export default async function getFlight(props) {
     const configuration = {
         method: "post",
         url: "http://localhost:3000/searchflights",
-        params: query
+        params: query,
     }
 
     let data = "";
@@ -31,4 +33,3 @@ export default async function getFlight(props) {
     
     return data;
 }
-

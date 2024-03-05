@@ -74,6 +74,10 @@ textarea{
     text-align: center;
 }
 
+.hidden{
+    display: none;
+}
+
 .loader_slot{
     width: 100%;
     display: flex;
@@ -216,8 +220,8 @@ button:active
     font-weight: bold;
 }
 
-/* || HEADER SIDEBAR --------------------------------------------------------------------*/
-.header__portrait{
+/* || SIDEBAR --------------------------------------------------------------------*/
+.sidebar{
     display: none;
     height: 100%;
     width: 50%;
@@ -232,7 +236,7 @@ button:active
 
 }
 
-.header__portrait .header__navigation{
+.sidebar .header__navigation{
     display: flex;
     flex-direction: column;
     align-items: end;
@@ -311,6 +315,7 @@ button:active
 /* || FLIGHT -------------------------------------------------------------------------------*/
 
 .flight{
+    border: 2px solid black;
     background-color: white;
     margin: 10px 10px;
     min-height: 180px;
@@ -337,7 +342,8 @@ button:active
 
 .flight__dates .date p, .one-way_date{
     /* font-size: var(--FONT_FLIGHT_SIZE); */
-    font-size: 1.4rem;
+    /* font-size: 1.4rem; */
+    font-size: clamp(0.1rem, 4vw + 0.5rem 1.4rem);
 }
 
 .flight__dates .nights p{
@@ -469,8 +475,8 @@ button:active
 
 .card{
     background: white;
-
-    border: 2px solid black;
+    /* Place into variable -============================================<<<<====================<<<<<<<<<<<<<<<<<<<<<<<<<<< */
+    border: 2px solid black; 
     border-radius: 20px;
 
     /* margin-bottom: 10px; */
@@ -562,16 +568,17 @@ button:active
     min-width: 150px;
 }
 
+/* || Custom SIDE BAR (SEARCHED FLIGHTS) ------------------------------------------------*/
+.custom__sidebar{
+    /* display: block; */
+    width: 50%;
+}
+
+
 /* || MEDIA -----------------------------------------------------------------------------*/
 /* || SMALL */
 @media screen and (max-width: 576px){
-    .open_sidemenu{
-        display: block;
-    }
 
-    .header__landscape{
-        display: none;
-    }
     
     .search div{
         display: flex;
@@ -585,11 +592,24 @@ button:active
     .loader_slot{
       align-items: center;
     }
+
+    .flight__info{
+        flex-direction: column;
+        align-items: center;
+    }
  
 }
 
 /* || MEDIUM */
 @media screen and (max-width: 846px){
+    .open_sidemenu{
+        display: block;
+    }
+
+    .header__landscape{
+        display: none;
+    }
+
     .home__destinations{
         display: block;
         align-items: space-between;
@@ -618,6 +638,10 @@ button:active
 
     .card__options{
         flex-direction: row;
+    }
+
+    .custom__sidebar{
+        width: 90%;
     }
 
 }

@@ -9,7 +9,7 @@ const AuthProvider = ({ children }) => {
 
     
     function storeToken(token){
-       // setUser(user);
+        setUser(user);
         setToken(token);
         localStorage.setItem("YourFlights", token);
         return;
