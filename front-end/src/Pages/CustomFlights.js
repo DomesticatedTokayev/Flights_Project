@@ -6,15 +6,15 @@ import axios from "axios";
 import FlightCard from "../components/FlightCard.js";
 import Flight from "../components/Flight.js";
 
-
 import UseOutsideClick from "../components/UseOutsideClick.js";
+import SearchFlights from "../components/SearchFlights.js";
 
 function CustomFlight() {
-
     const auth = useAuth();
 
     const [customFlights, setcustomFlights] = useState([]);
     const [flights, setFlights] = useState([{
+        
         id: 1,
         originCountry:"United Kingdom",
         destinationCountry:"Spain",
@@ -89,22 +89,55 @@ function CustomFlight() {
         toggleSideMenu("block");
     }
 
-    function handleSearch(flightID)
+    async function handleSearch(origin, destination, from, to, maxPrice, withReturn, minStay, maxStay)
     {
         // get data
-        // set searching icon on button
+        // set searching icon on Sidebar
+        // -- To Do
         // use axios to search for flights
+
+        console.log(withReturn)
+        const query = {
+            origin: origin,
+            destination: destination,
+            from: from,
+            to: to,
+            maxprice: maxPrice,
+            return: withReturn,
+            minstay: minStay,
+            maxstay: maxStay,
+        };
+        const config = {
+            method: "post",
+            url: "http://localhost:3000/searchflights",
+            params: query,
+        };
+
+        let data = "";
+        await axios(config)
+            .then(result => {
+                setFlights(result.data);
+                console.log(flights);
+            })
+            .catch(error => {
+                console.log(error);
+        })
         // Show side menu with flight data
         handleOpenMenu()
     }
 
 
     // Put this into custom flights. But call it from here
-    function handleEdit(flightID) {
+    function handleNew(flightID) {
         //Either send id or flight data
 
-        window.location.href = `editflight?flightid=${flightID}`;
+        window.location.href = `/newflight?flightid=${flightID}`;
         
+    }
+
+    function handleDelete(flightID) {
+        // Send delete request
+        console.log("Delete flight ID: ", flightID);
     }
     
 
@@ -114,8 +147,8 @@ function CustomFlight() {
             <>
                 {customFlights.map((item, index) => {
                     return <FlightCard 
-                        key={item.id}
-                        id={item.id}
+                        key={item.index}
+                        id={item.index}
                         originCountry = {item.originCountry}
                         originCity = {item.originCity}
                         destinationCountry = {item.destinationCountry}
@@ -127,7 +160,7 @@ function CustomFlight() {
                         return={item.return}
                         maxPrice={item.maxPrice}
                         handleSearch={handleSearch}
-                        handleEdit={handleEdit}
+                        handleDelete={handleDelete}
                     />
                 })}
             </>
@@ -138,7 +171,7 @@ function CustomFlight() {
         
                 {flights.map((item, index) => {
                     return <Flight
-                    key={item.id}
+                    key={item.index}
                     originCountry={item.originCountry}
                     destinationCountry={item.destinationCountry}
                     originCity={item.originCity}
@@ -155,6 +188,7 @@ function CustomFlight() {
                 })
                 }
             </div>
+            <button className="button" onClick={handleNew}>Add New Destination</button>
         </div>
     </main>
 }

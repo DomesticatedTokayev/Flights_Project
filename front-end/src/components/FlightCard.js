@@ -1,5 +1,4 @@
 import React from "react";
-
 ///
 // Disable save button when in custom flights
 
@@ -10,17 +9,31 @@ function FlightCard(props)
 
     React.useEffect(() => {
         setID(props.id);
+
+        
     }, []);
 
 
-    function handleEdit() {
+    function handleDelete() {
         // Send flight data (So additional api calls are not required)
-        props.handleEdit(id);
+
+        props.handleDelete(props.id);
     }
+
+ 
 
     function handleSearch() {
         //Send flight data
-        props.handleSearch();
+        props.handleSearch(
+            props.originCity ? props.originCity : props.originCountry,
+            props.destinationCity ? props.destinationCity : props.destinationCountry,
+            props.from,
+            props.to,
+            props.maxPrice,
+            props.return,
+            props.minStay,
+            props.maxStay
+        );
     }
 
     return <div className="card">
@@ -84,8 +97,8 @@ function FlightCard(props)
             </div>
         </div>
         <div className="col card__options">
-             <button className="button" onClick={handleSearch}>Search</button>
-            <button className="button" onClick={handleEdit}>Edit</button>
+            <button className="button" onClick={handleSearch}>Search</button>
+            <button className="button" onClick={handleDelete}>Delete</button>
         </div>
     </div>
 }

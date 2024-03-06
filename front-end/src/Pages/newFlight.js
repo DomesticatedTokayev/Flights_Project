@@ -4,22 +4,18 @@ import SearchForm from "../components/SearchForm";
 import { useSearchParams } from "react-router-dom";
 import { useAuth } from "../hooks/AuthProvider";
 
-function EditCustomFlight() {
+function NewFlight() {
     const auth = useAuth();
-
     const [searching, setSearching] = React.useState(false);
-    const [searchParams, setSearchParams] = useSearchParams();
     const [flight, setFlight] = React.useState([]);
 
-    React.useEffect(() => {
-        let id = searchParams.get("flightid");
-        // Use ID to get flight data from server database
 
-        getFlightData(id);
+    React.useEffect(() => {
+
     }, []);
 
 
-    async function getFlightData(flightID) {
+    async function createNewFlight(flightID) {
         const config = {
             method: "get",
             url: "http://localhost:3000/flight",
@@ -35,17 +31,17 @@ function EditCustomFlight() {
 
        // console.log(config);
 
-        await axios(config)
-            .then(result => {
-                //console.log(result.data);
-                setFlight(result.data);
-            })
-            .catch(error => {
-                console.log("Axios", error.message);
-            });
+        // await axios(config)
+        //     .then(result => {
+        //         //console.log(result.data);
+        //         //setFlight(result.data);
+        //     })
+        //     .catch(error => {
+        //         console.log("Axios", error.message);
+        //     });
     }
 
-    console.log("Flights:", flight);
+   // console.log("Flights:", flight);
 
     function handleSearch(props)
     {
@@ -61,8 +57,8 @@ function EditCustomFlight() {
                 <div className="custom_flight__search">
                     {console.log("Within return", flight.originCity)}
                 <SearchForm
-                    origin={flight.originCity ? flight.originCity: flight.originCountry}
-                    destination={flight.destinationCity ? flight.destinationCity: flight.destinationCountry}
+                    origin={flight.originCity}
+                    destination={flight.destinationCity}
                     from={flight.from}
                     to={flight.to}
                     return={flight.return? "Return" : "One-Way"}
@@ -79,4 +75,4 @@ function EditCustomFlight() {
     </>
 }
 
-export default EditCustomFlight;
+export default NewFlight;

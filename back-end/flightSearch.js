@@ -99,9 +99,11 @@ export async function searchFlight(flyFrom, flyTo, dateFrom, dateTo, currency = 
 
         }
     });
-
+    console.log(withReturn);
     let searchURL = withReturn === "return" ? searchURL_WithReturn :  searchURL_OneWay
     let flightData = [];
+    console.log(searchURL_WithReturn);
+    console.log(searchURL);
 
     await axios.get(searchURL, config)
     .then((result) => {

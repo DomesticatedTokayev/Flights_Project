@@ -3,6 +3,18 @@ import { useState } from "react"
 
 function Search(props) {
 
+    // const [data, setData] = useState({
+    //     origin: "",
+    //     destination: "",
+    //     from: "",
+    //     to: "",
+    //     return: "",
+    //     maxPrice: "",
+    //     minStay: "",
+    //     maxStay: "",
+    //     outputLimit: props.outputLimit
+    // });
+
     const [data, setData] = useState({
         origin: props.origin,
         destination: props.destination,
@@ -14,7 +26,6 @@ function Search(props) {
         maxStay: props.maxStay,
         outputLimit: props.outputLimit
     });
-
 
     function updateSearch(event)
     {
