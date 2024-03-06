@@ -31,7 +31,7 @@ function Header()
         <>
         <h1>This is a Header</h1>
             <div ref={ref} className="sidebar" id="sideBar" onClick={handleHeaderClick}>
-                <button onClick={()=>toggleSideMenu("none")}>X</button>
+                <button className="button round_btn" onClick={()=>toggleSideMenu("none")}>X</button>
                 <HeaderLinks/>
             </div>
 
@@ -40,7 +40,7 @@ function Header()
             </div>
 
             <div className="open_sidemenu">
-                <button onClick={()=>toggleSideMenu("block")}>Open</button>
+                <button className="button round_btn" onClick={()=>toggleSideMenu("block")}>|||</button>
             </div>
         </>
     </header>

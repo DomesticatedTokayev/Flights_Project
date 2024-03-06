@@ -13,22 +13,26 @@ function CustomFlight() {
     const auth = useAuth();
 
     const [customFlights, setcustomFlights] = useState([]);
-    const [flights, setFlights] = useState([{
+    const [flights, setFlights] = useState([]);
+    const [searching, setSearching] = React.useState(false);
+    const [searchComplete, setSearchComplete]= React.useState(false);
+
+    // const [flights, setFlights] = useState([{
         
-        id: 1,
-        originCountry:"United Kingdom",
-        destinationCountry:"Spain",
-        originCity: "London",
-        destinationCity: "Barcelona",
-        utcDeparture:"2024*03-02",
-        utcArrival: "2024-06-20",
-        returnUtcDeparture: "2024*03-02",
-        returnUtcArrival: "2024-06-20",
-        nights:7,
-        return: "return",
-        price:50,
-        link: "https://www.google.com",
-    }]);
+    //     id: 1,
+    //     originCountry:"United Kingdom",
+    //     destinationCountry:"Spain",
+    //     originCity: "London",
+    //     destinationCity: "Barcelona",
+    //     utcDeparture:"2024*03-02",
+    //     utcArrival: "2024-06-20",
+    //     returnUtcDeparture: "2024*03-02",
+    //     returnUtcArrival: "2024-06-20",
+    //     nights:7,
+    //     return: "return",
+    //     price:50,
+    //     link: "https://www.google.com",
+    // }]);
 
     useEffect(() => {
 
@@ -67,14 +71,20 @@ function CustomFlight() {
     {
         const sideMenu = document.getElementById("custom__sidebar");
         sideMenu.style.display = setting;
-
+        
         // On close, delete flight data
+        setting === "none" && ClearData();
     }
 
     function closeSideMenu()
     {
         toggleSideMenu("none");
         // On close, delete flight data
+        ClearData();
+    }
+
+    function ClearData() {
+        setFlights([]);
     }
 
     const ref = UseOutsideClick(closeSideMenu);
@@ -91,12 +101,13 @@ function CustomFlight() {
 
     async function handleSearch(origin, destination, from, to, maxPrice, withReturn, minStay, maxStay)
     {
-        // get data
-        // set searching icon on Sidebar
-        // -- To Do
-        // use axios to search for flights
+        setSearching(true);
+        setSearchComplete(false);
 
-        console.log(withReturn)
+        handleOpenMenu();
+
+
+        // use axios to search for flights
         const query = {
             origin: origin,
             destination: destination,
@@ -113,17 +124,17 @@ function CustomFlight() {
             params: query,
         };
 
-        let data = "";
         await axios(config)
             .then(result => {
                 setFlights(result.data);
-                console.log(flights);
+
             })
             .catch(error => {
                 console.log(error);
         })
-        // Show side menu with flight data
-        handleOpenMenu()
+        setSearching(false);
+        setSearchComplete(true);
+
     }
 
 
@@ -131,7 +142,8 @@ function CustomFlight() {
     function handleNew(flightID) {
         //Either send id or flight data
 
-        window.location.href = `/newflight?flightid=${flightID}`;
+        //window.location.href = `/newflight?flightid=${flightID}`;
+        window.location.href = `/newflight`;
         
     }
 
@@ -143,12 +155,13 @@ function CustomFlight() {
 
     return <main>
         <div className="custom">
+
             {(customFlights.length > 0) && 
             <>
                 {customFlights.map((item, index) => {
                     return <FlightCard 
-                        key={item.index}
-                        id={item.index}
+                        key={item.id}
+                        id={item.id}
                         originCountry = {item.originCountry}
                         originCity = {item.originCity}
                         destinationCountry = {item.destinationCountry}
@@ -159,6 +172,7 @@ function CustomFlight() {
                         maxStay={item.maxStay}
                         return={item.return}
                         maxPrice={item.maxPrice}
+                        isAddFlight={false}
                         handleSearch={handleSearch}
                         handleDelete={handleDelete}
                     />
@@ -167,11 +181,12 @@ function CustomFlight() {
             }
 
             <div ref={ref} className="custom__sidebar sidebar" id="custom__sidebar" onClick={handleSideBarClick}>
-                <button onClick={() => toggleSideMenu("none")}>X</button>
-        
+                <button className="button round_btn" onClick={() => toggleSideMenu("none")}>X</button>
+                {(flights.length <= 0 && searchComplete === false) && <div className="loader_slot"> <div className="loader loader__custom-flight"></div> </div>}
+                {(flights.length <= 0 && searchComplete === true) && <div className="loader_slot"> <p>No Flights Found</p></div>}
                 {flights.map((item, index) => {
                     return <Flight
-                    key={item.index}
+                    key={item.id}
                     originCountry={item.originCountry}
                     destinationCountry={item.destinationCountry}
                     originCity={item.originCity}

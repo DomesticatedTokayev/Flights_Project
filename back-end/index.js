@@ -57,7 +57,7 @@ let database2 = [
     },
     {
         id: 3,
-        originCountry: null,
+        originCountry: "United Kingdom",
         originCity: "Birmingham",
         destinationCountry: "Germany",
         destinationCity: null,

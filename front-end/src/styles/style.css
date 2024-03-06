@@ -78,6 +78,10 @@ textarea{
     display: none;
 }
 
+.full_width{
+    width: 100%;
+}
+
 .loader_slot{
     width: 100%;
     display: flex;
@@ -93,6 +97,11 @@ textarea{
     /* Safari*/
     /* -webkit-animation: spin 2s linear infinite;  */
     animation: spin 2s linear infinite;
+}
+
+.loader__custom-flight{
+    width: 90px;
+    height: 90px;
 }
 
 /* Safari*/
@@ -224,7 +233,7 @@ button:active
 .sidebar{
     display: none;
     height: 100%;
-    width: 50%;
+    width: 30%;
     position: fixed;
     z-index: 10;
     top: 0;
@@ -233,7 +242,7 @@ button:active
     overflow-x: hidden;
     transform: 0.5s;
     padding: 20px;
-
+    border-left: 2px solid black; 
 }
 
 .sidebar .header__navigation{
@@ -342,8 +351,8 @@ button:active
 
 .flight__dates .date p, .one-way_date{
     /* font-size: var(--FONT_FLIGHT_SIZE); */
-    /* font-size: 1.4rem; */
-    font-size: clamp(0.1rem, 4vw + 0.5rem 1.4rem);
+    font-size: 1.4rem;
+    /* font-size: clamp(0.1rem, 4vw + 0.5rem 1.4rem); */
 }
 
 .flight__dates .nights p{
@@ -386,7 +395,7 @@ button:active
 
 .city{
     /* font-size: clamp(var(--FONT_FLIGHT_SIZE), 1.5vw, 3rem); */
-    font-size: 1.4rem;
+     font-size: 0.9rem;
 }
 
 .countries span{
@@ -401,7 +410,7 @@ button:active
     display: flex;
     justify-content: center;
     gap: 7.5rem;
-    font-size: 0.9rem;
+   font-size: 1.4rem;
 }
 
 .flight__cost{
@@ -464,6 +473,10 @@ button:active
     align-content: center;
     margin-top: 10px;
     padding: 10px;
+}
+
+.round_btn{
+    width: 50px;
 }
 
 /* || Flight Card --------------------------------------------------------------------------*/
@@ -573,6 +586,9 @@ button:active
     /* display: block; */
     width: 50%;
 }
+
+/* || New Flight  -----------------------------------------------------------------------------*/ /*<<<<<<<<<<<<<<<<<<<<< Set var*/
+
 
 
 /* || MEDIA -----------------------------------------------------------------------------*/

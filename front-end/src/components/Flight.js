@@ -36,14 +36,14 @@ function Flight(props) {
             <div className="destinations">
                 <div className="countries">
                     <div>
-                        <p className="country grey-text">{props.originCountry ? props.originCountry : "Origin"}</p>
-                        <p className="city">{props.originCity ? props.originCity : "Origin"}</p>
+                        <p className="city grey-text">{props.originCity ? props.originCity : "Origin"}</p>
+                        <p className="country ">{props.originCountry ? props.originCountry : "Origin"}</p>
                         <p className="time grey-text">{departureHour}:{departureMinutes}</p>
                     </div>
                     <span className="arrow material-symbols-outlined grey-text">east</span>
                     <div>
-                    <p className="country grey-text">{props.destinationCountry ? props.destinationCountry : "Origin"}</p>
-                        <p className="city">{props.destinationCity ? props.destinationCity : "Destination"}</p>
+                        <p className="city  grey-text">{props.destinationCity ? props.destinationCity : "Destination"}</p>
+                        <p className="country">{props.destinationCountry ? props.destinationCountry : "Origin"}</p>
                         <p className="time grey-text">{arrivalHour}:{arrivalMinutes}</p>
                     </div>
                 </div>
@@ -53,14 +53,14 @@ function Flight(props) {
                 </div>
                 <div className="countries text-gap">
                     <div>
-                    <p className="country grey-text">{props.destinationCountry ? props.destinationCountry : "Origin"}</p>
-                        <p className="city">{props.destinationCity ? props.destinationCity : "Origin"}</p>
+                        <p className="city grey-text">{props.destinationCity ? props.destinationCity : "Origin"}</p>
+                        <p className="country ">{props.destinationCountry ? props.destinationCountry : "Origin"}</p>
                         <p className="time grey-text">{returnDepartureHour}:{returnDepartureMinutes}</p>
                     </div>
                     <span className="arrow material-symbols-outlined grey-text">east</span>
                     <div>
-                    <p className="country grey-text">{props.originCountry ? props.originCountry : "Origin"}</p>
-                        <p className="city">{props.originCity ? props.originCity : "Destination"}</p>
+                        <p className="city grey-text">{props.originCity ? props.originCity : "Destination"}</p>
+                        <p className="country ">{props.originCountry ? props.originCountry : "Origin"}</p>
                         <p className="time grey-text">{returnArrivalHour}:{returnArrivalMinutes}</p>
                     </div>
                 </div>

@@ -20,7 +20,6 @@ function FlightCard(props)
         props.handleDelete(props.id);
     }
 
- 
 
     function handleSearch() {
         //Send flight data
@@ -34,6 +33,10 @@ function FlightCard(props)
             props.minStay,
             props.maxStay
         );
+    }
+
+    function handleAddFlight() {
+        
     }
 
     return <div className="card">
@@ -97,9 +100,15 @@ function FlightCard(props)
             </div>
         </div>
         <div className="col card__options">
-            <button className="button" onClick={handleSearch}>Search</button>
-            <button className="button" onClick={handleDelete}>Delete</button>
-        </div>
+            {props.isAddFlight ? 
+                <button className="button full_width" onClick={handleAddFlight}>Add</button> :
+                <>
+                    <button className="button" onClick={handleSearch}>Search</button>
+                    <button className="button" onClick={handleDelete}>Delete</button>
+                </>
+            }
+            </div>
+    
     </div>
 }
 
