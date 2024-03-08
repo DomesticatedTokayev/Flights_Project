@@ -35,8 +35,23 @@ function FlightCard(props)
         );
     }
 
+    function handleEdit() {
+        // Open edit flight
+        props.handleEdit(
+            props.id,
+            props.originCity ? props.originCity : props.originCountry,
+            props.destinationCity ? props.destinationCity : props.destinationCountry,
+            props.from,
+            props.to,
+            props.maxPrice,
+            props.return,
+            props.minStay,
+            props.maxStay
+        );
+    }
+
     function handleAddFlight() {
-        
+        props.handleAddFlight();
     }
 
     return <div className="card">
@@ -103,6 +118,7 @@ function FlightCard(props)
             {props.isAddFlight ? 
                 <button className="button full_width" onClick={handleAddFlight}>Add</button> :
                 <>
+                    <button className="button" onClick={handleEdit}>Edit</button>
                     <button className="button" onClick={handleSearch}>Search</button>
                     <button className="button" onClick={handleDelete}>Delete</button>
                 </>

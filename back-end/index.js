@@ -221,9 +221,11 @@ app.post("/searchflights/", async (req, res) => {
 });
 
 app.get("/custom", auth, (req, res) => {
+    console.log("hello?");
     if (req.user)
     {
         const userID = req.user.userID;
+        console.log(database2);
 
         res.status(200).json(database2);
     }

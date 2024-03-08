@@ -3,29 +3,46 @@ import { useState } from "react"
 
 function Search(props) {
 
+    const [data, setData] = useState({
+        origin: "",
+        destination: "",
+        from: "",
+        to: "",
+        return: "",
+        maxPrice: "",
+        minStay: "",
+        maxStay: "",
+        outputLimit: props.outputLimit
+    });
+
     // const [data, setData] = useState({
-    //     origin: "",
-    //     destination: "",
-    //     from: "",
-    //     to: "",
-    //     return: "",
-    //     maxPrice: "",
-    //     minStay: "",
-    //     maxStay: "",
+    //     origin: props.origin,
+    //     destination: props.destination,
+    //     from: props.from,
+    //     to: props.to,
+    //     return: props.return,
+    //     maxPrice: props.maxPrice,
+    //     minStay: props.minStay,
+    //     maxStay: props.maxStay,
     //     outputLimit: props.outputLimit
     // });
 
-    const [data, setData] = useState({
-        origin: props.origin,
-        destination: props.destination,
-        from: props.from,
-        to: props.to,
-        return: props.return,
-        maxPrice: props.maxPrice,
-        minStay: props.minStay,
-        maxStay: props.maxStay,
-        outputLimit: props.outputLimit
-    });
+    React.useEffect(() => {
+        UpdateData("origin", props.origin || "");
+        UpdateData("destination", props.destination || "");
+        UpdateData("from", props.from || "");
+        UpdateData("to", props.to || "");
+        UpdateData("return", props.return || "");
+        UpdateData("maxPrice", props.maxPrice || "");
+        UpdateData("minStay", props.minStay || "");
+        UpdateData("maxStay", props.maxStay || "");
+        UpdateData("outputLimit", props.outputLimit || "");
+        
+    }, []);
+
+    function UpdateData(name, value) {
+        setData(prevValue => ({ ...prevValue, [name]: value }));
+    }
 
     function updateSearch(event)
     {

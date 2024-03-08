@@ -64,7 +64,11 @@ function CustomFlight() {
                 console.log(error);
                 error = new Error();
             });
+        
+        console.log(customFlights);
     }
+
+
 
     // Put this into its own function (Repeating code!)
     function toggleSideMenu(setting)
@@ -143,7 +147,24 @@ function CustomFlight() {
         //Either send id or flight data
 
         //window.location.href = `/newflight?flightid=${flightID}`;
-        window.location.href = `/newflight`;
+        window.location.href = `/newflight?type=new`;
+        
+    }
+
+    function handleEdit(
+        id,
+        origin,
+        destination,
+        from,
+        to,
+        maxPrice,
+        withReturn,
+        minStay,
+        maxStay,
+    )
+    {
+        const type = "edit";
+        window.location.href = `/newflight?id=${id}&origin=${origin}&destination=${destination}&from=${from}&to=${to}&maxprice=${maxPrice}&withreturn=${withReturn}&minstay=${minStay}&maxstay=${maxStay}&type=${type}`;
         
     }
 
@@ -155,9 +176,8 @@ function CustomFlight() {
 
     return <main>
         <div className="custom">
-
             {(customFlights.length > 0) && 
-            <>
+                <>
                 {customFlights.map((item, index) => {
                     return <FlightCard 
                         key={item.id}
@@ -175,6 +195,7 @@ function CustomFlight() {
                         isAddFlight={false}
                         handleSearch={handleSearch}
                         handleDelete={handleDelete}
+                        handleEdit={handleEdit}
                     />
                 })}
             </>

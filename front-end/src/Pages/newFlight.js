@@ -14,6 +14,16 @@ function NewFlight() {
     const [flights, setFlights] = React.useState([]);
     const [searchData, setSearchData] = React.useState();
 
+    const [searchParams] = useSearchParams();
+
+    let [isEditing, setEditing] = React.useState("");
+
+    React.useEffect(() => {
+        // Check if editing or creating new flight
+        setEditing(searchParams.get("type"));
+        
+    }, []);
+    
     // Go into flight card (Or from callback)
     // async function createNewFlight(flightID) {
     //     const config = {
@@ -83,8 +93,12 @@ function NewFlight() {
         setSearching(false);
         setSearchComplete(true);
 
-        console.log(searchData);
+        //console.log(searchData);
     };
+
+    function handleAddFlight() {
+        
+    }
     
 
     // When setting flight data, form isn't updated immediatly
@@ -93,14 +107,14 @@ function NewFlight() {
         <div className="custom_flight">
             <div className="custom_flight__search">
                 <SearchForm
-                    origin="London"
-                    destination="Spain"
-                    from="2024-03-20"
-                    to="2024-05-20"
-                    return="return"
-                    maxPrice="300"
-                    minStay="3"
-                    maxStay="14"
+                        origin={searchParams.get('origin') || ""} 
+                    destination={searchParams.get('destination') || ""} 
+                    from={searchParams.get('from') || ""} 
+                    to={searchParams.get('to') || ""} 
+                    return={searchParams.get('withreturn') || ""} 
+                    maxPrice={searchParams.get('maxprice') || ""} 
+                    minStay={searchParams.get('minstay') || ""} 
+                    maxStay={searchParams.get('maxstay') || ""} 
                     outputLimit={10}
                     onSearch={handleSearch}
                     isSearching={searching}
@@ -122,6 +136,7 @@ function NewFlight() {
                             return={searchData.return}
                             maxPrice={searchData.maxPrice}
                             isAddFlight={true}
+                            handleAddFlight={handleAddFlight}
                         />
                     }
                     {/* Section for specific cities */}
@@ -141,6 +156,7 @@ function NewFlight() {
                             return={searchData.return}
                             maxPrice={searchData.maxPrice}
                             isAddFlight={true}
+                            handleAddFlight={handleAddFlight}
                         />
                     })
                     }
