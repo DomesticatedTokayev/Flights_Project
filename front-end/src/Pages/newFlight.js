@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import SearchForm from "../components/SearchForm";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../hooks/AuthProvider";
 import FlightCard from "../components/FlightCard";
 import Flight from "../components/Flight";
@@ -16,12 +16,14 @@ function NewFlight() {
 
     const [searchParams] = useSearchParams();
 
+    const navigate = useNavigate();
+
     const [id, setID] = React.useState();
-    let [isEditing, setEditing] = React.useState("");
+    //let [isEditing, setEditing] = React.useState("");
 
     React.useEffect(() => {
         // Check if editing or creating new flight
-        setEditing(searchParams.get("type"));
+        //setEditing(searchParams.get("type"));
         setID(searchParams.get("id"));
     }, []);
     
@@ -33,6 +35,8 @@ function NewFlight() {
 
         setSearching(true);
         setSearchComplete(false);
+
+        console.log("Has Return", props.return)
 
         // use axios to search for flights
         const query = {
@@ -77,6 +81,9 @@ function NewFlight() {
             minStay,
             maxStay
     ) {
+
+        console.log(withReturn);
+
         const body = {
             originCity: originCity,
             originCountry: originCountry,
@@ -84,10 +91,10 @@ function NewFlight() {
             destinationCountry: destinationCountry,
             from: from,
             to: to,
-            maxprice: maxPrice,
+            maxPrice: maxPrice,
             return: withReturn,
-            minstay: minStay,
-            maxstay: maxStay,
+            minStay: minStay,
+            maxStay: maxStay,
         };
       
         if (searchParams.get("id") !== null)
@@ -99,26 +106,28 @@ function NewFlight() {
         //     url: "http://localhost:4000/" + searchParams.get("id") !== null ? "update" : "new",
             
         const config = {
-            method:"post",
-            url: "http://localhost:4000/new",
+            // method:"post",
+            // url: "http://localhost:4000/new",
+            method: searchParams.get("id") !== null ? "put" : "post",
+            url: "http://localhost:4000/" + (searchParams.get("id") !== null ? "update" : "new"),
             headers: {
                 Authorization: `Bearer ${auth.token}`,
             },
             data: body,
         };
 
-        await axios(config)
-            .then((result) => {
-            console.log(result)
-        })
-            .catch(error => {
-            console.log(error)
-        })
-
-
-
+        // await axios(config)
+        //     .then((result) => {
+        //         console.log(result)
+        //     })
+        //     .catch(error => {
+        //         console.log(error)
+        //     });
+        
+        
+        // Return to custom flights
+       // navigate("/custom");
     }
-
 
     // When setting flight data, form isn't updated immediatly
     return<>
@@ -131,9 +140,9 @@ function NewFlight() {
                     from={searchParams.get('from') || ""} 
                     to={searchParams.get('to') || ""} 
                     return={searchParams.get('withreturn') || ""} 
-                    maxPrice={searchParams.get('maxprice') || ""} 
-                    minStay={searchParams.get('minstay') || ""} 
-                    maxStay={searchParams.get('maxstay') || ""} 
+                    maxPrice={parseInt(searchParams.get('maxprice')) || ""} 
+                    minStay={parseInt(searchParams.get('minstay')) || ""} 
+                    maxStay={parseInt(searchParams.get('maxstay')) || ""} 
                     outputLimit={10}
                     onSearch={handleSearch}
                     isSearching={searching}

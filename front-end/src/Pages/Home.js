@@ -40,10 +40,10 @@ function Home()
                 <SearchForm             
                     origin=""
                     destination=""
-                    from="2"
+                    from=""
                     to=""
-                    return="return"
-                    maxPrice="0"
+                    return=""
+                    maxPrice=""
                     minStay=""
                     maxStay=""
                     outputLimit={10}

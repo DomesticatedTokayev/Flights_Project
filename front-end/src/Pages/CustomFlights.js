@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 // import Cookies from "universal-cookie";
 // const cookies = new Cookies();
  import { useAuth } from "../hooks/AuthProvider.js";
@@ -11,6 +12,8 @@ import SearchFlights from "../components/SearchFlights.js";
 
 function CustomFlight() {
     const auth = useAuth();
+
+    const navigate = useNavigate();
 
     const [customFlights, setcustomFlights] = useState([]);
     const [flights, setFlights] = useState([]);
@@ -139,6 +142,9 @@ function CustomFlight() {
 
         //window.location.href = `/newflight?flightid=${flightID}`;
         window.location.href = `/newflight?type=new`;
+
+        // replace with navigate (useNavigate)
+        //navigate("/custom");
         
     }
 
@@ -155,7 +161,11 @@ function CustomFlight() {
     )
     {
         const type = "edit";
-        window.location.href = `/newflight?id=${id}&origin=${origin}&destination=${destination}&from=${from}&to=${to}&maxprice=${maxPrice}&withreturn=${withReturn}&minstay=${minStay}&maxstay=${maxStay}&type=${type}`;
+
+        window.location.href = `/newflight?id=${id}&origin=${origin}&destination=${destination}&from=${from}&to=${to}&maxprice=${maxPrice}&withreturn=${withReturn}&minstay=${minStay !== undefined ? minStay : ""}&maxstay=${maxStay !== undefined ? maxStay : ""}&type=${type}`;
+        
+        // replace with navigate (useNavigate)
+        //navigate("/custom");
     }
 
     function handleDelete(flightID) {

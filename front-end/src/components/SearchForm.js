@@ -10,7 +10,7 @@ function Search(props) {
         destination: "",
         from: "",
         to: "",
-        return: "",
+        return: "oneway",
         maxPrice: "",
         minStay: "",
         maxStay: "",
@@ -34,7 +34,7 @@ function Search(props) {
         UpdateData("destination", props.destination || "");
         UpdateData("from", props.from || "");
         UpdateData("to", props.to || "");
-        UpdateData("return", props.return || "");
+        UpdateData("return", props.return || "oneway" ); // || "return"
         UpdateData("maxPrice", props.maxPrice || "");
         UpdateData("minStay", props.minStay || "");
         UpdateData("maxStay", props.maxStay || "");

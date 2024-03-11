@@ -46,21 +46,20 @@ export async function searchLocation(city)
 
 export async function searchFlight(flyFrom, flyTo, dateFrom, dateTo, currency = "GBP", maxPrice, minNights, maxNights, withReturn, returnOneCheapestFlight = 0, maxStoppovers = 0, limit = 10)
 {
-    // Set URL and config
+    //Set URL and config
     const searchURL_WithReturn = url.format({
         pathname: SEARCH_API,
         query: {
             fly_from: flyFrom,
             fly_to: flyTo,
-            date_from: dateFrom, //"01/04/2024"
+            date_from: dateFrom,
           
             curr: currency,
             price_to: maxPrice,
 
-            // Returns single cheapest flight
             one_for_city: returnOneCheapestFlight,
 
-            date_to: dateTo, //"03/05/2024"
+            date_to: dateTo,
             nights_in_dst_from: minNights,
             nights_in_dst_to: maxNights,
 
@@ -78,18 +77,12 @@ export async function searchFlight(flyFrom, flyTo, dateFrom, dateTo, currency = 
         query: {
             fly_from: flyFrom,
             fly_to: flyTo,
-            date_from: dateFrom, //"01/04/2024"
-          
+            date_from: dateFrom,
 
             curr: currency,
             price_to: maxPrice,
 
-            // Returns single cheapest flight
             one_for_city: returnOneCheapestFlight,
-
-            //date_to: dateTo, //"03/05/2024"
-            //nights_in_dst_from: minNights,
-            //nights_in_dst_to: maxNights,
 
             ret_from_diff_city: false,
             ret_to_diff_city: false,
@@ -99,11 +92,40 @@ export async function searchFlight(flyFrom, flyTo, dateFrom, dateTo, currency = 
 
         }
     });
-    console.log(withReturn);
-    let searchURL = withReturn === "return" ? searchURL_WithReturn :  searchURL_OneWay
+
+    let searchURL = withReturn === "return" ? searchURL_WithReturn : searchURL_OneWay
+    
+    // const searchURL =  url.format({
+    //     pathname: SEARCH_API,
+    //     query: {
+    //         fly_from: flyFrom,
+    //         fly_to: flyTo,
+    //         date_from: dateFrom,
+
+    //         curr: currency,
+    //         price_to: maxPrice,
+
+    //         one_for_city: returnOneCheapestFlight,
+
+    //         ret_from_diff_city: false,
+    //         ret_to_diff_city: false,
+            
+    //         max_stopovers: maxStoppovers,
+    //         limit: limit
+
+    //     },
+    // });
+
+    // If return is true, add return data
+    // if (withReturn === "return"){
+    //     searchURL.query.date_to = dateTo;
+    //     searchURL.query.nights_in_dst_from = minNights;
+    //     searchURL.query.nights_in_dst_to = maxNights;
+    // }    
+
+    // console.log(searchURL);
+
     let flightData = [];
-    console.log(searchURL_WithReturn);
-    console.log(searchURL);
 
     await axios.get(searchURL, config)
     .then((result) => {

@@ -73,10 +73,10 @@ let database2 = [
         originCity: null,
         destinationCountry: "Germany",
         destinationCity: null,
-        from: "02/03/2024",
-        to: "10/04/2024",
+        from: "2024-03-20",
+        to: "2024-05-20",
         maxPrice: 120,
-        return: null,
+        return: "oneway",
     },
 
 ]
@@ -174,6 +174,8 @@ app.post("/login", async (req, res) => {
 app.post("/searchflights/", async (req, res) => {
     const searchData = req.query;
 
+    console.log(searchData);
+
     let originIATA = "";
     let destinationIATA = "";
 
@@ -196,9 +198,9 @@ app.post("/searchflights/", async (req, res) => {
             searchData.from,
             searchData.to,
             "GBP",
-            searchData.maxprice,
-            searchData.minstay,
-            searchData.maxstay,
+            searchData.maxPrice,
+            searchData.minStay,
+            searchData.maxStay,
             searchData.return,
             1,
             0,
@@ -225,7 +227,6 @@ app.get("/custom", auth, (req, res) => {
     if (req.user)
     {
         const userID = req.user.userID;
-        console.log(database2);
 
         res.status(200).json(database2);
     }
@@ -251,7 +252,25 @@ app.get("/flight", auth, (req, res) => {
 app.post("/new", auth, (req, res) => {
     if (req.user)
     {   
-        console.log(req.body);
+        const newFlight = {
+            id: 5,
+            originCountry: req.body.originCountry,
+            originCity: req.body.originCity,
+            destinationCountry: req.body.destinationCountry,
+            destinationCity: req.body.destinationCity,
+            from: req.body.from,
+            to: req.body.to,
+            maxPrice: req.body.maxPrice,
+            return: req.body.return,
+            minStay: req.body.minStay,
+            maxStay: req.body.maxStay,
+        }
+
+
+        database2.push(req.body);
+
+        console.log(database2);
+
         res.status(200).json({message: "New Flight: Good"})
     } else {
         res.status(404).json({message: "Bad"})

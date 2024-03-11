@@ -79,7 +79,7 @@ function FlightCard(props)
                         <p className="country ">{props.destinationCountry ? props.destinationCountry : "Origin"}</p>
                     </div>
                 </div>
-                {props.return && <>
+                {props.return === "return" && <>
                     <div className="break">
                         <hr className="line-break"></hr>
                     </div>
@@ -106,7 +106,7 @@ function FlightCard(props)
                         <p></p>
                         <p><span className="grey-text">To:</span> {props.to}</p>
                     </div>
-                    {props.return && <>
+                    {props.return === "return"  && <>
                         <div className="times">
                         <p><span className="grey-text">Min-nights:</span> {props.minStay}</p>
                         <p><span className="grey-text">Max-nights:</span> {props.maxStay}</p>
