@@ -16,43 +16,16 @@ function NewFlight() {
 
     const [searchParams] = useSearchParams();
 
+    const [id, setID] = React.useState();
     let [isEditing, setEditing] = React.useState("");
 
     React.useEffect(() => {
         // Check if editing or creating new flight
         setEditing(searchParams.get("type"));
-        
+        setID(searchParams.get("id"));
     }, []);
     
-    // Go into flight card (Or from callback)
-    // async function createNewFlight(flightID) {
-    //     const config = {
-    //         method: "get",
-    //         url: "http://localhost:3000/flight",
-    //         params: {
-    //             flightid: flightID
-    //         },
-    //         headers:
-    //         {
-    //             Authorization: `Bearer ${auth.token}`
-    //         },
-
-    //     };
-
-       // console.log(config);
-
-        // await axios(config)
-        //     .then(result => {
-        //         //console.log(result.data);
-        //         //setFlight(result.data);
-        //     })
-        //     .catch(error => {
-        //         console.log("Axios", error.message);
-        //     });
-    //}
-
-   // console.log("Flights:", flight);
-
+   
     async function handleSearch(props)
     {
         // Set journey from country to country only (Any airport)
@@ -60,8 +33,6 @@ function NewFlight() {
 
         setSearching(true);
         setSearchComplete(false);
-
-
 
         // use axios to search for flights
         const query = {
@@ -92,14 +63,62 @@ function NewFlight() {
         
         setSearching(false);
         setSearchComplete(true);
-
-        //console.log(searchData);
     };
 
-    function handleAddFlight() {
-        
+    async function handleAddEditFlight(
+            originCity,
+            originCountry,
+            destinationcity,
+            destinationCountry,
+            from,
+            to,
+            maxPrice,
+            withReturn,
+            minStay,
+            maxStay
+    ) {
+        const body = {
+            originCity: originCity,
+            originCountry: originCountry,
+            destinationcity: destinationcity,
+            destinationCountry: destinationCountry,
+            from: from,
+            to: to,
+            maxprice: maxPrice,
+            return: withReturn,
+            minstay: minStay,
+            maxstay: maxStay,
+        };
+      
+        if (searchParams.get("id") !== null)
+        {
+            body.id = searchParams.get("id");
+        }
+
+        // method: searchParams.get("id") !== null ? "put" : "post",
+        //     url: "http://localhost:4000/" + searchParams.get("id") !== null ? "update" : "new",
+            
+        const config = {
+            method:"post",
+            url: "http://localhost:4000/new",
+            headers: {
+                Authorization: `Bearer ${auth.token}`,
+            },
+            data: body,
+        };
+
+        await axios(config)
+            .then((result) => {
+            console.log(result)
+        })
+            .catch(error => {
+            console.log(error)
+        })
+
+
+
     }
-    
+
 
     // When setting flight data, form isn't updated immediatly
     return<>
@@ -107,7 +126,7 @@ function NewFlight() {
         <div className="custom_flight">
             <div className="custom_flight__search">
                 <SearchForm
-                        origin={searchParams.get('origin') || ""} 
+                    origin={searchParams.get('origin') || ""} 
                     destination={searchParams.get('destination') || ""} 
                     from={searchParams.get('from') || ""} 
                     to={searchParams.get('to') || ""} 
@@ -136,15 +155,14 @@ function NewFlight() {
                             return={searchData.return}
                             maxPrice={searchData.maxPrice}
                             isAddFlight={true}
-                            handleAddFlight={handleAddFlight}
+                            handleAddFlight={handleAddEditFlight}
                         />
                     }
                     {/* Section for specific cities */}
                     <p className="align-center">Specific Cities</p>
-                    {flights.map((item, index) => {
+                        {flights.map((item, index) => {
                         return <FlightCard
                             key={index}
-                            id={index}
                             originCountry={item.originCountry}
                             originCity={item.originCity}
                             destinationCountry={item.destinationCountry}
@@ -156,7 +174,7 @@ function NewFlight() {
                             return={searchData.return}
                             maxPrice={searchData.maxPrice}
                             isAddFlight={true}
-                            handleAddFlight={handleAddFlight}
+                            handleAddFlight={handleAddEditFlight}
                         />
                     })
                     }

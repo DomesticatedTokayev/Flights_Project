@@ -221,7 +221,7 @@ app.post("/searchflights/", async (req, res) => {
 });
 
 app.get("/custom", auth, (req, res) => {
-    console.log("hello?");
+
     if (req.user)
     {
         const userID = req.user.userID;
@@ -245,6 +245,26 @@ app.get("/flight", auth, (req, res) => {
     }
     else {
         res.status(404);
+    }
+})
+
+app.post("/new", auth, (req, res) => {
+    if (req.user)
+    {   
+        console.log(req.body);
+        res.status(200).json({message: "New Flight: Good"})
+    } else {
+        res.status(404).json({message: "Bad"})
+    }
+});
+
+app.put("/update", auth, (req, res) => {
+    if (req.user)
+    {
+        console.log(req.body);
+        res.status(200).json({message: "Update Flight: Good"})
+    } else {
+        res.status(404).json({message: "Bad"})
     }
 })
 

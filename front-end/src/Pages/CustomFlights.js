@@ -38,7 +38,7 @@ function CustomFlight() {
 
         getData();
         
-    }, []);
+    }, []); // Run on add new flight, edit flight and delete flight
 
     async function getData() {
 
@@ -50,22 +50,14 @@ function CustomFlight() {
             },
         };
 
-        let temp = [];
         await axios(configuration)
             .then((result) => {
-                temp = result.data;
-                setcustomFlights(temp);
-
-                // temp.map((value) => {
-                //     flights.push(value);
-                // });
+                setcustomFlights(result.data);
             })
             .catch((error) => {
                 console.log(error);
                 error = new Error();
             });
-        
-        console.log(customFlights);
     }
 
 
@@ -142,7 +134,6 @@ function CustomFlight() {
     }
 
 
-    // Put this into custom flights. But call it from here
     function handleNew(flightID) {
         //Either send id or flight data
 
@@ -165,14 +156,12 @@ function CustomFlight() {
     {
         const type = "edit";
         window.location.href = `/newflight?id=${id}&origin=${origin}&destination=${destination}&from=${from}&to=${to}&maxprice=${maxPrice}&withreturn=${withReturn}&minstay=${minStay}&maxstay=${maxStay}&type=${type}`;
-        
     }
 
     function handleDelete(flightID) {
         // Send delete request
         console.log("Delete flight ID: ", flightID);
     }
-    
 
     return <main>
         <div className="custom">
@@ -194,8 +183,8 @@ function CustomFlight() {
                         maxPrice={item.maxPrice}
                         isAddFlight={false}
                         handleSearch={handleSearch}
-                        handleDelete={handleDelete}
                         handleEdit={handleEdit}
+                        handleDelete={handleDelete}
                     />
                 })}
             </>
@@ -230,12 +219,3 @@ function CustomFlight() {
 }
 
 export default CustomFlight;
-
-// .then((result) => {
-//     //console.log(result.data);
-//     data = result.data; 
-// })
-// .catch((error) => {
-//     console.log(error);
-//     error = new Error();
-// });

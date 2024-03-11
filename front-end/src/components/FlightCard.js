@@ -4,7 +4,7 @@ import React from "react";
 
 function FlightCard(props)
 {
-    const [id, setID] = React.useState();
+    const [id, setID] = React.useState(undefined);
 
 
     React.useEffect(() => {
@@ -38,7 +38,7 @@ function FlightCard(props)
     function handleEdit() {
         // Open edit flight
         props.handleEdit(
-            props.id,
+            id,
             props.originCity ? props.originCity : props.originCountry,
             props.destinationCity ? props.destinationCity : props.destinationCountry,
             props.from,
@@ -51,7 +51,18 @@ function FlightCard(props)
     }
 
     function handleAddFlight() {
-        props.handleAddFlight();
+        props.handleAddFlight(
+            props.originCity,
+            props.originCountry,
+            props.destinationCity,
+            props.destinationCountry,
+            props.from,
+            props.to,
+            props.maxPrice,
+            props.return,
+            props.minStay,
+            props.maxStay
+        );
     }
 
     return <div className="card">
@@ -114,6 +125,7 @@ function FlightCard(props)
                 </div>
             </div>
         </div>
+        {/* Determin if user is in edit or new flight: Set titles to appropriate names */}
         <div className="col card__options">
             {props.isAddFlight ? 
                 <button className="button full_width" onClick={handleAddFlight}>Add</button> :

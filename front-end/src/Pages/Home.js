@@ -38,14 +38,14 @@ function Home()
             <img className="home__image" src={image} alt="Plane and skyscraper image"></img>
             <div className="home__search">
                 <SearchForm             
-                    origin="London"
-                    destination="Spain"
-                    from="2024-03-20"
-                    to="2024-05-20"
+                    origin=""
+                    destination=""
+                    from="2"
+                    to=""
                     return="return"
-                    maxPrice="300"
-                    minStay="3"
-                    maxStay="14"
+                    maxPrice="0"
+                    minStay=""
+                    maxStay=""
                     outputLimit={10}
                     onSearch={handleSearch}   
                     isSearching={searching} 

@@ -3,6 +3,8 @@ import { useState } from "react"
 
 function Search(props) {
 
+    const [withReturn, setWithReturn] = React.useState(true);
+
     const [data, setData] = useState({
         origin: "",
         destination: "",
@@ -64,23 +66,41 @@ function Search(props) {
         <div>
             <h2>Search Flights</h2>
             <div className="search__inputs">
-                <input onChange={updateSearch} type="text" name="origin" placeholder="Origin" value={data.origin} required></input>
-                <input onChange={updateSearch} type="text" name="destination" placeholder="Destination" value={data.destination} required></input>
-                <div className="search__form">
+                <div>
+                    <label htmlFor="origin">Origin</label>
+                    <input onChange={updateSearch} type="text" name="origin" id="origin" placeholder="Origin" value={data.origin} required></input>
+                </div>
+                <div>
+                    <label htmlFor="destination">Destination</label>
+                    <input onChange={updateSearch} type="text" name="destination" id="destination" placeholder="Destination" value={data.destination} required></input>
+                </div>
+                <div>
                     <label htmlFor="from">From</label>
                     <input onChange={updateSearch} type="date" name="from" id="from" placeholder="From" value={data.from} required></input>
                 </div>
-                <div className="search__form">
+                <div>
                     <label htmlFor="to">To</label>
-                    <input onChange={updateSearch} type="date" name="to" id="to" placeholder="To" value={data.to}></input>
+                    <input onChange={updateSearch} type="date" name="to" id="to" placeholder="To" value={data.to} ></input>
                 </div>
-                <select onChange={updateSearch} type="text" name="return" placeholder="Return" value={data.return}>
-                    <option value="return">Return</option>
-                    <option value="oneway">One-way</option>
-                </select>
-                <input onChange={updateSearch} type="text" name="maxPrice" placeholder="Max price" value={data.maxPrice} required></input>
-                <input onChange={updateSearch} type="text" name="minStay" placeholder="Min Stay" value={data.minStay}></input>
-                <input onChange={updateSearch} type="text" name="maxStay" placeholder="Max Stay" value={data.maxStay}></input>
+                <div>
+                    <label htmlFor="return">Return</label>
+                    <select onChange={updateSearch} type="text" name="return" id="return" placeholder="Return" value={data.return}>
+                        <option value="return">Return</option>
+                        <option value="oneway">One-way</option>
+                    </select>
+                </div>
+                <div>
+                    <label htmlFor="maxPrice">Max Price</label>
+                    <input onChange={updateSearch} type="text" name="maxPrice" id="maxPrice" placeholder="Max price" value={data.maxPrice} required></input>
+                </div>  
+                <div>
+                    <label htmlFor="minStay">Min Stay</label>
+                    <input onChange={updateSearch} type="text" name="minStay" id="minStay" placeholder="" value={data.minStay} required disabled={data.return === "oneway" ? true : false}></input>
+                </div>
+                <div>
+                    <label htmlFor="maxStay">Max Stay</label>
+                    <input onChange={updateSearch} type="text" name="maxStay" id="maxStay" placeholder="" value={data.maxStay} required disabled={data.return === "oneway" ? true : false}></input>
+                </div>
             </div>
         </div>
 

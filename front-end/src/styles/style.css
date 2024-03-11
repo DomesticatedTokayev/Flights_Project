@@ -443,6 +443,16 @@ button:active
     padding-bottom: 20px;
 }
 
+.search__inputs{
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 5px;
+}
+
+.search__inputs div{
+    display: grid;
+}
+
 .search h2{
     margin-bottom: 15px;
 }
@@ -451,11 +461,6 @@ button:active
     width: 100%;
 }
 
-.search div{
-    display: grid;
-    grid-row: 2;
-    column-gap: 5px;
-}
 .search div h2{
     text-align: center;
 }
