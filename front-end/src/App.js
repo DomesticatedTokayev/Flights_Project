@@ -12,6 +12,7 @@ import Home from "./Pages/Home.js";
 import CustomFlights from "./Pages/CustomFlights.js";
 import Account from "./Pages/Account.js";
 import AccountSubscription from "./Pages/AccountSubscription.js"
+import AccountDetails from "./Pages/AccountDetails.js"
 
 import FlightData from "./hooks/FlightsProvider.js";
 // Context Test
@@ -37,9 +38,10 @@ function App() {
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/free" element={<AccountSubscription />} />
             <Route element={<ProtectedRoutes />}>  
-                <Route path="/custom" element={<CustomFlights />} />
-                <Route path="/newFlight" element={<NewFlight />} />
-              <Route path="/account" element={<Account/>} />
+              <Route path="/custom" element={<CustomFlights />} />
+              <Route path="/newFlight" element={<NewFlight />} />
+              <Route path="/account" element={<Account />} />
+              <Route path="/accountDetails" element={<AccountDetails/>} />
             </Route>
           </Routes>
         </BrowserRouter>  

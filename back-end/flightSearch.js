@@ -92,9 +92,9 @@ export async function searchFlight(flyFrom, flyTo, dateFrom, dateTo, currency = 
 
         }
     });
-
     let searchURL = withReturn === "return" ? searchURL_WithReturn : searchURL_OneWay
-    
+
+
     // const searchURL =  url.format({
     //     pathname: SEARCH_API,
     //     query: {
@@ -151,6 +151,8 @@ export async function searchFlight(flyFrom, flyTo, dateFrom, dateTo, currency = 
                 price: result.data.data[i].price,
                 link: result.data.data[i].deep_link,
             };
+
+
             if (withReturn === "return")
             {
                // console.log(result.data.data[i]);

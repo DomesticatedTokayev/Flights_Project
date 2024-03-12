@@ -91,15 +91,15 @@ function Search(props) {
                 </div>
                 <div>
                     <label htmlFor="maxPrice">Max Price</label>
-                    <input onChange={updateSearch} type="text" name="maxPrice" id="maxPrice" placeholder="Max price" value={data.maxPrice} required></input>
+                    <input onChange={updateSearch} type="number" name="maxPrice" id="maxPrice" placeholder="Max price" value={data.maxPrice} required></input>
                 </div>  
                 <div>
                     <label htmlFor="minStay">Min Stay</label>
-                    <input onChange={updateSearch} type="text" name="minStay" id="minStay" placeholder="" value={data.minStay} required disabled={data.return === "oneway" ? true : false}></input>
+                    <input onChange={updateSearch} type="number" name="minStay" id="minStay" placeholder="" value={data.minStay} required disabled={data.return === "oneway" ? true : false}></input>
                 </div>
                 <div>
                     <label htmlFor="maxStay">Max Stay</label>
-                    <input onChange={updateSearch} type="text" name="maxStay" id="maxStay" placeholder="" value={data.maxStay} required disabled={data.return === "oneway" ? true : false}></input>
+                    <input onChange={updateSearch} type="number" name="maxStay" id="maxStay" placeholder="" value={data.maxStay} required disabled={data.return === "oneway" ? true : false}></input>
                 </div>
             </div>
         </div>

@@ -5,6 +5,7 @@ import axios from "axios";
 // const cookies = new Cookies();
 import { useAuth } from "../hooks/AuthProvider";
 
+import LoginDetails from "../components/LoginDetails";
 
 function SignIn()
 {
@@ -18,46 +19,38 @@ function SignIn()
     const [register, setRegister] = useState({
         email: "",
         password: "",
+        password_check: "",
     });
 
-    function handleLogin(event)
-    {
-        const { value, name } = event.target;
 
-        setLogin((prevValue) => {
-            switch (name) {
-                case "email": {
-                    return { email: value, password: prevValue.password };
-                }
-                case "password": {
-                    return { email: prevValue.email, password: value };
-                }
-            };
-        });
-    };
-
-    function handleRegistration(event)
-    {
-        const { value, name } = event.target;
+    // function handleRegistration(event)
+    // {
+    //     const { value, name } = event.target;
        
-        setRegister((prevValue) => {
-            switch (name) {
-                case "email": {
-                    return { email: value, password: prevValue.password };
-                }
-                case "password": {
-                    return { email: prevValue.email, password: value };
-                }
-                default: {
-                    return;
-                }
-            };
-        });
+    //     setRegister((prevValue) => {
+    //         switch (name) {
+    //             case "email": {
+    //                 return { email: value, password: prevValue.password };
+    //             }
+    //             case "password": {
+    //                 return { email: prevValue.email, password: value };
+    //             }
+    //             default: {
+    //                 return;
+    //             }
+    //         };
+    //     });
 
-    };
+    // };
 
     const handleSubmitRegister = (e) => {
         e.preventDefault();
+
+        if (register.password !== register.password_check)
+        {
+            alert("Passwords don't match");
+            return;
+        }
 
         const configuration = {
             method: "post",
@@ -83,8 +76,6 @@ function SignIn()
     const handleSubmitLogin = (e) => {
         e.preventDefault();
 
-
-
         const configuration = {
             method: "post",
             url: "http://localhost:4000/login",
@@ -98,18 +89,80 @@ function SignIn()
             .then((result) => {
                 console.log(result)
                 //  Set the cookie (Makes the cookie available at "/" path. Thus, all pages)
-                auth.storeToken(result.data.token);
+                auth.storeToken(result.data.token, result.data.name);
                 //cookies.set("TOKEN", result.data.token, { path: "/" });
                 window.location.href = "/";
             })
             .catch((err) => {
                 console.log(err)
             });
-        
+    }
+
+    function handleLogin(event) {
+        const { name, value } = event.target;
+
+        setLogin((prevValue) => ({ ...prevValue, [name]: value }));
+        console.log(login.email);
+    }
+
+    function handleRegister(event)
+    {
+        const { name, value } = event.target;
+
+        setRegister((prevValue) => ({ ...prevValue, [name]: value }));
+        console.log(register.password_check);
     }
 
     return <main>
-        <div className="register">
+        <div className="login">
+            <h1>Log-in / Register</h1>
+            <button>Continue with Google</button>
+            <div className="login__divider">
+                <hr></hr>
+                <h3>Or</h3>
+                <hr></hr>
+            </div>
+
+            <form className="login__form" onSubmit={(e)=>handleSubmitLogin(e)}>
+                <LoginDetails 
+                    email={login.email}
+                    password={login.password}
+                    handleEmail={handleLogin}
+                    handlePassword={handleLogin}
+                />
+                <p>Forgot Password?</p>
+                <button type="submit" className="button">Log in</button>
+                <p>Don't have an account? Sign-up</p>
+            </form>
+
+            
+            <form className="login__form" onSubmit={(e)=>handleSubmitRegister(e)}>
+                <LoginDetails 
+                    email={register.email}
+                    password={register.password}
+                    handleEmail={handleRegister}
+                    handlePassword={handleRegister}
+                />
+                <label htmlFor="password_check">Re-enter Password</label>
+                <input type="password" id="password_check" name="password_check" value={register.password_check} onChange={(e)=>handleRegister(e)}></input>
+
+                <button type="submit" className="button">Log in</button>
+
+                <p> Already have an account? Log-in</p>
+            </form>
+        </div>
+    </main>
+}
+
+export default SignIn;
+
+
+{/* <label htmlFor="email">Email</label>
+<input type="text" id="email" name="email"></input>
+<label htmlFor="password">Password</label>
+<input type="text" id="password" name="password"></input> */}
+
+{/* <div className="register">
         <h1>Register</h1>
         <form onSubmit={(e)=>handleSubmitRegister(e)}> 
           <label>Email</label>
@@ -153,8 +206,4 @@ function SignIn()
                     </input>
           <button type="submit">Submit</button>
         </form>
-      </div>
-    </main>
-}
-
-export default SignIn;
+      </div> */}

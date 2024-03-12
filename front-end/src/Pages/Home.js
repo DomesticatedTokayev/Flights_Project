@@ -31,8 +31,6 @@ function Home()
         setSearching(false);
     };
 
-
-
     return <main>
         <div className="home">
             <img className="home__image" src={image} alt="Plane and skyscraper image"></img>

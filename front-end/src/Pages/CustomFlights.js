@@ -63,8 +63,6 @@ function CustomFlight() {
             });
     }
 
-
-
     // Put this into its own function (Repeating code!)
     function toggleSideMenu(setting)
     {

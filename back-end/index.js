@@ -157,7 +157,7 @@ app.post("/login", async (req, res) => {
                 {expiresIn: "24h"}
             );
             
-            res.status(201).send({message: "User successfully loged-in", email: tempDetails.email, token});
+            res.status(201).send({message: "User successfully loged-in", name: "Replace with name (On server)", token});
         } else {
             //Incorrect password
             res.status(400).send("Incorrect password");
@@ -173,8 +173,6 @@ app.post("/login", async (req, res) => {
 // Search for cheap flights
 app.post("/searchflights/", async (req, res) => {
     const searchData = req.query;
-
-    console.log(searchData);
 
     let originIATA = "";
     let destinationIATA = "";
@@ -267,7 +265,7 @@ app.post("/new", auth, (req, res) => {
         }
 
 
-        database2.push(req.body);
+        database2.push(newFlight);
 
         console.log(database2);
 
@@ -280,7 +278,13 @@ app.post("/new", auth, (req, res) => {
 app.put("/update", auth, (req, res) => {
     if (req.user)
     {
-        console.log(req.body);
+        console.log(req.body.id);
+        database2.map((item, index) => {
+            if (item.id === req.body.id) {
+                database2[index] = req.body;
+            }
+        });
+
         res.status(200).json({message: "Update Flight: Good"})
     } else {
         res.status(404).json({message: "Bad"})

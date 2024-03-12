@@ -169,6 +169,7 @@ h3{
 
 p, a{
     font-size: 1.2rem;
+
 }
 
 input, select{
@@ -183,7 +184,8 @@ p, a, button, input, label, select{
 a
 {
     font-weight: bold;
-    text-decoration: underline;
+    text-decoration: none;
+    
 }
 
 button{
@@ -195,7 +197,8 @@ a:focus-visible,
 button:hover,
 button:focus-visible
 {
-    color: grey;
+    /* color: grey; */
+    text-decoration: underline;
 }
 
 a:active,
@@ -592,9 +595,97 @@ button:active
     width: 50%;
 }
 
-/* || New Flight  -----------------------------------------------------------------------------*/ /*<<<<<<<<<<<<<<<<<<<<< Set var*/
+/* || LOGIN -----------------------------------------------------------------------------*/ 
+.login{
+    /* background: red; */
+    max-width: 400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 0 50px;
+}
+
+.login > button{
+    width: 100%;
+}
+
+.login__form{
+    text-align: center;
+
+}
+
+.login, .login__form * {
+    width: 100%;
+}
+
+.login{
+    gap: 10px;
+}
+
+.login__divider{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+
+.login__divider hr{
+    border: 2px solid black;
+    width: 100%; 
+
+}
+
+/* || ACCOUNT ---------------------------------------------------------------------------*/ 
+
+.account, .account__links{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.account__links a{
+    text-decoration: none;
+    margin-bottom: 8px;
+}
+
+.account__links a:hover, 
+.account__links a:focus-visible{
+    text-decoration: underline;
+}
+
+.account_name{
+    font-size: 0.9rem;
+}
+
+.account div{
+    margin-top: 15px;
+}
+
+/* || ACCOUNT_DETAILS -------------------------------------------------------------------*/ 
+.account_details{
+    text-align: center;
+}
+
+/* || DETAILS_ENTRY ---------------------------------------------------------------------*/ 
+.entry{
+    /* position: absolute; */
+    border: 3px solid black;
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
 
 
+.entry__edit{
+
+
+}
 
 /* || MEDIA -----------------------------------------------------------------------------*/
 /* || SMALL */
