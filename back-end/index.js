@@ -276,8 +276,7 @@ app.post("/new", auth, (req, res) => {
 });
 
 app.put("/update", auth, (req, res) => {
-    if (req.user)
-    {
+    if (req.user) {
         console.log(req.body.id);
         database2.map((item, index) => {
             if (item.id === req.body.id) {
@@ -285,11 +284,20 @@ app.put("/update", auth, (req, res) => {
             }
         });
 
-        res.status(200).json({message: "Update Flight: Good"})
+        res.status(200).json({ message: "Update Flight: Good" })
     } else {
-        res.status(404).json({message: "Bad"})
+        res.status(404).json({ message: "Bad" })
     }
-})
+});
+
+app.post("/account", auth, (req, res) => {
+    if (req.user){
+        console.log(req.body);
+    } else {
+        console.log("Error");
+    }
+    
+});
 
 // TESTS -----------------------------------------------------------------------------------------------------
 app.get("/free", (req, res)=>
