@@ -6,8 +6,8 @@ import { useAuth } from "../hooks/AuthProvider";
 function AccountDetails()
 {
     const [details, setDetails] = React.useState({
-        email: "temp email",
-        password: "temp passport",
+        email: "",
+        password: "",
         forename: "",
         surname: "",
     });
@@ -38,8 +38,8 @@ function AccountDetails()
 
     // Get details from server
     React.useEffect(() => {
-        
-    });
+        getDetails();
+    },[]);
 
     React.useEffect(() => {
         if (isMounted.current) {
@@ -55,7 +55,6 @@ function AccountDetails()
     }, [savedValue]);
 
     function handleNewEmail(email) {
-        console.log(email);
         // Check is email is correct, and set if succesfully saved
         updateDetails("email", email);
         SetSaved("email", true);
@@ -63,7 +62,6 @@ function AccountDetails()
 
     function handleNewPassword(password)
     {
-        console.log(password);
         updateDetails("password", password);
         // Check if password meets minimum requirements
         SetSaved("password", true);
@@ -71,14 +69,12 @@ function AccountDetails()
 
     function handleNewForename(forame)
     {
-        console.log(forame);
         updateDetails("forename", forame);
         //SetSaved("forename", false);
     };
 
     function handleNewSurname(surname)
     {
-        console.log(surname);
         updateDetails("surname", surname);
         //SetSaved("surname", true);
     };
@@ -111,6 +107,25 @@ function AccountDetails()
                 console.log(error);
         })
 
+    };
+
+    async function getDetails() {
+        const config = {
+            method: "get",
+            url: "http://localhost:4000/account",
+            headers: {
+                Authorization: `Bearer: ${auth.token}`,
+            },
+        };
+
+        await axios(config)
+            .then((result) => {
+                console.log(result);
+                setDetails(result.data);
+            })
+            .catch((error) => {
+                console.log(error);
+        })
     };
 
     return <main>

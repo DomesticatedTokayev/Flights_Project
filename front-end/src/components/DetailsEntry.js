@@ -3,7 +3,7 @@ import React from "react";
 function DetailsEntry(props) {
 
     const [value, setValue] = React.useState("");
-    const [validationValue, setValidationValue] = React.useState("");
+    const [validationValue, setValidationValue] = React.useState(""); // Change this to include new and re-enter 
 
     const [editing, setEditing] = React.useState(false);
     const [validationReq, setValidationReq] = React.useState(false);

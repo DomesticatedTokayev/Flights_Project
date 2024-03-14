@@ -20,6 +20,8 @@ function SignIn()
         email: "",
         password: "",
         password_check: "",
+        forename: "",
+        surname: "",
     });
 
 
@@ -58,12 +60,13 @@ function SignIn()
             data: {
                 email: register.email,
                 password: register.password,
+                forename: register.forename,
+                surname: register.surname,
             },
         };
 
         axios(configuration)
             .then((result) => {
-                console.log(result)
                 // On registration, redirect to sign-in
                 window.location.href = "/sign-in";
             })
@@ -87,7 +90,6 @@ function SignIn()
 
         axios(configuration)
             .then((result) => {
-                console.log(result)
                 //  Set the cookie (Makes the cookie available at "/" path. Thus, all pages)
                 auth.storeToken(result.data.token, result.data.name);
                 //cookies.set("TOKEN", result.data.token, { path: "/" });
@@ -136,7 +138,11 @@ function SignIn()
             </form>
 
             
-            <form className="login__form" onSubmit={(e)=>handleSubmitRegister(e)}>
+            <form className="login__form" onSubmit={(e) => handleSubmitRegister(e)}>
+                <label htmlFor="forename">Forename</label>
+                <input type="text" name="forename" id="forename" onChange={(e)=>handleRegister(e)} value={register.forename}></input>
+                <label htmlFor="surname">Surname</label>
+                <input type="text" name="surname" id="surname"  onChange={(e)=>handleRegister(e)} value={register.surname}></input>
                 <LoginDetails 
                     email={register.email}
                     password={register.password}

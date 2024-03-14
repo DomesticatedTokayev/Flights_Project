@@ -16,19 +16,23 @@ app.use(cors({
     credentials: true
 }))
 
-let database = [{
+let userDetailsDatabase = [{
     id: 1,
     email: "Tokayev",
-    password: "yes"
+    password: "yes",
+    forename: "debra",
+    surname: "snitch",
 },
     {
     id: 2,
     email: "Hank",
-    password: "no115"
+    password: "no115",
+    forename: "Mitch",
+    surname: "Stitch",
 }
 ];
 
-let database2 = [
+let flightsDatabase = [
     {
         id: 1,
         originCountry: "United Kingdom",
@@ -110,6 +114,8 @@ app.post("/register", (req, res) => {
     
     let username = req.body.email;
     let password = req.body.password;
+    let forename = req.body.forename;
+    let surname = req.body.surname;
 
 
     //Check if user (Username/Email exists)
@@ -117,12 +123,14 @@ app.post("/register", (req, res) => {
     //Else, create a new user (Add to database and hash password)
     const newUser = {
         email: username,
-        password: password
+        password: password,
+        forename: forename,
+        surname: surname,
     }
 
     console.log(newUser);
 
-    database.push(newUser); 
+    userDetailsDatabase.push(newUser); 
     //Return a tokon back
 
     res.status(200).send("New user created")
@@ -136,12 +144,12 @@ app.post("/login", async (req, res) => {
     console.log(username , password);
 
     //Check if user exists (Returns >= 0 index if found. -1 if not found)
-    const exists = database.findIndex(o => o.email === username);
+    const exists = userDetailsDatabase.findIndex(o => o.email === username);
     //if error (no email found) return error
     if (exists >= 0)
     {
         //Get user details (using temp database)
-        const tempDetails = database.find(o => o.email === username);
+        const tempDetails = userDetailsDatabase.find(o => o.email === username);
         // login (Check password)   
         if (tempDetails.password === password)
         {
@@ -156,7 +164,8 @@ app.post("/login", async (req, res) => {
                 "RANDOM-TOKEN",
                 {expiresIn: "24h"}
             );
-            
+            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!y
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Send forename and surname here
             res.status(201).send({message: "User successfully loged-in", name: "Replace with name (On server)", token});
         } else {
             //Incorrect password
@@ -226,7 +235,7 @@ app.get("/custom", auth, (req, res) => {
     {
         const userID = req.user.userID;
 
-        res.status(200).json(database2);
+        res.status(200).json(flightsDatabase);
     }
     else {
         res.status(200).send("User not found");
@@ -240,7 +249,7 @@ app.get("/flight", auth, (req, res) => {
     {
         const id = req.query.flightid;
         // Temp: Return test data
-        res.status(200).json(database2[0]);     
+        res.status(200).json(flightsDatabase[0]);     
     }
     else {
         res.status(404);
@@ -265,9 +274,9 @@ app.post("/new", auth, (req, res) => {
         }
 
 
-        database2.push(newFlight);
+        flightsDatabase.push(newFlight);
 
-        console.log(database2);
+        console.log(flightsDatabase);
 
         res.status(200).json({message: "New Flight: Good"})
     } else {
@@ -278,9 +287,9 @@ app.post("/new", auth, (req, res) => {
 app.put("/update", auth, (req, res) => {
     if (req.user) {
         console.log(req.body.id);
-        database2.map((item, index) => {
+        flightsDatabase.map((item, index) => {
             if (item.id === req.body.id) {
-                database2[index] = req.body;
+                flightsDatabase[index] = req.body;
             }
         });
 
@@ -290,11 +299,59 @@ app.put("/update", auth, (req, res) => {
     }
 });
 
-app.post("/account", auth, (req, res) => {
-    if (req.user){
-        console.log(req.body);
+app.get("/account", auth, (req, res, next) => {
+    if (req.user) {
+        const userID = req.user.userID;
+        console.log("User ID: ", userID);
+
+        let userFound = false;
+
+        // Temp: Find id in database
+        userDetailsDatabase.map((item, index) => {
+            if (item.id === userID)
+            {
+                res.status(200).json(item);
+                userFound = true;
+                next();
+            }
+        });
+
+        if (!userFound)
+        {
+            res.status(404).json({message: "User not found in database"});
+        }
+
     } else {
-        console.log("Error");
+        res.status(404).json({ message: "User not found" });
+    }
+})
+
+app.post("/account", auth, (req, res, next) => {
+    if (req.user) {
+        
+        const userID = req.user.userID;
+
+        console.log("Before",req.body)
+
+        userDetailsDatabase.map((item, index) => {
+            if (item.id === userID)
+            {
+                item.email = req.body.email;
+                item.password = req.body.password;
+                item.forename = req.body.forename;
+                item.surname = req.body.surname
+
+                console.log("Updated ",req.body)
+
+                res.status(200).json({ message: "Data updated", updated: true });
+                next();
+            }
+        });
+
+        // res.status(404).json({ message: "Coudn't update details", updated: false });
+
+    } else {
+        res.status(404).json({ message: "User not found" });
     }
     
 });
