@@ -98,14 +98,19 @@ function AccountDetails()
             },
             data: body,
         };
-
         await axios(config)
             .then((result) => {
-                console.log(result);
+                console.log("Updated:", result.data.data);
+                updateDetails("forename", result.data.data.forename);
+                updateDetails("surname", result.data.data.surname);
+                updateDetails("email", result.data.data.email);
+        
             })
             .catch((error) => {
                 console.log(error);
-        })
+            })
+        
+
 
     };
 

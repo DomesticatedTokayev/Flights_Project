@@ -1,9 +1,10 @@
+import "dotenv/config";
 import express from "express";
 import bodyParser from "body-parser";
 import jwt from "jsonwebtoken";
 import auth from "./auth.js"
 import cors from "cors";
-
+import * as db from "./db.js";
 import {searchLocation, searchFlight} from "./flightSearch.js";
 
 const port = 4000;
@@ -14,7 +15,17 @@ app.use(express.json());
 app.use(cors({
     origin: "http://localhost:3000",
     credentials: true
-}))
+}));
+
+db.connect();
+
+try {
+    //console.log(await db.getDetails("debra@gmail.com", ""));
+    //db.updateDetails("debra@gmail.com", "debra@yes.com", "Debra", null, "Snitch", "Martin", "hello", null, 1);
+} catch (error)
+{
+    console.log("Error:", error);
+}
 
 let userDetailsDatabase = [{
     id: 1,
@@ -112,54 +123,42 @@ app.post("/data", (req, res) =>
 
 app.post("/register", (req, res) => {
     
-    let username = req.body.email;
+    let email = req.body.email;
     let password = req.body.password;
     let forename = req.body.forename;
     let surname = req.body.surname;
-
-
     //Check if user (Username/Email exists)
     //If exists, return error (That user already exists)
     //Else, create a new user (Add to database and hash password)
-    const newUser = {
-        email: username,
-        password: password,
-        forename: forename,
-        surname: surname,
+
+    try {
+        db.registerUser(forename, surname, email, password);
+    } catch (error){
+        console.log(error);
     }
 
-    console.log(newUser);
-
-    userDetailsDatabase.push(newUser); 
-    //Return a tokon back
+    // console.log("This triggers");
 
     res.status(200).send("New user created")
 });
 
 app.post("/login", async (req, res) => {
     //Get details from body
-    let username = req.body.email;
+    let email = req.body.email;
     let password = req.body.password;
+   
+    try {
+        let {ok, data, errorType, message} = await db.checkUser(email, password);
+        // console.log(result.ok, result.data, result.message);
 
-    console.log(username , password);
-
-    //Check if user exists (Returns >= 0 index if found. -1 if not found)
-    const exists = userDetailsDatabase.findIndex(o => o.email === username);
-    //if error (no email found) return error
-    if (exists >= 0)
-    {
-        //Get user details (using temp database)
-        const tempDetails = userDetailsDatabase.find(o => o.email === username);
-        // login (Check password)   
-        if (tempDetails.password === password)
+        if (ok)
         {
-            //User succesfully loged-in
-            
-            //Create a random token to send back
+            // Create a random token to send back
             const token = await jwt.sign(
                 {
-                    userID: tempDetails.id,
-                    email: tempDetails.email,
+                    userID: data.user_id,
+                    email: data.email,
+                    name: `${data.forename} ${data.surname}`,
                 },
                 "RANDOM-TOKEN",
                 {expiresIn: "24h"}
@@ -167,16 +166,54 @@ app.post("/login", async (req, res) => {
             //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!y
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Send forename and surname here
             res.status(201).send({message: "User successfully loged-in", name: "Replace with name (On server)", token});
-        } else {
-            //Incorrect password
-            res.status(400).send("Incorrect password");
         }
+        else if(errorType === "email"){
+            console.log(message);
+        }
+        else if(errorType === "password"){
+            console.log(message);
+        }
+
+    } catch (error) {
+        // Unknown error occurred
+        console.log(error);
     }
-    else
-    {
-        //user not found  
-        res.status(404).send("User not found");
-    }
+
+
+    //Check if user exists (Returns >= 0 index if found. -1 if not found)
+    // const exists = userDetailsDatabase.findIndex(o => o.email === email);
+    // //if error (no email found) return error
+    // if (exists >= 0)
+    // {
+    //     //Get user details (using temp database)
+    //     const tempDetails = userDetailsDatabase.find(o => o.email === email);
+    //     // login (Check password)   
+    //     if (tempDetails.password === password)
+    //     {
+    //         //User succesfully loged-in
+            
+    //         //Create a random token to send back
+    //         const token = await jwt.sign(
+    //             {
+    //                 userID: tempDetails.id,
+    //                 email: tempDetails.email,
+    //             },
+    //             "RANDOM-TOKEN",
+    //             {expiresIn: "24h"}
+    //         );
+    //         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!y
+    //         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Send forename and surname here
+    //         res.status(201).send({message: "User successfully loged-in", name: "Replace with name (On server)", token});
+    //     } else {
+    //         //Incorrect password
+    //         res.status(400).send("Incorrect password");
+    //     }
+    // }
+    // else
+    // {
+    //     //user not found  
+    //     res.status(404).send("User not found");
+    // }
 });
 
 // Search for cheap flights
@@ -299,54 +336,85 @@ app.put("/update", auth, (req, res) => {
     }
 });
 
-app.get("/account", auth, (req, res, next) => {
+app.get("/account", auth, async (req, res, next) => {
     if (req.user) {
         const userID = req.user.userID;
-        console.log("User ID: ", userID);
+        //console.log("User ID: ", userID);
 
-        let userFound = false;
+        try {
+            const result = await db.getDetails(req.user.email, req.user.password, req.user.userID);
 
-        // Temp: Find id in database
-        userDetailsDatabase.map((item, index) => {
-            if (item.id === userID)
-            {
-                res.status(200).json(item);
-                userFound = true;
-                next();
+            if (result.ok) {
+                //console.log(result.data);
+
+                const details = {
+                    email: result.data.email,
+                    forename: result.data.forename,
+                    surname: result.data.surname,
+                };
+
+                res.status(200).json(details);
             }
-        });
+            else {
+                if (result.errorType === "email")
+                {
+                    console.log(result.message);
+                    res.status(404).json({message: "Email not found"});
 
-        if (!userFound)
+                } else if (result.errorType === "password") {
+                    console.log(result.message);
+                    res.status(404).json({message: "Incorrect password"});
+                }
+            }
+        } catch (error)
         {
-            res.status(404).json({message: "User not found in database"});
+            console.log(error);
         }
+
+        // // Temp: Find id in database
+        // userDetailsDatabase.map((item, index) => {
+        //     if (item.id === userID)
+        //     {
+        //         res.status(200).json(item);
+        //         userFound = true;
+        //         next();
+        //     }
+        // });
+
+        // if (!userFound)
+        // {
+        //     res.status(404).json({message: "User not found in database"});
+        // }
 
     } else {
         res.status(404).json({ message: "User not found" });
     }
 })
 
-app.post("/account", auth, (req, res, next) => {
+app.post("/account", auth, async (req, res, next) => {
     if (req.user) {
-        
-        const userID = req.user.userID;
+        try {
+            const updatedData = await db.updateDetails(req.body.email, req.body.forename, req.body.surname, null, req.body.password, req.user.userID);
+            res.status(200).json({ message: "Data updated", data: updatedData, updated: true });
+            next();
+        } catch (error)
+        {
+            res.status(404).json({ message: "Couldn't update details" });
+            console.log(error);
+        }
 
-        console.log("Before",req.body)
+        // userDetailsDatabase.map((item, index) => {
+        //     if (item.id === userID)
+        //     {
+        //         item.email = req.body.email;
+        //         item.password = req.body.password;
+        //         item.forename = req.body.forename;
+        //         item.surname = req.body.surname
 
-        userDetailsDatabase.map((item, index) => {
-            if (item.id === userID)
-            {
-                item.email = req.body.email;
-                item.password = req.body.password;
-                item.forename = req.body.forename;
-                item.surname = req.body.surname
-
-                console.log("Updated ",req.body)
-
-                res.status(200).json({ message: "Data updated", updated: true });
-                next();
-            }
-        });
+        //         res.status(200).json({ message: "Data updated", updated: true });
+        //         next();
+        //     }
+        // });
 
         // res.status(404).json({ message: "Coudn't update details", updated: false });
 

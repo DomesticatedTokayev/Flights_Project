@@ -53,6 +53,7 @@ function SignIn()
             alert("Passwords don't match");
             return;
         }
+    
 
         const configuration = {
             method: "post",
@@ -152,7 +153,7 @@ function SignIn()
                 <label htmlFor="password_check">Re-enter Password</label>
                 <input type="password" id="password_check" name="password_check" value={register.password_check} onChange={(e)=>handleRegister(e)}></input>
 
-                <button type="submit" className="button">Log in</button>
+                <button type="submit" className="button">Register</button>
 
                 <p> Already have an account? Log-in</p>
             </form>
