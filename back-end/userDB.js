@@ -1,28 +1,8 @@
-import "dotenv/config";
-import pg from "pg";
+import { db } from "./db.js";
 import { hashPassword, comparePasswords } from "./encryption.js";
 
 const saltingRounds = 10;
 
-const db = new pg.Client({
-    user: process.env.USER,
-    host: process.env.HSOT,
-    database: process.env.DATABASE,
-    password: process.env.PASSWORD,
-    port: process.env.PORT,
-});
-
-export function connect() {
-    db.connect();
-};
-
-export function disconnect() {
-    db.disconnect();
-};
-
-/////////////////////////////////////////////////
-//// Seperate User and flight database tables ///
-/////////////////////////////////////////////////
 // Register new user
 export async function registerUser(forename, surname, email, password) {
 

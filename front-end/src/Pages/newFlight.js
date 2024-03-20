@@ -70,7 +70,7 @@ function NewFlight() {
     async function handleAddEditFlight(
             originCity,
             originCountry,
-            destinationcity,
+            destinationCity,
             destinationCountry,
             from,
             to,
@@ -82,7 +82,7 @@ function NewFlight() {
         const body = {
             originCity: originCity,
             originCountry: originCountry,
-            destinationcity: destinationcity,
+            destinationCity: destinationCity,
             destinationCountry: destinationCountry,
             from: from,
             to: to,
