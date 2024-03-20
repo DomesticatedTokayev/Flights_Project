@@ -4,8 +4,8 @@ import bodyParser from "body-parser";
 import jwt from "jsonwebtoken";
 import auth from "./auth.js"
 import cors from "cors";
-import * as db from "./db.js";
-import {searchLocation, searchFlight} from "./flightSearch.js";
+import * as db from "./userDB.js";
+import { searchLocation, searchFlight } from "./flightSearch.js";
 
 const port = 4000;
 const app = express();
@@ -121,7 +121,7 @@ app.post("/data", (req, res) =>
 //     res.json({ status: s, token: "You Loged In" });
 // })
 
-app.post("/register", (req, res) => {
+app.post("/register", async (req, res) => {
     
     let email = req.body.email;
     let password = req.body.password;
@@ -148,6 +148,7 @@ app.post("/login", async (req, res) => {
     let password = req.body.password;
    
     try {
+
         let {ok, data, errorType, message} = await db.checkUser(email, password);
         // console.log(result.ok, result.data, result.message);
 
