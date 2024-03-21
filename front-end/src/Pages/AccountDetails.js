@@ -91,7 +91,7 @@ function AccountDetails()
         };
 
         const config = {
-            method: "post",
+            method: "put",
             url: "http://localhost:4000/account",
             headers: {
                 Authorization: `Bearer: ${auth.token}`,
@@ -104,7 +104,10 @@ function AccountDetails()
                 updateDetails("forename", result.data.data.forename);
                 updateDetails("surname", result.data.data.surname);
                 updateDetails("email", result.data.data.email);
-        
+                
+                // Update Token
+                console.log(result.data.newToken, result.data.data.email);
+                auth.storeToken(result.data.newToken, result.data.data.email);
             })
             .catch((error) => {
                 console.log(error);
@@ -133,8 +136,8 @@ function AccountDetails()
     async function handleDeleteAccount()
     {
         const config = {
-            method: "post",
-            url: "http://localhost:4000/account/delete",
+            method: "delete",
+            url: "http://localhost:4000/account",
             headers: {
                 Authorization: `Bearer: ${auth.token}`,
             },

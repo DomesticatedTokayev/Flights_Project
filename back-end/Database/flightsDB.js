@@ -33,7 +33,7 @@ export async function getFlightByID(userID, flightID)
     {
         throw (error);
     }
-}
+};
 
 // Add new flight
 export async function add(userID, origin_country, origin_city, destination_country, destination_city, outbound_from, outbound_to, max_price, with_return, min_stay, max_stay)
@@ -81,6 +81,33 @@ export async function add(userID, origin_country, origin_city, destination_count
     } catch (error) {
         throw (error);
     }
+};
+
+export async function deleteFlightByID(userID, flightID)
+{
+    try {
+        const result = await db.query(`DELETE FROM flights WHERE user_id = $1 AND id = $2`, [userID, flightID]);
+
+        if (result.rowCount <= 0)
+        {
+            return { ok: false, errorType: "unknown", message: "Couldn't delete entry" };
+        }
+
+        return { ok: true, errorType: null, message: "Flight Deleted" };
+
+    } catch (error)
+    {
+        throw (error);
+    }
+}
+
+export async function deleteAllFlights(userID) {
+    try {
+        const result = await db.query(`DELETE FROM flights WHERE user_id = $1`, [userID]);
+    } catch (error)
+    {
+        throw (error);
+    }
 }
 
 // Update flight
@@ -126,7 +153,7 @@ export async function update(userID, flightID, origin_country, origin_city, dest
     {
         throw (error);
     }
-}
+};
 
 // Delete flight
 
@@ -154,4 +181,4 @@ export function formatFlight(id, origin_country, origin_city, destination_countr
     };
 
     return flight;
-}
+};

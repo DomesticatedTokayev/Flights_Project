@@ -1,5 +1,6 @@
 import { db } from "./db.js";
-import { hashPassword, comparePasswords } from "./encryption.js";
+import { deleteAllFlights } from "./flightsDB.js";
+import { hashPassword, comparePasswords } from "../encryption.js";
 
 const saltingRounds = 10;
 
@@ -79,8 +80,9 @@ export async function getDetails(email, password, userID) {
 // Change user details (names, email, password) (Altering required) || (Testing)
 export async function updateDetails(userID, newEmail, newForename, newSurname, newPassword)
 {
+
     try {
-        const result = await db.query(`SELECT email, forename, surname, password FROM users WHERE user_id = $1`, [userID]);
+        const result = await db.query(`SELECT user_id email, forename, surname, password FROM users WHERE user_id = $1`, [userID]);
 
         if (result.rowCount <= 0) {
             return { ok: false, data: null, errorType: "unknow", message: "Unknown error" };
@@ -91,7 +93,12 @@ export async function updateDetails(userID, newEmail, newForename, newSurname, n
         data.email = newEmail;
         data.forename = newForename;
         data.surname = newSurname;
-        data.password = newPassword;
+
+        // Only set new passwrod if its different to current and is not null
+        if (newPassword)
+        {
+            data.password = await hashPassword(saltingRounds, newPassword);
+        }
 
         const result1 = await db.query(`UPDATE users SET email = $1, forename = $2, surname = $3, password = $4 WHERE user_id = $5 RETURNING email, forename, surname`,
             [
@@ -116,13 +123,27 @@ export async function updateDetails(userID, newEmail, newForename, newSurname, n
 
 // Delete user
 export async function deleteUser(userID) {
-    const result = await db.query(`DELETE FROM users WHERE user_id = $1`, [userID])
 
-    if (result.rowCount <= 0) {
-        return { ok: false, errorType: "unknown", message: "Unknown error, couldn't delete account" };
+    //Delete account flights (If available)
+    try {
+        // First, delete all user flights
+        deleteAllFlights(userID);
+
+        // Delete user
+        const result = await db.query(`DELETE FROM users WHERE user_id = $1`, [userID])
+
+        if (result.rowCount <= 0) {
+            return { ok: false, errorType: "unknown", message: "Unknown error, couldn't delete account" };
+        }
+
+        return { ok: true, errorType: null, message: "Account Deleted" };
+        
+    } catch (error)
+    {
+        console.log(error);
     }
 
-    return { ok: true, errorType: null, message: "Account Deleted" };
+   
 }
 
 export async function TestGetData() {

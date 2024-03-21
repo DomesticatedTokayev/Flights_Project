@@ -42,16 +42,17 @@ function NewFlight() {
             destination: props.destination,
             from: props.from,
             to: props.to,
-            maxPrice: props.maxPrice,
+            max_price: props.maxPrice,
             return: props.return,
-            minStay: props.minStay,
-            maxStay: props.maxStay,
+            min_stay: props.minStay,
+            max_stay: props.maxStay,
         };
         const config = {
-            method: "post",
-            url: "http://localhost:3000/searchflights",
+            method: "get",
+            url: "http://localhost:3000/search/flights",
             params: query,
         };
+        
 
         await axios(config)
             .then(result => {
@@ -99,12 +100,14 @@ function NewFlight() {
             
         const config = {
             method: searchParams.get("id") !== null ? "put" : "post",
-            url: "http://localhost:4000/" + (searchParams.get("id") !== null ? "update" : "new"),
+            url: "http://localhost:4000/saved/flights/" + (searchParams.get("id") !== null ? "update" : "new"),
             headers: {
                 Authorization: `Bearer ${auth.token}`,
             },
             data: body,
         };
+
+        console.log(config);
 
         await axios(config)
             .then((result) => {

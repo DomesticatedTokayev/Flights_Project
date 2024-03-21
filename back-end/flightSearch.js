@@ -94,47 +94,14 @@ export async function searchFlight(flyFrom, flyTo, dateFrom, dateTo, currency = 
     });
     let searchURL = withReturn === "return" ? searchURL_WithReturn : searchURL_OneWay
 
-
-    // const searchURL =  url.format({
-    //     pathname: SEARCH_API,
-    //     query: {
-    //         fly_from: flyFrom,
-    //         fly_to: flyTo,
-    //         date_from: dateFrom,
-
-    //         curr: currency,
-    //         price_to: maxPrice,
-
-    //         one_for_city: returnOneCheapestFlight,
-
-    //         ret_from_diff_city: false,
-    //         ret_to_diff_city: false,
-            
-    //         max_stopovers: maxStoppovers,
-    //         limit: limit
-
-    //     },
-    // });
-
-    // If return is true, add return data
-    // if (withReturn === "return"){
-    //     searchURL.query.date_to = dateTo;
-    //     searchURL.query.nights_in_dst_from = minNights;
-    //     searchURL.query.nights_in_dst_to = maxNights;
-    // }    
-
-    // console.log(searchURL);
-
     let flightData = [];
 
     await axios.get(searchURL, config)
-    .then((result) => {
-        //console.log(result.data.data);
+        .then((result) => {
+            let numOfFlights = result.data.data.length;
 
-        let numOfFlights = result.data.data.length;
+            for (let i = 0; i < numOfFlights; i++) {
 
-        for (let i = 0; i < numOfFlights; i++)
-        {
             let flight = {
                 originCountry: result.data.data[i].countryFrom.name,
                 originCity: result.data.data[i].route[0].cityFrom,
@@ -152,7 +119,7 @@ export async function searchFlight(flyFrom, flyTo, dateFrom, dateTo, currency = 
                 link: result.data.data[i].deep_link,
             };
 
-
+            // Add additional parameters if flight is with return
             if (withReturn === "return")
             {
                // console.log(result.data.data[i]);
@@ -169,10 +136,8 @@ export async function searchFlight(flyFrom, flyTo, dateFrom, dateTo, currency = 
         }
     })
     .catch((error) => {
-        //console.log(error.response.data.error);
         console.log(error);
         throw new Error(error);
-        //throw new Error(error.response.data.error);
     })
 
     return flightData;

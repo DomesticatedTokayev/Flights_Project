@@ -18,36 +18,28 @@ function CustomFlight() {
     const [customFlights, setcustomFlights] = useState([]);
     const [flights, setFlights] = useState([]);
     const [searching, setSearching] = React.useState(false);
-    const [searchComplete, setSearchComplete]= React.useState(false);
+    const [searchComplete, setSearchComplete] = React.useState(false);
+    
+    const [entryDeleted, setEntryDeleted] = React.useState(false);
 
-    // const [flights, setFlights] = useState([{
-        
-    //     id: 1,
-    //     originCountry:"United Kingdom",
-    //     destinationCountry:"Spain",
-    //     originCity: "London",
-    //     destinationCity: "Barcelona",
-    //     utcDeparture:"2024*03-02",
-    //     utcArrival: "2024-06-20",
-    //     returnUtcDeparture: "2024*03-02",
-    //     returnUtcArrival: "2024-06-20",
-    //     nights:7,
-    //     return: "return",
-    //     price:50,
-    //     link: "https://www.google.com",
-    // }]);
+    function toggleDeleted()
+    {
+        setEntryDeleted((prevValue) => (!prevValue));
+        console.log(entryDeleted);
+    }
+
 
     useEffect(() => {
-
+        setcustomFlights([]);
         getData();
         
-    }, []); // Run on add new flight, edit flight and delete flight
+    }, [entryDeleted]); // Run on add new flight, edit flight and delete flight
 
     async function getData() {
 
         const configuration = {
             method: "get",
-            url: "http://localhost:4000/custom",
+            url: "http://localhost:4000/saved/flights",
             headers: {
                 Authorization: `Bearer ${auth.token}`,
             },
@@ -96,7 +88,7 @@ function CustomFlight() {
         toggleSideMenu("block");
     }
 
-    async function handleSearch(origin, destination, from, to, maxPrice, withReturn, minStay, maxStay)
+    async function handleSearch(origin, destination, from, to, max_price, with_Return, min_Stay, max_stay)
     {
         setSearching(true);
         setSearchComplete(false);
@@ -110,14 +102,15 @@ function CustomFlight() {
             destination: destination,
             from: from,
             to: to,
-            maxprice: maxPrice,
-            return: withReturn,
-            minstay: minStay,
-            maxstay: maxStay,
+            max_price: max_price,
+            return: with_Return,
+            min_stay: min_Stay,
+            max_stay: max_stay,
         };
+
         const config = {
-            method: "post",
-            url: "http://localhost:3000/searchflights",
+            method: "get",
+            url: "http://localhost:3000/search/flights",
             params: query,
         };
 
@@ -152,23 +145,41 @@ function CustomFlight() {
         destination,
         from,
         to,
-        maxPrice,
-        withReturn,
-        minStay,
-        maxStay,
+        max_price,
+        with_return,
+        min_stay,
+        max_stay,
     )
     {
         const type = "edit";
 
-        window.location.href = `/newflight?id=${id}&origin=${origin}&destination=${destination}&from=${from}&to=${to}&maxprice=${maxPrice}&withreturn=${withReturn}&minstay=${minStay !== undefined ? minStay : ""}&maxstay=${maxStay !== undefined ? maxStay : ""}&type=${type}`;
+        window.location.href = `/newflight?id=${id}&origin=${origin}&destination=${destination}&from=${from}&to=${to}&maxprice=${max_price}&withreturn=${with_return}&minstay=${min_stay !== undefined ? min_stay : ""}&maxstay=${max_stay !== undefined ? max_stay : ""}&type=${type}`;
         
         // replace with navigate (useNavigate)
         //navigate("/custom");
     }
 
-    function handleDelete(flightID) {
-        // Send delete request
-        console.log("Delete flight ID: ", flightID);
+    async function handleDelete(flightID) {
+        const config = {
+            method: "delete",
+            url: "http://localhost:4000/saved/flights",
+            headers: {
+                Authorization: `Bearer: ${auth.token}`,
+            },
+            params: {
+                flightID: flightID,
+            }
+        };
+
+        await axios(config)
+            .then(result => {
+                console.log(result);
+                toggleDeleted()
+            })
+            .catch(error => {
+                console.log(error);
+        })
+
     }
 
     return <main>

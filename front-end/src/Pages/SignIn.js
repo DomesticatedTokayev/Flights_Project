@@ -7,6 +7,9 @@ import { useAuth } from "../hooks/AuthProvider";
 
 import LoginDetails from "../components/LoginDetails";
 
+// Google Authentication
+// https://medium.com/@sahadmuhammed289/react-js-a-step-by-step-guide-to-google-authentication-926d0d85edbd
+
 function SignIn()
 {
     const auth = useAuth();
@@ -92,7 +95,7 @@ function SignIn()
         axios(configuration)
             .then((result) => {
                 //  Set the cookie (Makes the cookie available at "/" path. Thus, all pages)
-                auth.storeToken(result.data.token, result.data.name);
+                auth.storeToken(result.data.token, result.data.email);
                 //cookies.set("TOKEN", result.data.token, { path: "/" });
                 window.location.href = "/";
             })
@@ -162,55 +165,3 @@ function SignIn()
 }
 
 export default SignIn;
-
-
-{/* <label htmlFor="email">Email</label>
-<input type="text" id="email" name="email"></input>
-<label htmlFor="password">Password</label>
-<input type="text" id="password" name="password"></input> */}
-
-{/* <div className="register">
-        <h1>Register</h1>
-        <form onSubmit={(e)=>handleSubmitRegister(e)}> 
-          <label>Email</label>
-                <input
-                    onChange={(e)=>handleRegistration(e)}
-                    name="email"
-                    type="text"
-                    value={register.email}
-                    required>
-                    </input>
-          <label>Password</label>
-                <input
-                    onChange={(e)=>handleRegistration(e)}
-                    name="password"
-                    type="password"
-                    value={register.password}
-                    required>
-                    </input>
-          <button type="Submit">Submit</button>
-        </form>
-      </div>
-
-      <div className="login">
-      <h1>Login</h1>
-            <form onSubmit={(e) =>handleSubmitLogin(e)}>
-          <label>Email</label>
-                <input
-                    name="email"
-                    type="text"
-                    value={login.email}
-                    onChange={(e)=>handleLogin(e)}
-                    required>
-                    </input>
-          <label>Password</label>
-                <input
-                    name="password"
-                    type="password"
-                    value={login.password}
-                    onChange={(e)=>handleLogin(e)}
-                    required>
-                    </input>
-          <button type="submit">Submit</button>
-        </form>
-      </div> */}
