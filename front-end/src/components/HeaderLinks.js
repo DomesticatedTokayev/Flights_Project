@@ -6,8 +6,6 @@ function HeaderLinks()
    // const token = cookie.get("TOKEN");
    const auth = useAuth();
 
-   console.log(auth.token);
-
    function LogOut() {
        //  Destroy the cookie
        auth.removeToken();

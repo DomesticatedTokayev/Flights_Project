@@ -12,6 +12,8 @@ function AccountDetails()
         surname: "",
     });
 
+    const [newPassword, setNewPassword] = React.useState("");
+
     const auth = useAuth();
     const isMounted = React.useRef(false);
     const [showMessage, setShowMessage] = React.useState(false);
@@ -88,8 +90,6 @@ function AccountDetails()
             password: details.password,
         };
 
-        console.log(body);
-
         const config = {
             method: "post",
             url: "http://localhost:4000/account",
@@ -109,9 +109,6 @@ function AccountDetails()
             .catch((error) => {
                 console.log(error);
             })
-        
-
-
     };
 
     async function getDetails() {
@@ -132,6 +129,26 @@ function AccountDetails()
                 console.log(error);
         })
     };
+
+    async function handleDeleteAccount()
+    {
+        const config = {
+            method: "post",
+            url: "http://localhost:4000/account/delete",
+            headers: {
+                Authorization: `Bearer: ${auth.token}`,
+            },
+        };
+
+        await axios(config)
+            .then((result) => {
+                auth.removeToken();
+                window.location.href = "/";
+            })
+            .catch(error => {
+                console.log(error);
+        })
+    }
 
     return <main>
         <div className="account_details">
@@ -169,6 +186,7 @@ function AccountDetails()
                 <button className="button" onClick={sendUpdatedDetails}>Save</button>
                 <button className="button">Cancel</button>
             </div>
+            <a className="delete_account red-text" onClick={() => handleDeleteAccount()}>Delete Account</a>
         </div>
     </main>
 }

@@ -30,75 +30,6 @@ try {
     console.log("Error:", error);
 }
 
-let userDetailsDatabase = [{
-    id: 1,
-    email: "Tokayev",
-    password: "yes",
-    forename: "debra",
-    surname: "snitch",
-},
-    {
-    id: 2,
-    email: "Hank",
-    password: "no115",
-    forename: "Mitch",
-    surname: "Stitch",
-}
-];
-
-let flightsDatabase = [
-    {
-        id: 1,
-        originCountry: "United Kingdom",
-        originCity: "London",
-        destinationCountry: "Spain",
-        destinationCity: "Barcelona",
-        from: "2024-03-20",
-        to: "2024-05-20",
-        maxPrice: 100,
-        return: "return",
-        minStay: 7,
-        maxStay: 14,
-    },
-    {
-        id: 2,
-        originCountry: "United Kingdom",
-        originCity: null,
-        destinationCountry: "France",
-        destinationCity: null,
-        from: "2024-03-20",
-        to: "2024-05-20",
-        maxPrice: 80,
-        return: "return",
-        minStay: 7,
-        maxStay: 14,
-    },
-    {
-        id: 3,
-        originCountry: "United Kingdom",
-        originCity: "Birmingham",
-        destinationCountry: "Germany",
-        destinationCity: null,
-        from: "2024-03-20",
-        to: "2024-05-20",
-        maxPrice: 120,
-        return: "return",
-        minStay: 14,
-        maxStay: 21,
-    }, {
-        id: 4,
-        originCountry: "United Kingdom",
-        originCity: null,
-        destinationCountry: "Germany",
-        destinationCity: null,
-        from: "2024-03-20",
-        to: "2024-05-20",
-        maxPrice: 120,
-        return: "oneway",
-    },
-
-]
-
 app.get("/", (req, res) =>
 {
     console.log("Sent Data");
@@ -116,8 +47,19 @@ app.post("/register", async (req, res) => {
     //Else, create a new user (Add to database and hash password)
 
     try {
-        userDB.registerUser(forename, surname, email, password);
-        res.status(200).send("New user created")
+        const result = await userDB.registerUser(forename, surname, email, password);
+        if (result.ok)
+        {
+            res.status(200).send("New user created")
+        } else if (result.errorType === "duplicate") {
+            console.log("Email already in use");
+            res.status(400).send("Email already exists");
+        }
+        else {
+            console.log(result.message);
+            res.status(400).send("Unknown error");
+        }
+
     } catch (error){
         console.log(error);
         res.status(404).send(error);
@@ -422,18 +364,43 @@ app.get("/account", auth, async (req, res, next) => {
 app.post("/account", auth, async (req, res, next) => {
     if (req.user) {
         try {
-            const updatedData = await userDB.updateDetails(req.body.email, req.body.forename, req.body.surname, null, req.body.password, req.user.userID);
-            res.status(200).json({ message: "Data updated", data: updatedData, updated: true });
-            next();
+            const result = await userDB.updateDetails(req.user.userID, req.body.email, req.body.forename, req.body.surname, req.body.password);
+
+            if (result.ok)
+            {
+                res.status(200).json({ message: "Data updated", data: result.data, updated: true });
+                next();
+            } else {
+                res.status(404).json({ message: result.message });
+            }
         } catch (error)
         {
             res.status(404).json({ message: "Couldn't update details" });
             console.log(error);
         }
     } else {
+        console.log("Error");
         res.status(404).json({ message: "User not found" });
     }
     
+});
+
+app.post("/account/delete", auth, async (req, res) => {
+   
+    console.log("Deleting user")
+    if (req.user) {
+        const result = await userDB.deleteUser(req.user.userID);
+        if (result.ok)
+        {
+            res.status(200).json({ message: result.message });
+        }
+        else {
+            res.status(400).json({ message: result.message });
+        }
+    } else
+    {
+        res.status(404).json({ message: "User not found" });
+    }
 });
 
 

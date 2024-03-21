@@ -78,6 +78,10 @@ textarea{
     color: grey;
 }
 
+.red-text{
+    color: red;
+}
+
 .align-center{
     text-align: center;
 }
@@ -684,6 +688,10 @@ button:active
 
 .error-message{
     min-height: 30px;
+}
+
+.delete_account{
+
 }
 
 /* || DETAILS_ENTRY ---------------------------------------------------------------------*/ 
