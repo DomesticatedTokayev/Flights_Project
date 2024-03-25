@@ -34,11 +34,12 @@ export async function searchLocation(city)
              
             } else
             {
-                return {error: "Location not found"};
+                //return { error: "Location not found" };
+                throw("Location not found");
             }
             })
             .catch(error => {
-                throw new Error(error);
+                throw(error);
             })
         
     return flightCode;
@@ -136,8 +137,8 @@ export async function searchFlight(flyFrom, flyTo, dateFrom, dateTo, currency = 
         }
     })
     .catch((error) => {
-        console.log(error);
-        throw new Error(error);
+
+        throw(error);
     })
 
     return flightData;

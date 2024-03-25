@@ -17,17 +17,6 @@ function Search(props) {
         outputLimit: props.outputLimit
     });
 
-    // const [data, setData] = useState({
-    //     origin: props.origin,
-    //     destination: props.destination,
-    //     from: props.from,
-    //     to: props.to,
-    //     return: props.return,
-    //     maxPrice: props.maxPrice,
-    //     minStay: props.minStay,
-    //     maxStay: props.maxStay,
-    //     outputLimit: props.outputLimit
-    // });
 
     React.useEffect(() => {
         UpdateData("origin", props.origin || "");
@@ -59,9 +48,6 @@ function Search(props) {
         props.onSearch(data);
     }
 
-    React.useEffect(() => {
-    },[])
-
     return <form className="search" onSubmit={(e) => (submitSearch(e))}>
         <div>
             <h2>Search Flights</h2>
@@ -72,7 +58,7 @@ function Search(props) {
                 </div>
                 <div>
                     <label htmlFor="destination">Destination</label>
-                    <input onChange={updateSearch} type="text" name="destination" id="destination" placeholder="Destination" value={data.destination} required></input>
+                    <input onChange={updateSearch} type="text" name="destination" id="destination" placeholder="Any" value={data.destination}></input>
                 </div>
                 <div>
                     <label htmlFor="from">From</label>
@@ -91,7 +77,7 @@ function Search(props) {
                 </div>
                 <div>
                     <label htmlFor="maxPrice">Max Price</label>
-                    <input onChange={updateSearch} type="number" name="maxPrice" id="maxPrice" placeholder="Max price" value={data.maxPrice} required></input>
+                    <input onChange={updateSearch} type="number" name="maxPrice" id="maxPrice" placeholder="Any" value={data.maxPrice} min="0" ></input>
                 </div>  
                 <div>
                     <label htmlFor="minStay">Min Stay</label>

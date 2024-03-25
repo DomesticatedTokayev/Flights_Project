@@ -29,4 +29,5 @@ export default async function SearchFlights(props) {
         })
 
     return data;
+    // Return an object, with data and error is required
 }

@@ -13,7 +13,6 @@ function Flight(props) {
     const { hour: returnDepartureHour, minutes: returnDepartureMinutes } = props.return && parseDate(props.returnUtcDeparture);
     const { day: returnDepartureDay, month: returnDepartureMonth, year: returnDepartureYear } = props.return && parseDate(props.returnUtcDeparture);
         
-    
 
     return <div className="flight">
         <div className="flight__dates">

@@ -51,7 +51,6 @@ function CustomFlight() {
             })
             .catch((error) => {
                 console.log(error);
-                error = new Error();
             });
     }
 
@@ -95,6 +94,7 @@ function CustomFlight() {
 
         handleOpenMenu();
 
+        
 
         // use axios to search for flights
         const query = {

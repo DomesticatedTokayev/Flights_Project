@@ -75,7 +75,12 @@ function SignIn()
                 window.location.href = "/sign-in";
             })
             .catch((error) => {
-                console.log(error)
+                // Error Code 5 = Email already exists
+                if (error.response.data.code === 5) {
+                    console.log("Email already in use");
+                }else {
+                    console.log("Unknown error");
+                }
             });
         
     };
@@ -94,13 +99,23 @@ function SignIn()
 
         axios(configuration)
             .then((result) => {
+                //console.log(result.data);
                 //  Set the cookie (Makes the cookie available at "/" path. Thus, all pages)
                 auth.storeToken(result.data.token, result.data.email);
                 //cookies.set("TOKEN", result.data.token, { path: "/" });
                 window.location.href = "/";
             })
             .catch((err) => {
-                console.log(err)
+                // Error Code 10 = Incorrect Email
+                // Error code 20 = Incorrect Password
+                const errorCode = err.response.data.code;
+                if (errorCode === 10) {
+                    console.log("Email not Found");
+                } else if (errorCode === 20) {
+                    console.log("Incorrect password");
+                } else {
+                    console.log("Unknown error");
+                }
             });
     }
 
@@ -108,7 +123,6 @@ function SignIn()
         const { name, value } = event.target;
 
         setLogin((prevValue) => ({ ...prevValue, [name]: value }));
-        console.log(login.email);
     }
 
     function handleRegister(event)

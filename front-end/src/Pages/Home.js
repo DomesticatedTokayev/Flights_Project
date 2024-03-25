@@ -22,10 +22,10 @@ function Home()
     {
         // Start loading icon (On search button)
         setSearching(true);
-        let data;
+        let result;
         // Only send requrests once while loading
-        !searching && (data = await SearchFlights(props));
-        setFlights(data);
+        !searching && (result = await SearchFlights(props));
+        setFlights(result);
         setHasSearched(true);
         // Stop loading icon
         setSearching(false);

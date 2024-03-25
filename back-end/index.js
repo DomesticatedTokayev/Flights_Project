@@ -53,7 +53,7 @@ app.post("/register", async (req, res) => {
             res.status(200).send("New user created")
         } else if (result.errorType === "duplicate") {
             console.log("Email already in use");
-            res.status(400).send("Email already exists");
+            res.status(400).json({message: "Email already exists", code: 5});
         }
         else {
             console.log(result.message);
@@ -88,15 +88,13 @@ app.post("/login", async (req, res) => {
                 "RANDOM-TOKEN",
                 {expiresIn: "24h"}
             );
-            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!y
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Send forename and surname here
             res.status(201).send({message: "User successfully loged-in", email: email, token});
         }
         else if(errorType === "email"){
-            console.log(message);
+            res.status(404).json({message: "Emai not found", code: 10});
         }
         else if(errorType === "password"){
-            console.log(message);
+            res.status(404).json({message: "Incorrect password", code: 20});
         }
 
     } catch (error) {
@@ -106,50 +104,57 @@ app.post("/login", async (req, res) => {
 });
 
 // Search for cheap flights
-app.get("/search/flights", async (req, res) => {
+app.get("/search/flights", async (req, res, next) => {
     const searchData = req.query;
-    console.log("aye")
     let originIATA = "";
     let destinationIATA = "";
 
     try {
         originIATA = await searchLocation(searchData.origin);
-        destinationIATA =  await searchLocation(searchData.destination);
     } catch (error) {
         console.log(error);
-        res.status(404).send(error);
+        res.status(404).json({ message: "Incorrect origin", code: 30 });
+        return next();
     }
 
-    if (originIATA.error === null || destinationIATA.error === null)
+    // Destination is not required (If not supplied, tequilla will look random destination)
+    try {
+        destinationIATA = await searchLocation(searchData.destination);
+    } catch (error)
     {
-        console.log("Location not found");
-        res.status(400).send("Location not found");
-    } else {
-        await searchFlight(
-            originIATA,
-            destinationIATA,
-            searchData.from,
-            searchData.to,
-            "GBP",
-            searchData.max_price,
-            searchData.min_stay,
-            searchData.max_stay,
-            searchData.return,
-            1,
-            0,
-            searchData.output_limit,
-        ).then((result) => {
-            if (result.length > 0)
-            {
-                res.status(200).json(result);         
-            } else {
-                res.status(204).json({ message: "No flights found" });
-            }
-        }).catch((error) => {
-            //console.log(error); 
-            res.status(400).json({ message: error });
-        });
+        console.log("Destinaton not selected/found");
     }
+
+    // if (originIATA) // || !destinationIATA
+    // {
+    await searchFlight(
+        originIATA,
+        destinationIATA,
+        searchData.from,
+        searchData.to,
+        "GBP",
+        searchData.max_price,
+        searchData.min_stay,
+        searchData.max_stay,
+        searchData.return,
+        1,
+        0,
+        searchData.output_limit,
+    ).then((result) => {
+        if (result.length > 0)
+        {
+            res.status(200).json(result);         
+        } else {
+            res.status(204).json({ message: "No flights found", code: 50});
+        }
+    }).catch((error) => {
+        //console.log(error); 
+        res.status(400).json({ message: error, code: 100});
+    });
+    // } else {
+    //     console.log("Location not found");
+    //     res.status(400).json({ message: "Invalid Origin", code: 40 });
+    // }
 });
 
 app.get("/saved/flights", auth, async (req, res) => {

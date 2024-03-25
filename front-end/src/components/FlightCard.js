@@ -119,10 +119,17 @@ function FlightCard(props)
         <div className="col card__price">
             <div>
                 <p className="grey-text">Max Price</p>
+              
                 <div className="price">
-                <p>£</p>
-                <p>{props.maxPrice}</p>
+                {(props.maxPrice) ? <>
+                        <p>£</p>
+                        <p>{props.maxPrice}</p>
+                    </> :
+                    <p>Any</p>}
                 </div>
+               
+                    
+                
             </div>
         </div>
         {/* Determin if user is in edit or new flight: Set titles to appropriate names */}
