@@ -49,11 +49,13 @@ Saved Flights
 
 +------------------------------------------+
 Account
-> Code Letter: 'C'
+> Code Letter: 'S'
 
 >> S90 - User not found
 >> S100 - Unknown error: Couldn't update user
+>> S105 - Invalid email
 >> S110 - Failed to delete account
+>> S120 - New password doesn't meet minimum requirements
 +------------------------------------------+
 Unknown Error:
 > Code Letter: 'U'

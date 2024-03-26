@@ -305,6 +305,28 @@ app.get("/account", auth, async (req, res, next) => {
 app.put("/account", auth, async (req, res, next) => {
     if (req.user.userID) {
 
+        // Vaidate email
+        const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+
+        if (!regex.test(req.body.email))
+        {   
+            res.status(404).json({ message: "Invalid email", errorCode: "S105" });
+            return next();
+        }
+
+        if (req.body.password) {
+            // Password must contain:
+            // - At least one Upper case character
+            // - At least one digit
+            // - At least 8 characters
+            const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+            if (!passwordRegex.test(req.body.password))
+            {
+                res.status(400).json({ message: "New password doesn't meet minimum requirements", errorCode: "S120" });
+                return next();
+            }
+        }
+        
         try {
             const result = await userDB.updateDetails(req.user.userID, req.body.email, req.body.forename, req.body.surname, req.body.password);
 

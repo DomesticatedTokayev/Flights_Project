@@ -3,6 +3,9 @@ import axios from "axios"
 import DetailsEntry from "../components/DetailsEntry"
 import { useAuth } from "../hooks/AuthProvider";
 
+// Password and email validation
+// 
+
 function AccountDetails()
 {
     const [details, setDetails] = React.useState({
@@ -18,7 +21,7 @@ function AccountDetails()
     const isMounted = React.useRef(false);
     const [showMessage, setShowMessage] = React.useState(false);
     const [savedValue, setSavedValue] = React.useState({
-        message: "hu",
+        message: "",
         wasSaved: false,
     });
 
@@ -56,17 +59,38 @@ function AccountDetails()
         
     }, [savedValue]);
 
+    function validateEmail(email) {
+        const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+        return regex.test(email);
+    }
+
     function handleNewEmail(email) {
-        // Check is email is correct, and set if succesfully saved
-        updateDetails("email", email);
-        //SetSaved("email", true);
+        // Validate email 
+        if (validateEmail(email))
+        {
+            updateDetails("email", email);
+        } else {
+            SetSaved("Invalid Password", false);
+        }
     };
+
+    function validatePassword(password) {
+        const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+        return regex.test(password);
+    }
 
     function handleNewPassword(password)
     {
-        setNewPassword(password);
+        if (validatePassword(password)){
+            setNewPassword(password);
+        }
+        else {
+            // alert("Password is not strong enough");
+        }
+        // Password must contain at least one digit and eight characters and at least one upper case character
+
         //updateDetails("password", password);
-        // Check if password meets minimum requirements
+        //Check if password meets minimum requirements
         //SetSaved("password", true);
     };
 
@@ -100,6 +124,7 @@ function AccountDetails()
             },
             data: body,
         };
+
         await axios(config)
             .then((result) => {
                 //alert("Data updated");
@@ -107,6 +132,8 @@ function AccountDetails()
                 updateDetails("forename", result.data.data.forename);
                 updateDetails("surname", result.data.data.surname);
                 updateDetails("email", result.data.data.email);
+
+                setNewPassword("")
                 
                 SetSaved("Details Updated", true);
                 
@@ -123,6 +150,16 @@ function AccountDetails()
                         SetSaved("Couldn't Update Details", false);
                         break;
                     }
+                    case "S105": {
+                        // alert(error.response.data.message);
+                        SetSaved("Invalid email", false);
+                        break;
+                    }
+                    case "S120": {
+                         alert(error.response.data.message);
+                        SetSaved("Password doesn't meet minimum requirements", false);
+                        break;
+                    }
                     case "U10": {
                         // alert("Unknown error");
                         SetSaved("Error Saving Details", false);
@@ -133,6 +170,8 @@ function AccountDetails()
                         SetSaved("Error Saving Details", false);
                         break;
                     }
+                        
+                    setNewPassword("");
                 }
             })
     };
@@ -148,7 +187,6 @@ function AccountDetails()
 
         await axios(config)
             .then((result) => {
-                console.log(result);
                 setDetails(result.data);
             })
             .catch((error) => {
@@ -172,7 +210,8 @@ function AccountDetails()
                         break;
                     }
                 }
-        })
+            }
+            )
     };
 
     async function handleDeleteAccount()
@@ -219,12 +258,11 @@ function AccountDetails()
             <h2 className="title">This is Account Details</h2>
             {/* {showMessage === true && <> */}
             <div className="error-message">
-                <p className={showMessage ? "show" : "hidden"}>
+                <p className={showMessage ? "show red-text" : "hidden"}>
                     {savedValue.message}
                 </p>
             </div>
             
-            {/* </>} */}
             <div>
                 <DetailsEntry 
                     entryName={"Email"}
