@@ -47,7 +47,8 @@ export async function searchLocation(city)
 
 export async function searchFlight(flyFrom, flyTo, dateFrom, dateTo, currency = "GBP", maxPrice, minNights, maxNights, withReturn, returnOneCheapestFlight = 0, maxStoppovers = 0, limit = 10)
 {
-    //Set URL and config
+    // If 'date from' and/or 'date to' is null, check flight from today and leave date to empty
+
     const searchURL_WithReturn = url.format({
         pathname: SEARCH_API,
         query: {
@@ -56,7 +57,7 @@ export async function searchFlight(flyFrom, flyTo, dateFrom, dateTo, currency = 
             date_from: dateFrom,
           
             curr: currency,
-            price_to: maxPrice,
+            price_to: maxPrice ,
 
             one_for_city: returnOneCheapestFlight,
 
@@ -77,8 +78,8 @@ export async function searchFlight(flyFrom, flyTo, dateFrom, dateTo, currency = 
         pathname: SEARCH_API,
         query: {
             fly_from: flyFrom,
-            fly_to: flyTo,
             date_from: dateFrom,
+            fly_to: flyTo,
 
             curr: currency,
             price_to: maxPrice,

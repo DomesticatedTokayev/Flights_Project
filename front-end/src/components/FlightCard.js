@@ -9,14 +9,11 @@ function FlightCard(props)
 
     React.useEffect(() => {
         setID(props.id);
-
-        
     }, []);
 
 
     function handleDelete() {
         // Send flight data (So additional api calls are not required)
-
         props.handleDelete(props.id);
     }
 
@@ -121,7 +118,7 @@ function FlightCard(props)
                 <p className="grey-text">Max Price</p>
               
                 <div className="price">
-                {(props.maxPrice) ? <>
+                {(props.maxPrice !== null && props.maxPrice !== "null") ? <>
                         <p>£</p>
                         <p>{props.maxPrice}</p>
                     </> :

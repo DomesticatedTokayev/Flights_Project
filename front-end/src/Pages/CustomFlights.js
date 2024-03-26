@@ -8,7 +8,7 @@ import FlightCard from "../components/FlightCard.js";
 import Flight from "../components/Flight.js";
 
 import UseOutsideClick from "../components/UseOutsideClick.js";
-import SearchFlights from "../components/SearchFlights.js";
+import {SearchFlightsWithParam} from "../components/SearchFlights";
 
 function CustomFlight() {
     const auth = useAuth();
@@ -25,21 +25,19 @@ function CustomFlight() {
     function toggleDeleted()
     {
         setEntryDeleted((prevValue) => (!prevValue));
-        console.log(entryDeleted);
-    }
-
+    };
 
     useEffect(() => {
         setcustomFlights([]);
         getData();
         
-    }, [entryDeleted]); // Run on add new flight, edit flight and delete flight
+    }, [entryDeleted]); // Run on 'delete flight' only
 
     async function getData() {
 
         const configuration = {
             method: "get",
-            url: "http://localhost:4000/saved/flights",
+            url: "/saved/flights",
             headers: {
                 Authorization: `Bearer ${auth.token}`,
             },
@@ -94,49 +92,42 @@ function CustomFlight() {
 
         handleOpenMenu();
 
+
+        let result;
+        !searching && (result = await SearchFlightsWithParam(origin, destination, from, to, max_price, with_Return, min_Stay, max_stay));
+
+        if (result.ok)
+        {
+            setFlights(result.data);
+        } else {
+            console.log(result);
+            switch (result.errorCode)
+            {
+                case "F30": {
+                    alert("Invalid Origin");
+                    break;
+                }
+                case "F40": {
+                    alert("No flights found");
+                    break;
+                }
+                case "U10": {
+                    alert("Unknown error. Code: U10");
+                    break;
+                }
+                default:{
+                    alert("Unknown error");
+                    break;
+                }
+            }   
+        }
         
-
-        // use axios to search for flights
-        const query = {
-            origin: origin,
-            destination: destination,
-            from: from,
-            to: to,
-            max_price: max_price,
-            return: with_Return,
-            min_stay: min_Stay,
-            max_stay: max_stay,
-        };
-
-        const config = {
-            method: "get",
-            url: "http://localhost:3000/search/flights",
-            params: query,
-        };
-
-        await axios(config)
-            .then(result => {
-                setFlights(result.data);
-
-            })
-            .catch(error => {
-                console.log(error);
-        })
         setSearching(false);
         setSearchComplete(true);
-
-    }
-
+    };
 
     function handleNew(flightID) {
-        //Either send id or flight data
-
-        //window.location.href = `/newflight?flightid=${flightID}`;
-        window.location.href = `/newflight?type=new`;
-
-        // replace with navigate (useNavigate)
-        //navigate("/custom");
-        
+        navigate("/newflight?type=new");
     }
 
     function handleEdit(
@@ -152,17 +143,13 @@ function CustomFlight() {
     )
     {
         const type = "edit";
-
-        window.location.href = `/newflight?id=${id}&origin=${origin}&destination=${destination}&from=${from}&to=${to}&maxprice=${max_price}&withreturn=${with_return}&minstay=${min_stay !== undefined ? min_stay : ""}&maxstay=${max_stay !== undefined ? max_stay : ""}&type=${type}`;
-        
-        // replace with navigate (useNavigate)
-        //navigate("/custom");
+        navigate(`/newflight?id=${id}&origin=${origin}&destination=${destination}&from=${from}&to=${to}&maxprice=${max_price}&withreturn=${with_return}&minstay=${min_stay !== undefined ? min_stay : ""}&maxstay=${max_stay !== undefined ? max_stay : ""}&type=${type}`);
     }
 
     async function handleDelete(flightID) {
         const config = {
             method: "delete",
-            url: "http://localhost:4000/saved/flights",
+            url: "/saved/flights",
             headers: {
                 Authorization: `Bearer: ${auth.token}`,
             },
@@ -181,6 +168,9 @@ function CustomFlight() {
         })
 
     }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Flight card keeps getting re-rendered when not required
 
     return <main>
         <div className="custom">

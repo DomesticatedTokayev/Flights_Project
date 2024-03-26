@@ -1,6 +1,7 @@
 import axios from "axios";
 
-export default async function SearchFlights(props) {
+export async function SearchFlightsWithProps(props) {
+
     const query = {
         origin: props.origin,
         destination: props.destination,
@@ -13,21 +14,39 @@ export default async function SearchFlights(props) {
         output_limit: props.outputLimit,
     };
 
+    return await search(query);
+};
+
+export async function SearchFlightsWithParam(origin, destination, from, to, max_price, with_Return, min_Stay, max_stay, output_limit)
+{
+    const query = {
+        origin: origin,
+        destination: destination,
+        from: from,
+        to: to,
+        return: with_Return,
+        max_price: max_price,
+        min_stay: min_Stay,
+        max_stay: max_stay,
+        output_limit: output_limit,
+    };
+
+    return await search(query);
+};
+
+async function search(query) {
     const configuration = {
         method: "get",
-        url: "http://localhost:3000/search/flights",
+        url: "/search/flights",
         params: query,
     }
 
-    let data = "";
-
-    await axios(configuration)
-        .then(result => {
-            data = result.data;
-        }).catch(error => {
-            console.log(error);
-        })
-
-    return data;
-    // Return an object, with data and error is required
+    try {
+        let result = await axios(configuration)
+        return { ok: true, data: result.data, errorType: null, message: null };
+    } catch (error)
+    {
+        console.log(error);
+        return { ok: false, data: null, errorCode: error.response.data.errorCode, message: error.response.data.message};
+    }
 }

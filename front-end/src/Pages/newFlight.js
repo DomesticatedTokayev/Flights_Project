@@ -4,7 +4,7 @@ import SearchForm from "../components/SearchForm";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../hooks/AuthProvider";
 import FlightCard from "../components/FlightCard";
-import Flight from "../components/Flight";
+import {SearchFlightsWithProps} from "../components/SearchFlights";
 
 function NewFlight() {
 
@@ -13,9 +13,7 @@ function NewFlight() {
     const [searchingComplete, setSearchComplete] = React.useState(false);
     const [flights, setFlights] = React.useState([]);
     const [searchData, setSearchData] = React.useState();
-
     const [searchParams] = useSearchParams();
-
     const navigate = useNavigate();
 
     const [id, setID] = React.useState();
@@ -30,39 +28,38 @@ function NewFlight() {
    
     async function handleSearch(props)
     {
-        // Set journey from country to country only (Any airport)
-        // Load available destinations from city/country to city/country
-
         setSearching(true);
         setSearchComplete(false);
 
-        // use axios to search for flights
-        const query = {
-            origin: props.origin,
-            destination: props.destination,
-            from: props.from,
-            to: props.to,
-            max_price: props.maxPrice,
-            return: props.return,
-            min_stay: props.minStay,
-            max_stay: props.maxStay,
-        };
-        const config = {
-            method: "get",
-            url: "http://localhost:3000/search/flights",
-            params: query,
-        };
-        
+        let result;
+        // Only send request when not already searching
+        !searching && (result = await SearchFlightsWithProps(props));
 
-        await axios(config)
-            .then(result => {
-                setFlights(result.data);
-                setSearchData(props);
-
-            })
-            .catch(error => {
-                console.log(error);
-            });
+        if (result.ok)
+        {
+            setFlights(result.data);
+            setSearchData(props);
+        } else {
+            switch (result.errorCode)
+            {
+                case "F30": {
+                    alert("Invalid Origin");
+                    break;
+                }
+                case "F40": {
+                    alert("No flights found");
+                    break;
+                }
+                case "U10": {
+                    alert("Unknown error. Code: 100");
+                    break;
+                }
+                default:{
+                    alert("Unknown error");
+                    break;
+                }
+            }   
+        }
         
         setSearching(false);
         setSearchComplete(true);
@@ -100,18 +97,16 @@ function NewFlight() {
             
         const config = {
             method: searchParams.get("id") !== null ? "put" : "post",
-            url: "http://localhost:4000/saved/flights/" + (searchParams.get("id") !== null ? "update" : "new"),
+            url: "/saved/flights/" + (searchParams.get("id") !== null ? "update" : "new"),
             headers: {
                 Authorization: `Bearer ${auth.token}`,
             },
             data: body,
         };
-
-        console.log(config);
-
+        
         await axios(config)
             .then((result) => {
-                console.log(result)
+                //console.log(result)
             })
             .catch(error => {
                 console.log(error)
@@ -121,7 +116,6 @@ function NewFlight() {
         // Return to custom flights
         navigate("/custom");
     }
-
     // When setting flight data, form isn't updated immediatly
     return<>
     <main>
@@ -145,8 +139,9 @@ function NewFlight() {
                 {(flights.length <= 0 && searchingComplete) && <p className="align-center">No Flights found</p>}
                     {/* Add to any city only */}
                 {(flights && searchingComplete) && <>
-                    <p className="align-center">Any City</p>
-                    {flights.length > 0 && 
+                    {(flights.length > 0) && 
+                        <>
+                        <p className="align-center">Any City</p>
                         <FlightCard 
                             originCountry = {flights[0].originCountry}
                             destinationCountry = {flights[0].destinationCountry}
@@ -158,7 +153,8 @@ function NewFlight() {
                             maxPrice={searchData.maxPrice}
                             isAddFlight={true}
                             handleAddFlight={handleAddEditFlight}
-                        />
+                            />
+                        </>
                     }
                     {/* Section for specific cities */}
                     <p className="align-center">Specific Cities</p>

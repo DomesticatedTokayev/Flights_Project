@@ -27,27 +27,6 @@ function SignIn()
         surname: "",
     });
 
-
-    // function handleRegistration(event)
-    // {
-    //     const { value, name } = event.target;
-       
-    //     setRegister((prevValue) => {
-    //         switch (name) {
-    //             case "email": {
-    //                 return { email: value, password: prevValue.password };
-    //             }
-    //             case "password": {
-    //                 return { email: prevValue.email, password: value };
-    //             }
-    //             default: {
-    //                 return;
-    //             }
-    //         };
-    //     });
-
-    // };
-
     const handleSubmitRegister = (e) => {
         e.preventDefault();
 
@@ -60,7 +39,7 @@ function SignIn()
 
         const configuration = {
             method: "post",
-            url: "http://localhost:4000/register",
+            url: "/register",
             data: {
                 email: register.email,
                 password: register.password,
@@ -76,10 +55,10 @@ function SignIn()
             })
             .catch((error) => {
                 // Error Code 5 = Email already exists
-                if (error.response.data.code === 5) {
-                    console.log("Email already in use");
+                if (error.response.data.errorCode === "A5") {
+                    alert("Email already in use");
                 }else {
-                    console.log("Unknown error");
+                    alert("Unknown error");
                 }
             });
         
@@ -90,7 +69,7 @@ function SignIn()
 
         const configuration = {
             method: "post",
-            url: "http://localhost:4000/login",
+            url: "/login",
             data: {
                 email: login.email,
                 password: login.password,
@@ -108,13 +87,13 @@ function SignIn()
             .catch((err) => {
                 // Error Code 10 = Incorrect Email
                 // Error code 20 = Incorrect Password
-                const errorCode = err.response.data.code;
-                if (errorCode === 10) {
-                    console.log("Email not Found");
-                } else if (errorCode === 20) {
-                    console.log("Incorrect password");
+                const errorCode = err.response.data.errorCode;
+                if (errorCode === "A10") {
+                    alert("Email not Found");
+                } else if (errorCode === "A20") {
+                    alert("Incorrect password");
                 } else {
-                    console.log("Unknown error");
+                    alert("Unknown error");
                 }
             });
     }

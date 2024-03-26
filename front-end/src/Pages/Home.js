@@ -1,6 +1,6 @@
 import React from "react";
 import SearchForm from "../components/SearchForm";
-import SearchFlights from "../components/SearchFlights.js";
+import {SearchFlightsWithProps} from "../components/SearchFlights.js";
 import Flight from "../components/Flight.js";
 
 import image from "../images/Skyscraper.jpg";
@@ -24,8 +24,32 @@ function Home()
         setSearching(true);
         let result;
         // Only send requrests once while loading
-        !searching && (result = await SearchFlights(props));
-        setFlights(result);
+        !searching && (result = await SearchFlightsWithProps(props));
+        
+        if (result.ok)
+        {
+            setFlights(result.data);
+        } else {
+            switch (result.errorCode)
+            {
+                case "F30": {
+                    alert("Invalid Origin");
+                    return;
+                }
+                case "F40": {
+                    alert("No flights found");
+                    return;
+                }
+                case "U10": {
+                    alert("Unknown error");
+                    return;
+                }
+                default:{
+                    alert("Unknown error");
+                    return;
+                }
+            }   
+        }
         setHasSearched(true);
         // Stop loading icon
         setSearching(false);
@@ -70,10 +94,7 @@ function Home()
                 })}          
             </div>
             <div className="home__gallery">
-
             </div>
-            {/* <div className="home__examples">
-            </div> */}
         </div>
     </main>
 }

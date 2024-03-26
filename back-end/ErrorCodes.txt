@@ -1,0 +1,67 @@
++==========================================+
++-------------- ERROR CODES ---------------+
++==========================================+
+
+
+DATABASE ERRORS:
++------------------------------------------+
++------------------------------------------+
+User database:
+> Code Letter: 'D'
+
+>> D10 - Email not found
+>> D20 - Email already exists
+>> D30 - Incorrect password
+>> D40 - Couldn't update user
+>> D50 - Couldn't delete account
+
++------------------------------------------+
+Flights database:
+> Code Letter: 'H'
+
+
+API ERRORS:
++------------------------------------------+
++------------------------------------------+
+Log-in and Register:
+> Code Letter: 'A'
+
+>> A5 - Email already exists
+>> A10 - Email not found
+>> A20 - Incorrect password
+
+
++------------------------------------------+
+Flight search
+> Code Letter: 'F'
+
+>>F30 - Incorrect Origin
+>>F40 - No flights found
+
++------------------------------------------+
+Saved Flights
+> Code Letter: 'S'
+
+>> S50 - No flights found
+>> S60 - Couldn't delete flight
+>> S70 - Couldn't add flight to database
+>> S80 - Couldn't update flight
+
++------------------------------------------+
+Account
+> Code Letter: 'C'
+
+>> S90 - User not found
+>> S100 - Unknown error: Couldn't update user
+>> S110 - Failed to delete account
++------------------------------------------+
+Unknown Error:
+> Code Letter: 'U'
+
+>> U10 - Unknown Error
+
++------------------------------------------+
+Authenication
+> Code Letter: 'R'
+
+>> R10 - Failed to authenticate

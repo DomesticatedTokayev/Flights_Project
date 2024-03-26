@@ -7,7 +7,7 @@ function AccountDetails()
 {
     const [details, setDetails] = React.useState({
         email: "",
-        password: "",
+        // password: "",
         forename: "",
         surname: "",
     });
@@ -18,7 +18,7 @@ function AccountDetails()
     const isMounted = React.useRef(false);
     const [showMessage, setShowMessage] = React.useState(false);
     const [savedValue, setSavedValue] = React.useState({
-        name: "",
+        message: "hu",
         wasSaved: false,
     });
 
@@ -28,7 +28,7 @@ function AccountDetails()
     }
 
     function SetSaved(newName, value){
-        setSavedValue((prevValue) => ({...prevValue, name : newName, wasSaved: value }));
+        setSavedValue((prevValue) => ({...prevValue, message : newName, wasSaved: value }));
     
         setShowMessage(true);
 
@@ -59,14 +59,15 @@ function AccountDetails()
     function handleNewEmail(email) {
         // Check is email is correct, and set if succesfully saved
         updateDetails("email", email);
-        SetSaved("email", true);
+        //SetSaved("email", true);
     };
 
     function handleNewPassword(password)
     {
-        updateDetails("password", password);
+        setNewPassword(password);
+        //updateDetails("password", password);
         // Check if password meets minimum requirements
-        SetSaved("password", true);
+        //SetSaved("password", true);
     };
 
     function handleNewForename(forame)
@@ -87,12 +88,13 @@ function AccountDetails()
             forename: details.forename,
             surname: details.surname,
             email: details.email,
-            password: details.password,
+            // password: details.password,
+            password: newPassword,
         };
 
         const config = {
             method: "put",
-            url: "http://localhost:4000/account",
+            url: "/account", //http://localhost:4000
             headers: {
                 Authorization: `Bearer: ${auth.token}`,
             },
@@ -100,24 +102,45 @@ function AccountDetails()
         };
         await axios(config)
             .then((result) => {
-                console.log("Updated:", result.data.data);
+                //alert("Data updated");
+
                 updateDetails("forename", result.data.data.forename);
                 updateDetails("surname", result.data.data.surname);
                 updateDetails("email", result.data.data.email);
                 
-                // Update Token
-                console.log(result.data.newToken, result.data.data.email);
+                SetSaved("Details Updated", true);
+                
                 auth.storeToken(result.data.newToken, result.data.data.email);
             })
             .catch((error) => {
-                console.log(error);
+ 
+                const errorCode = error.response.data.errorCode;
+                
+                switch (errorCode)
+                {
+                    case "S100": {
+                        // alert(error.response.data.message);
+                        SetSaved("Couldn't Update Details", false);
+                        break;
+                    }
+                    case "U10": {
+                        // alert("Unknown error");
+                        SetSaved("Error Saving Details", false);
+                        break;
+                    }
+                    default: {
+                        // alert("Unknown error");
+                        SetSaved("Error Saving Details", false);
+                        break;
+                    }
+                }
             })
     };
 
     async function getDetails() {
         const config = {
             method: "get",
-            url: "http://localhost:4000/account",
+            url: "/account",
             headers: {
                 Authorization: `Bearer: ${auth.token}`,
             },
@@ -129,7 +152,26 @@ function AccountDetails()
                 setDetails(result.data);
             })
             .catch((error) => {
-                console.log(error);
+                const errorCode = error.response.data.errorCode;
+                
+                switch (errorCode)
+                {
+                    case "S90": {
+                        // alert(error.response.data.message);
+                        SetSaved("Failed to load account details", false);
+                        break;
+                    }
+                    case "U10": {
+                        // alert("Unknown error");
+                        SetSaved("Error loading account details", false);
+                        break;
+                    }
+                    default: {
+                        // alert("Unknown error");
+                        SetSaved("Error loading account details", false);
+                        break;
+                    }
+                }
         })
     };
 
@@ -137,7 +179,7 @@ function AccountDetails()
     {
         const config = {
             method: "delete",
-            url: "http://localhost:4000/account",
+            url: "/account",
             headers: {
                 Authorization: `Bearer: ${auth.token}`,
             },
@@ -149,7 +191,26 @@ function AccountDetails()
                 window.location.href = "/";
             })
             .catch(error => {
-                console.log(error);
+                const errorCode = error.response.data.errorCode;
+                
+                switch (errorCode)
+                {
+                    case "S110": {
+                        // alert(error.response.data.message);
+                        SetSaved("Failed to delete account", false);
+                        break;
+                    }
+                    case "U10": {
+                        // alert("Unknown error");
+                        SetSaved("Error Deleting Account", false);
+                        break;
+                    }
+                    default: {
+                        // alert("Unknown error");
+                        SetSaved("Error Deleting Account", false);
+                        break;
+                    }
+                }
         })
     }
 
@@ -159,7 +220,7 @@ function AccountDetails()
             {/* {showMessage === true && <> */}
             <div className="error-message">
                 <p className={showMessage ? "show" : "hidden"}>
-                    {savedValue.wasSaved ? "New " + savedValue.name + " was saved" : "Couldn't save " + savedValue.name}
+                    {savedValue.message}
                 </p>
             </div>
             

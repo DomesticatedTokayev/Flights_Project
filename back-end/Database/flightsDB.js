@@ -6,10 +6,10 @@ export async function getAllFlights(userID) {
         const result = await db.query(`SELECT * FROM flights WHERE user_id = $1 ORDER BY date_created DESC`, [userID]);
 
         if (result.rowCount <= 0) {
-            return { ok: false, data: null, errorType: "flight count", message: "No flights found" };
+            return { ok: false, data: null, errorCode: "flight count", message: "No flights found" };
         }
 
-        return { ok: true, data: result.rows, errorType: null, message: "Flights found" };
+        return { ok: true, data: result.rows, errorCode: null, message: "Flights found" };
 
     } catch (error)
     {
@@ -24,10 +24,10 @@ export async function getFlightByID(userID, flightID)
         const result = await db.query("SELECT * FROM flights WHERE user_id = $1 AND id = $2", [userID, flightID]);
 
         if (result.rowCount <= 0) {
-            return { ok: false, data: null, errorType: "empty", message: "Flight not found" };
+            return { ok: false, data: null, errorCode: "empty", message: "Flight not found" };
         }
 
-        return { ok: true, data:result.rows[0], errorType: null, message: "Flight found" };
+        return { ok: true, data:result.rows[0], errorCode: null, message: "Flight found" };
         
     } catch (error)
     {
@@ -39,9 +39,105 @@ export async function getFlightByID(userID, flightID)
 export async function add(userID, origin_country, origin_city, destination_country, destination_city, outbound_from, outbound_to, max_price, with_return, min_stay, max_stay)
 {
     const dateCreated = new Date().toUTCString();
-    console.log(dateCreated);
-
+    
+    // console.log(userID,
+    //     origin_country,
+    //     origin_city,
+    //     destination_country, 
+    //     destination_city, 
+    //     outbound_from, 
+    //     outbound_to,
+    //     max_price, 
+    //     with_return, 
+    //     min_stay,
+    //     max_stay);
+    
+    
+    
     try {
+        // Check if entry already exists
+        // const exists = await db.query(`SELECT 1 FROM flights WHERE 
+
+        // user_id = ${userID} AND
+        // origin_country = '${origin_country}' AND
+        // origin_city = '${origin_city}' OR origin_city IS NULL AND
+        // outbound_from = '${outbound_from}' AND
+        // outbound_to = '${outbound_to}'
+
+
+        // LIMIT 1`
+        // );
+
+        //  Backups Below
+
+        /*
+        origin_country = '${origin_country}' AND
+        origin_city = '${origin_city}' AND
+        destination_country = '${destination_country}' AND
+        destination_city = '${destination_city}' 
+
+        AND
+        outbound_from = ${outbound_from} AND
+        outbound_to = ${outbound_to} AND
+        max_price = ${max_price} AND
+        with_return = ${with_return}  AND
+        min_stay = ${min_stay}  AND
+        max_stay = ${max_stay}
+        */
+
+        // const exists = await db.query(`SELECT 1 FROM flights WHERE 
+        // user_id = ${userID} AND
+        // origin_country = ${origin_country} AND
+        // origin_city = ${origin_city} AND
+        // destination_country = ${destination_country} AND
+        // destination_city = ${destination_city} AND
+        // outbound_from = ${outbound_from} AND
+        // outbound_to = ${outbound_to} AND
+        // max_price = ${max_price} AND
+        // with_return = ${with_return} AND
+        // min_stay = ${min_stay} AND
+        // max_stay = ${max_stay}
+        // LIMIT 1`
+        // );
+
+        // , [
+        //     userID,
+        //     origin_country,
+        //     origin_city,
+        //     destination_country, 
+        //     destination_city, 
+        //     outbound_from, 
+        //     outbound_to,
+        //     max_price, 
+        //     with_return, 
+        //     min_stay,
+        //     max_stay]
+        
+        // const exists = await db.query(`SELECT 1 FROM flights WHERE 
+        // user_id = $1 AND
+        // origin_country = $2 AND
+
+        // destination_country = $3 AND
+        // outbound_from = $4 AND
+        // outbound_to = $5 AND
+        // with_return = $6 AND 
+        // origin_city = $7
+
+   
+        // LIMIT 1`, [
+        //     userID,
+        //     origin_country,
+        //     origin_city,
+        //     destination_country, 
+        //     destination_city, 
+        //     outbound_from, 
+        //     outbound_to,
+        //     max_price, 
+        //     with_return, 
+        //     min_stay,
+        //     max_stay]
+        // );
+
         const result = await db.query(`INSERT INTO flights (
             user_id,
             origin_country,
@@ -73,10 +169,10 @@ export async function add(userID, origin_country, origin_city, destination_count
         
         if (result.rowCount <= 0)
         {
-            return { ok: false, errorType: "add", message: "Couldn't add flight to database" };    
+            return { ok: false, errorCode: "add", message: "Couldn't add flight to database" };    
         }
 
-        return { ok: true, errorType: null, message: "Flight added to database" };    
+         return { ok: true, errorCode: null, message: "Flight added to database" };    
 
     } catch (error) {
         throw (error);
@@ -90,10 +186,10 @@ export async function deleteFlightByID(userID, flightID)
 
         if (result.rowCount <= 0)
         {
-            return { ok: false, errorType: "unknown", message: "Couldn't delete entry" };
+            return { ok: false, errorCode: "unknown", message: "Couldn't delete entry" };
         }
 
-        return { ok: true, errorType: null, message: "Flight Deleted" };
+        return { ok: true, errorCode: null, message: "Flight Deleted" };
 
     } catch (error)
     {
@@ -113,6 +209,8 @@ export async function deleteAllFlights(userID) {
 // Update flight
 export async function update(userID, flightID, origin_country, origin_city, destination_country, destination_city, outbound_from, outbound_to, max_price, with_return, min_stay, max_stay)
 {
+    const dateCreated = new Date().toUTCString();
+
     try {
         const result = await db.query(`UPDATE flights 
         SET 
@@ -125,7 +223,8 @@ export async function update(userID, flightID, origin_country, origin_city, dest
         max_price = $9,
         with_return = $10,
         min_stay = $11,
-        max_stay = $12
+        max_stay = $12, 
+        date_created = $13
         WHERE user_id = $1 AND id = $2`
         , [
             userID,
@@ -139,15 +238,16 @@ export async function update(userID, flightID, origin_country, origin_city, dest
             max_price,
             with_return,
             min_stay,
-            max_stay
+            max_stay,
+            dateCreated
             ]);
 
         if (result.rowCount <= 0)
         {
-            return {ok: false, errorType: "update", message: "Couldn't update flight"}    
+            return {ok: false, errorCode: "update", message: "Couldn't update flight"}    
         }
 
-        return { ok: true, errorType: null, message: "Flight updated" };
+        return { ok: true, errorCode: null, message: "Flight updated" };
 
     } catch (error)
     {

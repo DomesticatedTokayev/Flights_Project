@@ -22,14 +22,6 @@ app.use(cors({
 
 connectDB();
 
-try {
-    //console.log(await db.getDetails("debra@gmail.com", ""));
-    //db.updateDetails("debra@gmail.com", "debra@yes.com", "Debra", null, "Snitch", "Martin", "hello", null, 1);
-} catch (error)
-{
-    console.log("Error:", error);
-}
-
 app.get("/", (req, res) =>
 {
     console.log("Sent Data");
@@ -42,27 +34,22 @@ app.post("/register", async (req, res) => {
     let password = req.body.password;
     let forename = req.body.forename;
     let surname = req.body.surname;
-    //Check if user (Username/Email exists)
-    //If exists, return error (That user already exists)
-    //Else, create a new user (Add to database and hash password)
 
     try {
         const result = await userDB.registerUser(forename, surname, email, password);
         if (result.ok)
         {
             res.status(200).send("New user created")
-        } else if (result.errorType === "duplicate") {
-            console.log("Email already in use");
-            res.status(400).json({message: "Email already exists", code: 5});
+        } else if (result.errorCode === "D20") {
+            res.status(400).json({message: "Email already exists", errorCode: "A5"});
         }
         else {
-            console.log(result.message);
-            res.status(400).send("Unknown error");
+            res.status(400).json({ message: "Unknown error", errorCode: "A115"});
         }
 
     } catch (error){
         console.log(error);
-        res.status(404).send(error);
+        res.status(404).json({ message: error, errorCode: "U10"});
     }
 });
 
@@ -73,33 +60,33 @@ app.post("/login", async (req, res) => {
    
     try {
 
-        let {ok, data, errorType, message} = await userDB.checkUser(email, password);
-        // console.log(result.ok, result.data, result.message);
+        let result = await userDB.checkUser(email, password);
 
-        if (ok)
+        if (result.ok)
         {
             // Create a random token to send back
             const token = await jwt.sign(
                 {
-                    userID: data.user_id,
-                    email: data.email,
-                    name: `${data.forename} ${data.surname}`,
+                    userID: result.data.user_id,
+                    email: result.data.email,
+                    name: `${result.data.forename} ${result.data.surname}`,
                 },
                 "RANDOM-TOKEN",
                 {expiresIn: "24h"}
             );
             res.status(201).send({message: "User successfully loged-in", email: email, token});
         }
-        else if(errorType === "email"){
-            res.status(404).json({message: "Emai not found", code: 10});
+        else if(result.errorCode === "D10"){
+            res.status(404).json({message: "Email not found", errorCode: "A10"});
         }
-        else if(errorType === "password"){
-            res.status(404).json({message: "Incorrect password", code: 20});
+        else if(result.errorCode === "D30"){
+            res.status(404).json({message: "Incorrect password", errorCode: "A20"});
         }
 
     } catch (error) {
         // Unknown error occurred
         console.log(error);
+        res.status(404).json({message: error, errorCode: "U10"});
     }
 });
 
@@ -112,8 +99,8 @@ app.get("/search/flights", async (req, res, next) => {
     try {
         originIATA = await searchLocation(searchData.origin);
     } catch (error) {
-        console.log(error);
-        res.status(404).json({ message: "Incorrect origin", code: 30 });
+       // console.log(error);
+        res.status(404).json({ message: "Incorrect origin", errorCode: "F30"});
         return next();
     }
 
@@ -122,18 +109,16 @@ app.get("/search/flights", async (req, res, next) => {
         destinationIATA = await searchLocation(searchData.destination);
     } catch (error)
     {
-        console.log("Destinaton not selected/found");
+        // console.log("Destinaton not selected/found");
     }
 
-    // if (originIATA) // || !destinationIATA
-    // {
     await searchFlight(
         originIATA,
         destinationIATA,
         searchData.from,
         searchData.to,
         "GBP",
-        searchData.max_price,
+        searchData.maxPrice,
         searchData.min_stay,
         searchData.max_stay,
         searchData.return,
@@ -145,16 +130,12 @@ app.get("/search/flights", async (req, res, next) => {
         {
             res.status(200).json(result);         
         } else {
-            res.status(204).json({ message: "No flights found", code: 50});
+            res.status(204).json({ message: "No flights found", errorCode: "F40"});
         }
     }).catch((error) => {
-        //console.log(error); 
-        res.status(400).json({ message: error, code: 100});
+        console.log(error); 
+        res.status(404).json({ message: error, errorCode: "U10"});
     });
-    // } else {
-    //     console.log("Location not found");
-    //     res.status(400).json({ message: "Invalid Origin", code: 40 });
-    // }
 });
 
 app.get("/saved/flights", auth, async (req, res) => {
@@ -190,96 +171,50 @@ app.get("/saved/flights", auth, async (req, res) => {
                 res.status(200).json(formattedFlights);
             } else {
                 console.log(flights.message);
-                res.status(400);
+                res.status(400).json({message: "No flights found", errorCode: "S50"});
             }
         } catch (error) {
             console.log(error);
+            res.status(400).json({message: error, errorCode: "U10"});
         }
-
-        //res.status(200).json(flightsDatabase);
-
     }
     else {
-        res.status(200).send("User not found");
+        failedToAuthenticate(res);
     }
 
 });
 
 app.delete("/saved/flights", auth, async (req, res) => {
     if (req.user) {
-    
         try {
             const result = await flightDB.deleteFlightByID(req.user.userID, req.query.flightID);
 
             if (result.ok) {
                 res.status(200).json({message: "Flight Deleted"});
             } else {
-                res.status(404).json({message: "Couldn't delete flight"});
+                res.status(404).json({message: "Couldn't delete flight", errorCode: "S60"});
             }
             
         } catch (error)
         {
-            res.status(404).json({message: "Couldn't delete flight"});
+            res.status(404).json({message: "Couldn't delete flight", errorCode: "U10"});
             console.log(error);
         }
-
     } else {
-        res.status(404).json({message: "User not found"});
+        failedToAuthenticate(res);
     }
 });
-
-// app.get("/flight", auth, async(req, res) => {
-
-//     if (req.user)
-//     {
-//         try {
-//             const flight = await flightDB.getFlightByID(req.user.userID, req.query.flightid) 
-
-//             if (flight.ok)
-//             {
-//                 const formattedFlight = flightDB.formatFlight(
-//                     flight.id,
-//                     flight.origin_country,
-//                     flight.origin_city,
-//                     flight.destination_country,
-//                     flight.destination_city,
-//                     flight.outbound_from,
-//                     flight.outbound_to,
-//                     flight.max_price,
-//                     flight.with_return,
-//                     flight.min_stay,
-//                     flight.max_stay,
-//                 );
-
-//                 console.log(formattedFlight);
-
-//                 res.status(200).json(formattedFlight);   
-//             } else
-//             {
-//                 res.status(400).json({message: "No flights found"});   
-//             }
-//         }
-//         catch (error) {
-//             console.log(error);
-//             res.status(400).json({message: "Unknown Error"});
-//          }
-//     }
-//     else {
-//         res.status(404);
-//     }
-// })
 
 app.post("/saved/flights/new", auth, async (req, res) => {
     if (req.user)
     {   
-
         try {
             const result = await flightDB.add(
                 req.user.userID,
                 req.body.originCountry,
-                req.body.originCity,
+                req.body.originCity || null,
                 req.body.destinationCountry,
-                req.body.destinationCity,
+                req.body.destinationCity || null,
                 req.body.from,
                 req.body.to,
                 req.body.maxPrice,
@@ -287,31 +222,25 @@ app.post("/saved/flights/new", auth, async (req, res) => {
                 req.body.minStay,
                 req.body.maxStay,
             )
-    
             if (result.ok) {
-                res.status(200).json({ message: result.message });
-                
+                res.status(200).json({message: "New flight added"}); //.json({ message: result.message })
             } else {
-                res.status(400).json({ message: result.message });
+                res.status(400).json({ message: "Couldn't add flight to database", errorCode: "S70" });
             }
-
         } catch (error)
         {
             console.log(error);
-            res.status(404).json({message: error})
+            res.status(404).json({message: error, errorCode: "S10" })
         }
-       
     } else {
-        res.status(404).json({message: "User not found"})
+        failedToAuthenticate(res);
     }
 });
 
 app.put("/saved/flights/update", auth, async (req, res) => {
     if (req.user) {
 
-        console.log("Hello");
-        console.log(req.body);
-
+        console.log("updating");
         try {
             const result = await flightDB.update(
                 req.user.userID,
@@ -320,8 +249,8 @@ app.put("/saved/flights/update", auth, async (req, res) => {
                 req.body.originCity,
                 req.body.destinationCountry,
                 req.body.destinationCity,
-                req.body.from,
-                req.body.to,
+                req.body.from, //
+                req.body.to, //
                 req.body.maxPrice,
                 req.body.return,
                 req.body.minStay,
@@ -329,30 +258,25 @@ app.put("/saved/flights/update", auth, async (req, res) => {
             );
 
             if (result.ok) { 
-                res.status(200).json({ message: result.message });
+                res.status(200).json({ message: "Flight updated" });
             } else {
-                res.status(400).json({ message: result.message });
+                res.status(400).json({ message: "Couldn't update flight", errorCode: "S80" });
             }
 
         } catch (error)
         {
             console.log(error);
-            res.status(404).json({ message: error });
+            res.status(404).json({ message: error, errorCode: "S10"  });
         }
-
-
     } else {
-        res.status(404).json({ message: "Bad" })
+        failedToAuthenticate(res);
     }
 });
 
 app.get("/account", auth, async (req, res, next) => {
     if (req.user) {
-        const userID = req.user.userID;
-        //console.log("User ID: ", userID);
-
         try {
-            const result = await userDB.getDetails(req.user.email, req.user.password, req.user.userID);
+            const result = await userDB.getDetails(req.user.email, req.user.userID);
 
             if (result.ok) {
                 //console.log(result.data);
@@ -365,24 +289,16 @@ app.get("/account", auth, async (req, res, next) => {
 
                 res.status(200).json(details);
             }
-            else {
-                if (result.errorType === "email")
-                {
-                    console.log(result.message);
-                    res.status(404).json({message: "Email not found"});
-
-                } else if (result.errorType === "password") {
-                    console.log(result.message);
-                    res.status(404).json({message: "Incorrect password"});
-                }
+            else { 
+                res.status(404).json({message: "User not found", errorCode: "S90"});
             }
         } catch (error)
         {
-            console.log(error);
+           //console.log(error);
+            res.status(404).json({message: error, errorCode: "U10"});
         }
-
     } else {
-        res.status(404).json({ message: "User not found" });
+        failedToAuthenticate(res);
     }
 })
 
@@ -407,18 +323,16 @@ app.put("/account", auth, async (req, res, next) => {
                 res.status(200).json({ message: "Data updated", data: result.data, newToken: token, updated: true });
                 next();
             } else {
-                res.status(404).json({ message: result.message });
+                res.status(404).json({ message: "Unknown error: Couldn't update user", errorCode: "S100" });
             }
         } catch (error)
         {
-            res.status(404).json({ message: "Couldn't update details" });
             console.log(error);
+            res.status(404).json({ message: error, errorCode: "U10" });
         }
     } else {
-        console.log("Error");
-        res.status(404).json({ message: "User not found" });
+        failedToAuthenticate(res);
     }
-    
 });
 
 app.delete("/account", auth, async (req, res) => {
@@ -431,16 +345,18 @@ app.delete("/account", auth, async (req, res) => {
             res.status(200).json({ message: result.message });
         }
         else {
-            res.status(400).json({ message: result.message });
+            res.status(400).json({ message: "Failed to delete account", errorCode: "S110"});
         }
     } else
     {
-        res.status(404).json({ message: "User not found" });
+        failedToAuthenticate(res);
     }
 });
-
-
 
 app.listen(port, (err) => {
     err ? console.log("Error starting server", err) : console.log("Server running on port", port);
 })
+
+function failedToAuthenticate(res) {
+    res.status(404).json({ message: "Failed to authenticate" , errorCode: "R10"});
+}
