@@ -6,6 +6,7 @@ import axios from "axios";
 import { useAuth } from "../hooks/AuthProvider";
 
 import LoginDetails from "../components/LoginDetails";
+import { validatePassword, validateEmail } from "../components/EmailPasswordValidation";
 
 // Google Authentication
 // https://medium.com/@sahadmuhammed289/react-js-a-step-by-step-guide-to-google-authentication-926d0d85edbd
@@ -45,7 +46,7 @@ function SignIn()
     const [invalidRegistrationEmail, setInvalidRegistrationEmail] = React.useState(false);
     const [passwordsDontMatch, setPasswordsDontMatch] = React.useState(false);
 
-    const handleSubmitRegister = (e) => {
+    const submitRegister = (e) => {
         e.preventDefault();
 
         // Check if email is valid
@@ -119,12 +120,7 @@ function SignIn()
         
     };
 
-    function validateEmail(email) {
-        const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-        return regex.test(email);
-    };
-
-    const handleSubmitLogin = (e) => {
+    const submitLogin = (e) => {
         e.preventDefault();
 
         // Check email (formatting)
@@ -153,8 +149,6 @@ function SignIn()
                 window.location.href = "/";
             })
             .catch((err) => {
-                // Error Code 10 = Incorrect Email
-                // Error code 20 = Incorrect Password
                 const errorCode = err.response.data.errorCode;
                 if (errorCode === "A10") {
                     //alert("Email not Found");
@@ -181,20 +175,7 @@ function SignIn()
             setIncorrectPassword(false);
         }
     };
-
-    function checkPassword(password) {
-        const upperCheckRegex = /^(?=.*[A-Z])/;
-        const lowerCheckRegex = /^(?=.*[a-z])/;
-        const digitCheckRegex = /^(?=.*\d)/;
-
-        return {
-            upperCase: upperCheckRegex.test(password),
-            lowerCase: lowerCheckRegex.test(password),
-            digit: digitCheckRegex.test(password),
-            length: password.length >= 8
-        }
-    };
-
+   
     function handleRegister(event)
     {
         const { name, value } = event.target;
@@ -211,7 +192,7 @@ function SignIn()
         // check for at least 8 characters
         if (name === "password") {
             //Check password strenght here
-            setPasswordStrenght(checkPassword(value));
+            setPasswordStrenght(validatePassword(value));
             setWeakPassword(false);
         }
 
@@ -230,7 +211,7 @@ function SignIn()
                 <hr></hr>
             </div>
 
-            <form className="login__form" onSubmit={(e)=>handleSubmitLogin(e)}>
+            <form className="login__form" onSubmit={(e)=>submitLogin(e)}>
                 <label htmlFor="email">Email</label>
                 <input className={(emailNotFound || incorrectLoginEmail) && "red_border"} type="text" id="email" name="email" required value={login.email} onChange={(e) => handleLogin(e)}></input>
                 {emailNotFound && <p className="error_text red-text">Email not found</p>}
@@ -244,9 +225,9 @@ function SignIn()
             </form>
 
             
-            <form className="login__form" onSubmit={(e) => handleSubmitRegister(e)}>
+            <form className="login__form" onSubmit={(e) => submitRegister(e)}>
                 <label htmlFor="forename">Forename</label>
-                <input type="text" name="forename" id="forename" onChange={(e)=>handleRegister(e)} value={register.forename}></input>
+                <input type="text" name="forenhandleSubmitRegisterame" id="forename" onChange={(e)=>handleRegister(e)} value={register.forename}></input>
                 <label htmlFor="surname">Surname</label>
                 <input type="text" name="surname" id="surname"  onChange={(e)=>handleRegister(e)} value={register.surname}></input>
                 <label htmlFor="email">Email</label>
@@ -255,6 +236,7 @@ function SignIn()
                 {invalidRegistrationEmail && <p className="error_text red-text">Invalid email</p>}
                 <label htmlFor="password">Password</label>
                 <input className={(weakPassword) && "red_border"} type="password" id="password" name="password" required value={register.password} onChange={(e) => handleRegister(e)}></input>        
+                {weakPassword && <p className="error_text red-text">Weak password</p>}
                 <div className="password_strength">
                     <p className={passwordStrength.upperCase ? "green" : "grey-text"}>At least one upper case letter</p>
                     <p className={passwordStrength.lowerCase ? "green" : "grey-text"}>At least one lower case letter</p>

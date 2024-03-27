@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios"
 import DetailsEntry from "../components/DetailsEntry"
 import { useAuth } from "../hooks/AuthProvider";
-
+import { validatePassword, validateEmail } from "../components/EmailPasswordValidation";
 // Password and email validation
 // 
 
@@ -23,6 +23,13 @@ function AccountDetails()
     const [savedValue, setSavedValue] = React.useState({
         message: "",
         wasSaved: false,
+    });
+
+    const [passwordStrength, setPasswordStrenght] = React.useState({
+        upperCase: false,
+        lowerCase: false,
+        digit: false,
+        length: false,
     });
 
     function updateDetails(name, value)
@@ -59,10 +66,10 @@ function AccountDetails()
         
     }, [savedValue]);
 
-    function validateEmail(email) {
-        const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-        return regex.test(email);
-    }
+    // function validateEmail(email) {
+    //     const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+    //     return regex.test(email);
+    // }
 
     function handleNewEmail(email) {
         // Validate email 
@@ -78,7 +85,7 @@ function AccountDetails()
     function validatePassword(password) {
         const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
         return regex.test(password);
-    }
+    };
 
     function handleNewPassword(password)
     {
@@ -86,12 +93,8 @@ function AccountDetails()
             setNewPassword(password);
         }
         else {
-            // alert("Password is not strong enough");
+            
         }
-            // Password must contain: ------------------------------------------- To Do
-            // - At least one Upper case character
-            // - At least one digit
-            // - At least 8 characters
     };
 
     function handleNewForename(forame)
@@ -262,9 +265,34 @@ function AccountDetails()
                     {savedValue.message}
                 </p>
             </div>
+
+            <div className="entry">
+            <div className="entry__data">   
+                <p className="entry__name">{"Name"}</p>
+
+                    <form className="entry__form">
+                        {/* Replace 'p' with input when editing account details */}
+                        <p className="entry__userdata grey-text">{"Entry value"}</p>
+                        <input type="text" id="input"  required></input> 
+                    </form>
+                
+            </div>
+        </div>
             
             <div>
-                <DetailsEntry 
+                <button className="button">Edit</button>
+                <button className="button" onClick={sendUpdatedDetails}>Save</button>
+                <button className="button">Cancel</button>
+            </div>
+            <a className="delete_account red-text" onClick={() => handleDeleteAccount()}>Delete Account</a>
+        </div>
+    </main>
+}
+
+export default AccountDetails;
+
+
+{/* <DetailsEntry 
                     entryName={"Email"}
                     entryValue={details.email}
                     handleSave={handleNewEmail}
@@ -284,13 +312,4 @@ function AccountDetails()
                     entryName={"Surname"}
                     entryValue={details.surname}
                     handleSave={handleNewSurname}
-                />
-                <button className="button" onClick={sendUpdatedDetails}>Save</button>
-                <button className="button">Cancel</button>
-            </div>
-            <a className="delete_account red-text" onClick={() => handleDeleteAccount()}>Delete Account</a>
-        </div>
-    </main>
-}
-
-export default AccountDetails;
+                /> */}
