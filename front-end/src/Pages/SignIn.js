@@ -27,16 +27,69 @@ function SignIn()
         surname: "",
     });
 
+    const [passwordStrength, setPasswordStrenght] = React.useState({
+        upperCase: false,
+        lowerCase: false,
+        digit: false,
+        length: false,
+    });
+
+    //Login error
+    const [emailNotFound, setEmailNotFound] = React.useState(false);
+    const [incorrectLoginEmail, setIncorrectLoginEmail] = React.useState(false);
+    const [incorrectPassword, setIncorrectPassword] = React.useState(false);
+
+    // Registration
+    const [weakPassword, setWeakPassword] = React.useState(false);
+    const [emailAlreadyInUse, setEmailAlreadyInUse] = React.useState(false);
+    const [invalidRegistrationEmail, setInvalidRegistrationEmail] = React.useState(false);
+    const [passwordsDontMatch, setPasswordsDontMatch] = React.useState(false);
+
     const handleSubmitRegister = (e) => {
         e.preventDefault();
 
-        if (register.password !== register.password_check)
-        {
-            alert("Passwords don't match");
-            return;
+        // Check if email is valid
+        function checkValidEmail() {
+            if (!validateEmail(register.email))
+            {
+                setInvalidRegistrationEmail(true);
+                return false;
+            }
+            return true;
         }
     
+        // Check password length
+        function checkPasswordLength() {
+            if (register.password !== register.password_check)
+            {
+                setPasswordsDontMatch(true);
+                return false;
+            }
+            return true;
+        }
 
+        function checkPasswordRequirements() {
+            if (!(passwordStrength.upperCase &&
+                passwordStrength.lowerCase &&
+                passwordStrength.digit && 
+                passwordStrength.length)) {
+                //console.log("Password doesn't meet minimum requirements");
+                setWeakPassword(true);
+                return false;
+            }
+            return true;
+        }
+
+        const validEmail = checkValidEmail();
+        const passwordLength = checkPasswordLength();
+        const passwordReq =  checkPasswordRequirements();
+
+        // Check both password length, password req and email are valid
+        if (!validEmail || !passwordLength || !passwordReq)
+        {
+            return;
+        }
+       
         const configuration = {
             method: "post",
             url: "/register",
@@ -56,16 +109,31 @@ function SignIn()
             .catch((error) => {
                 // Error Code 5 = Email already exists
                 if (error.response.data.errorCode === "A5") {
-                    alert("Email already in use");
+                    //alert("Email already in use");
+                    setEmailAlreadyInUse(true);
                 }else {
-                    alert("Unknown error");
+                    //alert("Unknown error");
+                    setEmailAlreadyInUse(true);
                 }
             });
         
     };
 
+    function validateEmail(email) {
+        const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+        return regex.test(email);
+    };
+
     const handleSubmitLogin = (e) => {
         e.preventDefault();
+
+        // Check email (formatting)
+        if (!validateEmail(login.email)) {
+            setIncorrectLoginEmail(true);
+            return;
+        }
+        // If email is incorrect, show error
+        //setIncorrectLoginEmail(true);
 
         const configuration = {
             method: "post",
@@ -89,28 +157,68 @@ function SignIn()
                 // Error code 20 = Incorrect Password
                 const errorCode = err.response.data.errorCode;
                 if (errorCode === "A10") {
-                    alert("Email not Found");
+                    //alert("Email not Found");
+                    setEmailNotFound(true);
                 } else if (errorCode === "A20") {
-                    alert("Incorrect password");
+                    //alert("Incorrect password");
+                    setIncorrectPassword(true);
                 } else {
                     alert("Unknown error");
                 }
             });
-    }
+    };
 
     function handleLogin(event) {
         const { name, value } = event.target;
 
         setLogin((prevValue) => ({ ...prevValue, [name]: value }));
-    }
+
+        if (name === "email") {
+            setEmailNotFound(false);
+            setIncorrectLoginEmail(false);
+        } else if (name === "password")
+        {
+            setIncorrectPassword(false);
+        }
+    };
+
+    function checkPassword(password) {
+        const upperCheckRegex = /^(?=.*[A-Z])/;
+        const lowerCheckRegex = /^(?=.*[a-z])/;
+        const digitCheckRegex = /^(?=.*\d)/;
+
+        return {
+            upperCase: upperCheckRegex.test(password),
+            lowerCase: lowerCheckRegex.test(password),
+            digit: digitCheckRegex.test(password),
+            length: password.length >= 8
+        }
+    };
 
     function handleRegister(event)
     {
         const { name, value } = event.target;
 
         setRegister((prevValue) => ({ ...prevValue, [name]: value }));
-        console.log(register.password_check);
-    }
+
+        if (name === "email") {
+            setEmailAlreadyInUse(false);
+            setInvalidRegistrationEmail(false);
+        }
+        
+        // Check for Uppercase character
+        // Check for one digit
+        // check for at least 8 characters
+        if (name === "password") {
+            //Check password strenght here
+            setPasswordStrenght(checkPassword(value));
+            setWeakPassword(false);
+        }
+
+        if (name === "password" || name === "password_check") {
+            setPasswordsDontMatch(false);
+        }
+    };
 
     return <main>
         <div className="login">
@@ -123,12 +231,13 @@ function SignIn()
             </div>
 
             <form className="login__form" onSubmit={(e)=>handleSubmitLogin(e)}>
-                <LoginDetails 
-                    email={login.email}
-                    password={login.password}
-                    handleEmail={handleLogin}
-                    handlePassword={handleLogin}
-                />
+                <label htmlFor="email">Email</label>
+                <input className={(emailNotFound || incorrectLoginEmail) && "red_border"} type="text" id="email" name="email" required value={login.email} onChange={(e) => handleLogin(e)}></input>
+                {emailNotFound && <p className="error_text red-text">Email not found</p>}
+                {incorrectLoginEmail && <p className="error_text red-text">Invalid email</p>}
+                <label htmlFor="password">Password</label>
+                <input className={incorrectPassword && "red_border"} type="password" id="password" name="password" required value={login.password} onChange={(e) => handleLogin(e)}></input>
+                {incorrectPassword && <p className="error_text red-text">Incorrect password</p>}
                 <p>Forgot Password?</p>
                 <button type="submit" className="button">Log in</button>
                 <p>Don't have an account? Sign-up</p>
@@ -140,15 +249,22 @@ function SignIn()
                 <input type="text" name="forename" id="forename" onChange={(e)=>handleRegister(e)} value={register.forename}></input>
                 <label htmlFor="surname">Surname</label>
                 <input type="text" name="surname" id="surname"  onChange={(e)=>handleRegister(e)} value={register.surname}></input>
-                <LoginDetails 
-                    email={register.email}
-                    password={register.password}
-                    handleEmail={handleRegister}
-                    handlePassword={handleRegister}
-                />
+                <label htmlFor="email">Email</label>
+                <input className={(emailAlreadyInUse || invalidRegistrationEmail) && "red_border"} type="text" id="email" name="email" required value={register.email} onChange={(e) => handleRegister(e)}></input>
+                {emailAlreadyInUse && <p className="error_text red-text">Email already in use</p>}
+                {invalidRegistrationEmail && <p className="error_text red-text">Invalid email</p>}
+                <label htmlFor="password">Password</label>
+                <input className={(weakPassword) && "red_border"} type="password" id="password" name="password" required value={register.password} onChange={(e) => handleRegister(e)}></input>        
+                <div className="password_strength">
+                    <p className={passwordStrength.upperCase ? "green" : "grey-text"}>At least one upper case letter</p>
+                    <p className={passwordStrength.lowerCase ? "green" : "grey-text"}>At least one lower case letter</p>
+                    <p className={passwordStrength.digit ? "green" : "grey-text"}>At least one number</p>
+                    <p className={passwordStrength.length ? "green" : "grey-text"}>At least 8 letter</p>
+                </div>
                 <label htmlFor="password_check">Re-enter Password</label>
-                <input type="password" id="password_check" name="password_check" value={register.password_check} onChange={(e)=>handleRegister(e)}></input>
-
+                <input className={(weakPassword || passwordsDontMatch) && "red_border"} type="password" id="password_check" name="password_check" value={register.password_check} onChange={(e)=>handleRegister(e)}></input>
+                {passwordsDontMatch && <p className="error_text red-text">Passwords don't match!</p>}
+                
                 <button type="submit" className="button">Register</button>
 
                 <p> Already have an account? Log-in</p>

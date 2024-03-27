@@ -74,6 +74,7 @@ function AccountDetails()
         }
     };
 
+    // Insert into own component
     function validatePassword(password) {
         const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
         return regex.test(password);
@@ -87,11 +88,10 @@ function AccountDetails()
         else {
             // alert("Password is not strong enough");
         }
-        // Password must contain at least one digit and eight characters and at least one upper case character
-
-        //updateDetails("password", password);
-        //Check if password meets minimum requirements
-        //SetSaved("password", true);
+            // Password must contain: ------------------------------------------- To Do
+            // - At least one Upper case character
+            // - At least one digit
+            // - At least 8 characters
     };
 
     function handleNewForename(forame)

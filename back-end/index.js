@@ -8,7 +8,6 @@ import { connectDB, disconnectDB } from "./Database/db.js";
 import * as userDB from "./Database/userDB.js"
 import * as flightDB from "./Database/flightsDB.js"
 import { searchLocation, searchFlight } from "./flightSearch.js";
-import { compareSync } from "bcrypt";
 
 const port = 4000;
 const app = express();
@@ -315,10 +314,7 @@ app.put("/account", auth, async (req, res, next) => {
         }
 
         if (req.body.password) {
-            // Password must contain:
-            // - At least one Upper case character
-            // - At least one digit
-            // - At least 8 characters
+
             const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
             if (!passwordRegex.test(req.body.password))
             {

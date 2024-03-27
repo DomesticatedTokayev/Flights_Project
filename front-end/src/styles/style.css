@@ -647,7 +647,22 @@ button:active
 .login__divider hr{
     border: 2px solid black;
     width: 100%; 
+}
 
+.password_strength p{
+    font-size: 0.8rem;
+}
+
+.green{
+color: green;
+}
+
+.red_border{
+    border-color: red;
+}
+
+.error_text{
+    font-size: 0.8rem;
 }
 
 /* || ACCOUNT ---------------------------------------------------------------------------*/ 
