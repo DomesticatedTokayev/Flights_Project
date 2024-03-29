@@ -49,6 +49,10 @@ function SignIn()
     const submitRegister = (e) => {
         e.preventDefault();
 
+        const validEmail = checkValidEmail();
+        const passwordMatch = checkPasswordMatch();
+        const passwordReq =  checkPasswordRequirements();
+
         // Check if email is valid
         function checkValidEmail() {
             if (!validateEmail(register.email))
@@ -60,7 +64,7 @@ function SignIn()
         }
     
         // Check password length
-        function checkPasswordLength() {
+        function checkPasswordMatch() {
             if (register.password !== register.password_check)
             {
                 setPasswordsDontMatch(true);
@@ -81,12 +85,8 @@ function SignIn()
             return true;
         }
 
-        const validEmail = checkValidEmail();
-        const passwordLength = checkPasswordLength();
-        const passwordReq =  checkPasswordRequirements();
-
         // Check both password length, password req and email are valid
-        if (!validEmail || !passwordLength || !passwordReq)
+        if (!validEmail || !passwordMatch || !passwordReq)
         {
             return;
         }
@@ -187,9 +187,6 @@ function SignIn()
             setInvalidRegistrationEmail(false);
         }
         
-        // Check for Uppercase character
-        // Check for one digit
-        // check for at least 8 characters
         if (name === "password") {
             //Check password strenght here
             setPasswordStrenght(validatePassword(value));

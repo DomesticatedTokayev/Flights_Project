@@ -15,7 +15,15 @@ function AccountDetails()
         surname: "",
     });
 
+    const [currentPassword, setCurrentPassword] = React.useState("");
     const [newPassword, setNewPassword] = React.useState("");
+    const [passwordCheck, setPasswordCheck] = React.useState("");
+
+    const [incorrectCurrentPassword, setIncorrectPassword] = React.useState(false);
+    const [invalidEmail, setInvalidEmail] = React.useState(false);
+    const [weakPassword, setWeakPassword] = React.useState(false);
+    const [passwordNotMatch, setPasswordNotMatch] = React.useState(false);
+
 
     const auth = useAuth();
     const isMounted = React.useRef(false);
@@ -66,51 +74,104 @@ function AccountDetails()
         
     }, [savedValue]);
 
-    // function validateEmail(email) {
-    //     const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-    //     return regex.test(email);
-    // }
 
-    function handleNewEmail(email) {
-        // Validate email 
-        if (validateEmail(email))
-        {
-            updateDetails("email", email);
-        } else {
-            SetSaved("Invalid Password", false);
-        }
+    function handleNewEmail(event) {
+
+        const newEmail = event.target.value;
+        setInvalidEmail(false);
+        updateDetails("email", newEmail);
     };
 
-    // Insert into own component
-    function validatePassword(password) {
-        const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-        return regex.test(password);
-    };
+    function handleCurrentPassword(password)
+    {
+        //Reset incorrect password error
+        setCurrentPassword(password);
+    }
 
     function handleNewPassword(password)
     {
-        if (validatePassword(password)){
-            setNewPassword(password);
+        setWeakPassword(false);
+        setPasswordNotMatch(false);
+
+        setNewPassword(password);
+
+        setPasswordStrenght(validatePassword(password));
+
+        if ((passwordStrength.upperCase &&
+            passwordStrength.lowerCase &&
+            passwordStrength.digit &&
+            passwordStrength.length))
+        {
+            return true;
         }
         else {
-            
+            return false;
         }
     };
 
-    function handleNewForename(forame)
+    function handlePasswordCheck(password)
     {
-        updateDetails("forename", forame);
-        //SetSaved("forename", false);
-    };
+        setPasswordNotMatch(false);
+        setPasswordCheck(password);
+    }
 
-    function handleNewSurname(surname)
-    {
-        updateDetails("surname", surname);
-        //SetSaved("surname", true);
-    };
 
-    async function sendUpdatedDetails()
+    async function sendUpdatedDetails(event)
     {
+        event.preventDefault();
+        
+
+        const passwordMatch = checkPasswordMatch();
+        const strongPassword = checkPasswordStrength();
+
+        // Return early if passwrod is weak or doesn't match
+        if (newPassword.length > 0 && (!passwordMatch || !strongPassword))
+        {
+            return;    
+        }
+
+        function checkPasswordMatch() {
+            if( newPassword === passwordCheck) {
+                return true; 
+            } else {
+                // Show error mismatch
+                //alert("Passwords don't match");
+                setPasswordNotMatch(false);
+                return false;  
+            }
+        };
+
+        function checkPasswordStrength() {
+            //check again, otherwise it will miss the last character
+            if (handleNewPassword(newPassword)) {
+                return true;
+            } else {
+                // Show error weak password
+                //alert("Weak password");
+                setWeakPassword(true);
+                return false;
+            }
+        };
+
+
+        // cehck valid email, and return early if incorrect.
+        if (!checkValidEmail())
+        {
+            return;
+        }
+
+        function checkValidEmail() {
+            if (validateEmail(details.email)) {
+                return true;
+            } else {
+                // Show error: invalid email
+                //alert("Invalid email");
+                setInvalidEmail(true);
+                return false;
+            }
+        };
+
+
         const body = {
             forename: details.forename,
             surname: details.surname,
@@ -121,7 +182,7 @@ function AccountDetails()
 
         const config = {
             method: "put",
-            url: "/account", //http://localhost:4000
+            url: "/account",
             headers: {
                 Authorization: `Bearer: ${auth.token}`,
             },
@@ -136,8 +197,8 @@ function AccountDetails()
                 updateDetails("surname", result.data.data.surname);
                 updateDetails("email", result.data.data.email);
 
-                setNewPassword("")
-                
+                setNewPassword("");
+                alert("password updated");
                 SetSaved("Details Updated", true);
                 
                 auth.storeToken(result.data.newToken, result.data.data.email);
@@ -256,6 +317,9 @@ function AccountDetails()
         })
     }
 
+    // Each form element will handle its own change
+    // When submitting one change, for now, all data is updated.
+
     return <main>
         <div className="account_details">
             <h2 className="title">This is Account Details</h2>
@@ -268,16 +332,64 @@ function AccountDetails()
 
             <div className="entry">
             <div className="entry__data">   
-                <p className="entry__name">{"Name"}</p>
+                <p className="entry__name">{"Forename"}</p>
 
                     <form className="entry__form">
                         {/* Replace 'p' with input when editing account details */}
                         <p className="entry__userdata grey-text">{"Entry value"}</p>
-                        <input type="text" id="input"  required></input> 
+                        <input type="text" id="forename" value={details.forename}></input> 
                     </form>
-                
             </div>
-        </div>
+            </div>
+
+            <div className="entry">
+            <div className="entry__data">   
+                <p className="entry__name">{"Surname"}</p>
+
+                    <form className="entry__form">
+                        {/* Replace 'p' with input when editing account details */}
+                        <p className="entry__userdata grey-text">{"Entry value"}</p>
+                        <input type="text" id="surname" value={details.surname}></input> 
+                    </form>
+            </div>
+            </div>
+            
+            <div className="entry">
+            <div className="entry__data">   
+                <p className="entry__name">{"Email"}</p>
+
+                    <form className="entry__form" onSubmit={sendUpdatedDetails}>
+                        {/* Replace 'p' with input when editing account details */}
+                        <p className="entry__userdata grey-text">{"Entry value"}</p>
+                        <input type="text" id="email" onChange={handleNewEmail} value={details.email} required></input> 
+                        <button type="submit">Save</button>
+                    </form>
+            </div>
+            </div>
+
+            <div className="entry">
+            <div className="entry__data">   
+                <p className="entry__name">{"Password"}</p>
+
+                    <form className="entry__form" onSubmit={sendUpdatedDetails}>
+                        {/* Replace 'p' with input when editing account details */}
+                        <p className="entry__userdata grey-text">{"********"}</p>
+                        <label htmlFor="current_password">Current Password</label>
+                        <input type="text" id="current_password" name="current_password" onChange={(e)=>handleCurrentPassword(e.target.value)} value={currentPassword} required></input> 
+                        <label htmlFor="new_password">New Password</label>
+                        <input type="text" id="new_password" name="new_password" onChange={(e)=>handleNewPassword(e.target.value)} value={newPassword} required></input> 
+                        <div className="password_strength">
+                            <p className={passwordStrength.upperCase ? "green" : "grey-text"}>At least one upper case letter</p>
+                            <p className={passwordStrength.lowerCase ? "green" : "grey-text"}>At least one lower case letter</p>
+                            <p className={passwordStrength.digit ? "green" : "grey-text"}>At least one number</p>
+                            <p className={passwordStrength.length ? "green" : "grey-text"}>At least 8 letter</p>
+                        </div>
+                        <label htmlFor="re-enter_password">Re-enter Password</label>
+                        <input type="text" id="re-enter_password" name="re-enter_password" onChange={(e)=>handlePasswordCheck(e.target.value)} value={passwordCheck} required></input> 
+                        <button type="submit">Save</button>
+                    </form>
+            </div>
+            </div>
             
             <div>
                 <button className="button">Edit</button>
@@ -313,3 +425,15 @@ export default AccountDetails;
                     entryValue={details.surname}
                     handleSave={handleNewSurname}
                 /> */}
+
+                
+    // function validateEmail(email) {
+    //     const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+    //     return regex.test(email);
+    // }
+
+        // // Insert into own component
+    // function validatePassword(password) {
+    //     const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+    //     return regex.test(password);
+    // };
