@@ -19,7 +19,9 @@ function AccountDetails()
     const [newPassword, setNewPassword] = React.useState("");
     const [passwordCheck, setPasswordCheck] = React.useState("");
 
+    // Return if user enters incorrect password
     const [incorrectCurrentPassword, setIncorrectPassword] = React.useState(false);
+
     const [invalidEmail, setInvalidEmail] = React.useState(false);
     const [weakPassword, setWeakPassword] = React.useState(false);
     const [passwordNotMatch, setPasswordNotMatch] = React.useState(false);
@@ -56,10 +58,9 @@ function AccountDetails()
         }, 3000);
     };
 
-    // Get details from server
     React.useEffect(() => {
         getDetails();
-    },[]);
+    }, [])
 
     React.useEffect(() => {
         if (isMounted.current) {
@@ -85,16 +86,23 @@ function AccountDetails()
     function handleCurrentPassword(password)
     {
         //Reset incorrect password error
+        setIncorrectPassword(false);
         setCurrentPassword(password);
     }
 
     function handleNewPassword(password)
     {
-        setWeakPassword(false);
+        // Reset password errors
         setPasswordNotMatch(false);
+        setWeakPassword(false);
 
         setNewPassword(password);
 
+        return checkPasswordStrength(password);
+    };
+
+    function checkPasswordStrength(password)
+    {
         setPasswordStrenght(validatePassword(password));
 
         if ((passwordStrength.upperCase &&
@@ -107,12 +115,14 @@ function AccountDetails()
         else {
             return false;
         }
-    };
+    }
 
     function handlePasswordCheck(password)
     {
-        setPasswordNotMatch(false);
         setPasswordCheck(password);
+
+        // Reset password errors
+        setPasswordNotMatch(false);
     }
 
 
@@ -120,44 +130,46 @@ function AccountDetails()
     {
         event.preventDefault();
         
-
-        const passwordMatch = checkPasswordMatch();
-        const strongPassword = checkPasswordStrength();
-
-        // Return early if passwrod is weak or doesn't match
-        if (newPassword.length > 0 && (!passwordMatch || !strongPassword))
-        {
-            return;    
-        }
-
-        function checkPasswordMatch() {
-            if( newPassword === passwordCheck) {
-                return true; 
-            } else {
-                // Show error mismatch
-                //alert("Passwords don't match");
-                setPasswordNotMatch(false);
-                return false;  
-            }
-        };
-
-        function checkPasswordStrength() {
-            //check again, otherwise it will miss the last character
-            if (handleNewPassword(newPassword)) {
-                return true;
-            } else {
-                // Show error weak password
-                //alert("Weak password");
-                setWeakPassword(true);
-                return false;
-            }
-        };
-
-
         // cehck valid email, and return early if incorrect.
         if (!checkValidEmail())
         {
             return;
+        }
+
+        // Return early if passwrod is weak or doesn't match
+        if (newPassword.length > 0 )
+        {
+            const passwordMatch = checkPasswordMatch();
+            const strongPassword = passwordStrength();
+
+            if (!passwordMatch || !strongPassword)
+            {
+                return;    
+            }
+
+            function checkPasswordMatch() {
+                if( newPassword === passwordCheck) {
+                    return true; 
+                } else {
+                    // Show error mismatch
+                    //alert("Passwords don't match");
+                    setPasswordNotMatch(true);
+                    return false;  
+                }
+            };
+    
+            function passwordStrength() {
+                //check again, otherwise it will miss the last character
+                if (checkPasswordStrength(newPassword)) {
+                    return true;
+                } else {
+                    // Show error weak password
+                   // alert("Weak password");
+                    setWeakPassword(true);
+                    return false;
+                }
+            };
+
         }
 
         function checkValidEmail() {
@@ -178,6 +190,7 @@ function AccountDetails()
             email: details.email,
             // password: details.password,
             password: newPassword,
+            currentPassword: currentPassword,
         };
 
         const config = {
@@ -188,17 +201,16 @@ function AccountDetails()
             },
             data: body,
         };
-
         await axios(config)
             .then((result) => {
-                //alert("Data updated");
-
                 updateDetails("forename", result.data.data.forename);
                 updateDetails("surname", result.data.data.surname);
                 updateDetails("email", result.data.data.email);
 
                 setNewPassword("");
-                alert("password updated");
+                setCurrentPassword("");
+                setPasswordCheck("");
+
                 SetSaved("Details Updated", true);
                 
                 auth.storeToken(result.data.newToken, result.data.data.email);
@@ -219,8 +231,12 @@ function AccountDetails()
                         SetSaved("Invalid email", false);
                         break;
                     }
-                    case "S120": {
-                         alert(error.response.data.message);
+                    case "S106": {
+                        setIncorrectPassword(true);
+                        SetSaved("Incorrect password", false);
+                        break;
+                    }
+                    case "S120": {       
                         SetSaved("Password doesn't meet minimum requirements", false);
                         break;
                     }
@@ -234,9 +250,8 @@ function AccountDetails()
                         SetSaved("Error Saving Details", false);
                         break;
                     }
-                        
-                    setNewPassword("");
                 }
+                setNewPassword("");
             })
     };
 
@@ -251,6 +266,7 @@ function AccountDetails()
 
         await axios(config)
             .then((result) => {
+                //alert("Data recieved");
                 setDetails(result.data);
             })
             .catch((error) => {
@@ -320,6 +336,7 @@ function AccountDetails()
     // Each form element will handle its own change
     // When submitting one change, for now, all data is updated.
 
+
     return <main>
         <div className="account_details">
             <h2 className="title">This is Account Details</h2>
@@ -333,11 +350,11 @@ function AccountDetails()
             <div className="entry">
             <div className="entry__data">   
                 <p className="entry__name">{"Forename"}</p>
-
-                    <form className="entry__form">
+                    <form className="entry__form" onSubmit={sendUpdatedDetails}>
                         {/* Replace 'p' with input when editing account details */}
                         <p className="entry__userdata grey-text">{"Entry value"}</p>
-                        <input type="text" id="forename" value={details.forename}></input> 
+                        <input type="text" id="forename" onChange={(e) => (updateDetails("forename", e.target.value))} value={details.forename}></input> 
+                        <button type="submit">Save</button>
                     </form>
             </div>
             </div>
@@ -345,11 +362,11 @@ function AccountDetails()
             <div className="entry">
             <div className="entry__data">   
                 <p className="entry__name">{"Surname"}</p>
-
-                    <form className="entry__form">
+                    <form className="entry__form" onSubmit={sendUpdatedDetails}>
                         {/* Replace 'p' with input when editing account details */}
                         <p className="entry__userdata grey-text">{"Entry value"}</p>
-                        <input type="text" id="surname" value={details.surname}></input> 
+                        <input type="text" id="surname" onChange={(e) => (updateDetails("surna", e.target.value))} value={details.surname}></input> 
+                        <button type="submit">Save</button>
                     </form>
             </div>
             </div>
@@ -357,11 +374,11 @@ function AccountDetails()
             <div className="entry">
             <div className="entry__data">   
                 <p className="entry__name">{"Email"}</p>
-
                     <form className="entry__form" onSubmit={sendUpdatedDetails}>
                         {/* Replace 'p' with input when editing account details */}
                         <p className="entry__userdata grey-text">{"Entry value"}</p>
-                        <input type="text" id="email" onChange={handleNewEmail} value={details.email} required></input> 
+                        <input className={invalidEmail && "red_border"} type="text" id="email" onChange={handleNewEmail} value={details.email} required></input>  {passwordNotMatch && <p className="red-text error_text">Passwords don't match!</p>}
+                        {invalidEmail && <p className="red-text error_text">Invalid Email</p>}
                         <button type="submit">Save</button>
                     </form>
             </div>
@@ -370,14 +387,15 @@ function AccountDetails()
             <div className="entry">
             <div className="entry__data">   
                 <p className="entry__name">{"Password"}</p>
-
                     <form className="entry__form" onSubmit={sendUpdatedDetails}>
                         {/* Replace 'p' with input when editing account details */}
                         <p className="entry__userdata grey-text">{"********"}</p>
                         <label htmlFor="current_password">Current Password</label>
-                        <input type="text" id="current_password" name="current_password" onChange={(e)=>handleCurrentPassword(e.target.value)} value={currentPassword} required></input> 
+                        <input className={incorrectCurrentPassword && "red_border"} type="text" id="current_password" name="current_password" onChange={(e)=>handleCurrentPassword(e.target.value)} value={currentPassword} required></input> 
+                        {incorrectCurrentPassword && <p className="error_text red-text">Incorrect password</p>}
                         <label htmlFor="new_password">New Password</label>
-                        <input type="text" id="new_password" name="new_password" onChange={(e)=>handleNewPassword(e.target.value)} value={newPassword} required></input> 
+                        <input className={(passwordNotMatch || weakPassword) && "red_border"} type="text" id="new_password" name="new_password" onChange={(e) => handleNewPassword(e.target.value)} value={newPassword} required></input> 
+                        {weakPassword && <p className="red-text error_text">Weak Password</p>}
                         <div className="password_strength">
                             <p className={passwordStrength.upperCase ? "green" : "grey-text"}>At least one upper case letter</p>
                             <p className={passwordStrength.lowerCase ? "green" : "grey-text"}>At least one lower case letter</p>
@@ -385,18 +403,20 @@ function AccountDetails()
                             <p className={passwordStrength.length ? "green" : "grey-text"}>At least 8 letter</p>
                         </div>
                         <label htmlFor="re-enter_password">Re-enter Password</label>
-                        <input type="text" id="re-enter_password" name="re-enter_password" onChange={(e)=>handlePasswordCheck(e.target.value)} value={passwordCheck} required></input> 
+                        <input className={(passwordNotMatch) && "red_border"} type="text" id="re-enter_password" name="re-enter_password" onChange={(e) => handlePasswordCheck(e.target.value)} value={passwordCheck} required></input> 
+                        {passwordNotMatch && <p className="red-text error_text">Passwords don't match!</p>}
                         <button type="submit">Save</button>
                     </form>
             </div>
             </div>
             
-            <div>
+            {/* <div>
                 <button className="button">Edit</button>
                 <button className="button" onClick={sendUpdatedDetails}>Save</button>
                 <button className="button">Cancel</button>
-            </div>
-            <a className="delete_account red-text" onClick={() => handleDeleteAccount()}>Delete Account</a>
+            </div> */}
+
+            <button className="delete_account red-text" onClick={() => handleDeleteAccount()}>Delete Account</button>
         </div>
     </main>
 }

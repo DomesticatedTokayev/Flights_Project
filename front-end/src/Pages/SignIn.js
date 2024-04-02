@@ -179,7 +179,7 @@ function SignIn()
     function handleRegister(event)
     {
         const { name, value } = event.target;
-
+        console.log(name);
         setRegister((prevValue) => ({ ...prevValue, [name]: value }));
 
         if (name === "email") {
@@ -224,7 +224,7 @@ function SignIn()
             
             <form className="login__form" onSubmit={(e) => submitRegister(e)}>
                 <label htmlFor="forename">Forename</label>
-                <input type="text" name="forenhandleSubmitRegisterame" id="forename" onChange={(e)=>handleRegister(e)} value={register.forename}></input>
+                <input type="text" name="forename" id="forename" onChange={(e)=>handleRegister(e)} value={register.forename}></input>
                 <label htmlFor="surname">Surname</label>
                 <input type="text" name="surname" id="surname"  onChange={(e)=>handleRegister(e)} value={register.surname}></input>
                 <label htmlFor="email">Email</label>
