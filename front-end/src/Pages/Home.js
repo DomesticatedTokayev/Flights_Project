@@ -83,7 +83,9 @@ function Home()
         <div className="home">
             {/* <img className="home__image" src={image} alt="Plane and skyscraper image"></img> */}
 
-            <Gallerry className="home__image"/>
+            <div className="home__gallery">
+                <Gallerry/>
+            </div>
             
             <div className="home__search">
                 <SearchForm             
@@ -120,10 +122,12 @@ function Home()
                         />
                 })}          
             </div>
-            <div className="home__gallery">
-                {showcase.map((item, index) => {
-                    return <FlightShowcase key={index} item={item}/>;
-                })}
+            <div className="home__showcase">
+                <div className="destinations">
+                    {showcase.map((item, index) => {
+                        return <FlightShowcase key={index} item={item}/>;
+                    })}
+                </div> 
             </div>
         </div>
     </main>

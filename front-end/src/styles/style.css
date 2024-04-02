@@ -288,11 +288,8 @@ button:active
 }
 
 .home__gallery{
-    background-color: var(--HEADER_BGCOLOR);
     width: 100%;
-    min-height: 400px;
-    margin: var(--STANDARD_MARGIN);
-    padding-inline: var(--STANDARD_PADDING_HORIZONTAL);
+    height: auto;
 }
 
 .home__search{
@@ -331,11 +328,42 @@ button:active
     padding-inline: var(--STANDARD_PADDING_HORIZONTAL);
 }
 
-.home__image {
-    object-fit: cover;
-    width: 100%;
-    height: 300px;
+
+
+.home__showcase .destinations{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
+
+/* || Home Showcase ------------------------------------------------------------------------*/
+.showcase{
+    /* max-width: 45%; */
+    max-width: 49.5%;
+    border: 2px solid black;
+    border-radius: 3%;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.showcase__header{
+    font-size: 1.5rem;
+}
+
+.showcase__img{
+
+}
+
+.showcase_price{
+    font-size: 1.3rem;
+}
+
+/* || Gallery -=----------------------------------------------------------------------------*/
+.home__image{
+    border-radius: 10%;
+}
+
 
 /* || FLIGHT -------------------------------------------------------------------------------*/
 
@@ -823,6 +851,16 @@ color: green;
 
     .custom__sidebar{
         width: 90%;
+    }
+
+    .home__showcase .destinations{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .showcase{
+        max-width: 100%;
     }
 
 }
