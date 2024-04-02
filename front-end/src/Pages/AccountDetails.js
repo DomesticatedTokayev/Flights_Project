@@ -42,6 +42,9 @@ function AccountDetails()
         length: false,
     });
 
+    const [isEditing, setIsEditing] = React.useState(false);
+    const [updated, setUpdated] = React.useState(false);
+
     function updateDetails(name, value)
     {
         setDetails((prevValue) => ({ ...prevValue, [name]: value }));
@@ -57,6 +60,12 @@ function AccountDetails()
             setShowMessage(false);
         }, 3000);
     };
+
+    function toggleEditing()
+    {
+        setUpdated(false);
+        setIsEditing(prevValue => (!prevValue));
+    }
 
     React.useEffect(() => {
         getDetails();
@@ -120,11 +129,9 @@ function AccountDetails()
     function handlePasswordCheck(password)
     {
         setPasswordCheck(password);
-
         // Reset password errors
         setPasswordNotMatch(false);
     }
-
 
     async function sendUpdatedDetails(event)
     {
@@ -136,8 +143,18 @@ function AccountDetails()
             return;
         }
 
+        function checkValidEmail() {
+            if (validateEmail(details.email)) {
+                return true;
+            } else {
+                // Show error: invalid email
+                setInvalidEmail(true);
+                return false;
+            }
+        };
+
         // Return early if passwrod is weak or doesn't match
-        if (newPassword.length > 0 )
+        if (currentPassword.length > 0 )
         {
             const passwordMatch = checkPasswordMatch();
             const strongPassword = passwordStrength();
@@ -152,7 +169,6 @@ function AccountDetails()
                     return true; 
                 } else {
                     // Show error mismatch
-                    //alert("Passwords don't match");
                     setPasswordNotMatch(true);
                     return false;  
                 }
@@ -164,31 +180,16 @@ function AccountDetails()
                     return true;
                 } else {
                     // Show error weak password
-                   // alert("Weak password");
                     setWeakPassword(true);
                     return false;
                 }
             };
-
         }
-
-        function checkValidEmail() {
-            if (validateEmail(details.email)) {
-                return true;
-            } else {
-                // Show error: invalid email
-                //alert("Invalid email");
-                setInvalidEmail(true);
-                return false;
-            }
-        };
-
-
+     
         const body = {
             forename: details.forename,
             surname: details.surname,
             email: details.email,
-            // password: details.password,
             password: newPassword,
             currentPassword: currentPassword,
         };
@@ -211,7 +212,9 @@ function AccountDetails()
                 setCurrentPassword("");
                 setPasswordCheck("");
 
-                SetSaved("Details Updated", true);
+                //("Details Updated", true);
+                setUpdated(true);
+                setIsEditing(false);
                 
                 auth.storeToken(result.data.newToken, result.data.data.email);
             })
@@ -222,12 +225,10 @@ function AccountDetails()
                 switch (errorCode)
                 {
                     case "S100": {
-                        // alert(error.response.data.message);
                         SetSaved("Couldn't Update Details", false);
                         break;
                     }
                     case "S105": {
-                        // alert(error.response.data.message);
                         SetSaved("Invalid email", false);
                         break;
                     }
@@ -241,12 +242,10 @@ function AccountDetails()
                         break;
                     }
                     case "U10": {
-                        // alert("Unknown error");
                         SetSaved("Error Saving Details", false);
                         break;
                     }
                     default: {
-                        // alert("Unknown error");
                         SetSaved("Error Saving Details", false);
                         break;
                     }
@@ -266,7 +265,6 @@ function AccountDetails()
 
         await axios(config)
             .then((result) => {
-                //alert("Data recieved");
                 setDetails(result.data);
             })
             .catch((error) => {
@@ -275,23 +273,20 @@ function AccountDetails()
                 switch (errorCode)
                 {
                     case "S90": {
-                        // alert(error.response.data.message);
                         SetSaved("Failed to load account details", false);
                         break;
                     }
                     case "U10": {
-                        // alert("Unknown error");
                         SetSaved("Error loading account details", false);
                         break;
                     }
                     default: {
-                        // alert("Unknown error");
                         SetSaved("Error loading account details", false);
                         break;
                     }
                 }
             }
-            )
+        )
     };
 
     async function handleDeleteAccount()
@@ -333,28 +328,19 @@ function AccountDetails()
         })
     }
 
-    // Each form element will handle its own change
-    // When submitting one change, for now, all data is updated.
-
-
     return <main>
         <div className="account_details">
             <h2 className="title">This is Account Details</h2>
-            {/* {showMessage === true && <> */}
-            <div className="error-message">
-                <p className={showMessage ? "show red-text" : "hidden"}>
-                    {savedValue.message}
-                </p>
-            </div>
 
             <div className="entry">
             <div className="entry__data">   
                 <p className="entry__name">{"Forename"}</p>
                     <form className="entry__form" onSubmit={sendUpdatedDetails}>
-                        {/* Replace 'p' with input when editing account details */}
-                        <p className="entry__userdata grey-text">{"Entry value"}</p>
-                        <input type="text" id="forename" onChange={(e) => (updateDetails("forename", e.target.value))} value={details.forename}></input> 
-                        <button type="submit">Save</button>
+                        {!isEditing ? 
+                           <p className="entry__userdata grey-text">{details.forename.length > 0 ? details.forename : "Not set"}</p>
+                            :
+                            <input type="text" id="forename" onChange={(e) => (updateDetails("forename", e.target.value))} value={details.forename}></input> 
+                        }
                     </form>
             </div>
             </div>
@@ -363,10 +349,11 @@ function AccountDetails()
             <div className="entry__data">   
                 <p className="entry__name">{"Surname"}</p>
                     <form className="entry__form" onSubmit={sendUpdatedDetails}>
-                        {/* Replace 'p' with input when editing account details */}
-                        <p className="entry__userdata grey-text">{"Entry value"}</p>
-                        <input type="text" id="surname" onChange={(e) => (updateDetails("surna", e.target.value))} value={details.surname}></input> 
-                        <button type="submit">Save</button>
+                        {!isEditing ?
+                            <p className="entry__userdata grey-text">{details.surname.length > 0 ? details.surname : "Not set"}</p>
+                            :
+                            <input type="text" id="surname" onChange={(e) => (updateDetails("surname", e.target.value))} value={details.surname}></input>
+                        }
                     </form>
             </div>
             </div>
@@ -375,11 +362,15 @@ function AccountDetails()
             <div className="entry__data">   
                 <p className="entry__name">{"Email"}</p>
                     <form className="entry__form" onSubmit={sendUpdatedDetails}>
-                        {/* Replace 'p' with input when editing account details */}
-                        <p className="entry__userdata grey-text">{"Entry value"}</p>
-                        <input className={invalidEmail && "red_border"} type="text" id="email" onChange={handleNewEmail} value={details.email} required></input>  {passwordNotMatch && <p className="red-text error_text">Passwords don't match!</p>}
-                        {invalidEmail && <p className="red-text error_text">Invalid Email</p>}
-                        <button type="submit">Save</button>
+                    {!isEditing ?
+                            <p className="entry__userdata grey-text">{details.email}</p>
+                            :
+                            <>
+                                <input className={invalidEmail && "red_border"} type="text" id="email" onChange={handleNewEmail} value={details.email} required></input>  
+                                {passwordNotMatch && <p className="red-text error_text">Passwords don't match!</p>}
+                                {invalidEmail && <p className="red-text error_text">Invalid Email</p>}
+                            </>
+                        }
                     </form>
             </div>
             </div>
@@ -388,33 +379,46 @@ function AccountDetails()
             <div className="entry__data">   
                 <p className="entry__name">{"Password"}</p>
                     <form className="entry__form" onSubmit={sendUpdatedDetails}>
-                        {/* Replace 'p' with input when editing account details */}
                         <p className="entry__userdata grey-text">{"********"}</p>
-                        <label htmlFor="current_password">Current Password</label>
-                        <input className={incorrectCurrentPassword && "red_border"} type="text" id="current_password" name="current_password" onChange={(e)=>handleCurrentPassword(e.target.value)} value={currentPassword} required></input> 
-                        {incorrectCurrentPassword && <p className="error_text red-text">Incorrect password</p>}
-                        <label htmlFor="new_password">New Password</label>
-                        <input className={(passwordNotMatch || weakPassword) && "red_border"} type="text" id="new_password" name="new_password" onChange={(e) => handleNewPassword(e.target.value)} value={newPassword} required></input> 
-                        {weakPassword && <p className="red-text error_text">Weak Password</p>}
-                        <div className="password_strength">
-                            <p className={passwordStrength.upperCase ? "green" : "grey-text"}>At least one upper case letter</p>
-                            <p className={passwordStrength.lowerCase ? "green" : "grey-text"}>At least one lower case letter</p>
-                            <p className={passwordStrength.digit ? "green" : "grey-text"}>At least one number</p>
-                            <p className={passwordStrength.length ? "green" : "grey-text"}>At least 8 letter</p>
-                        </div>
-                        <label htmlFor="re-enter_password">Re-enter Password</label>
-                        <input className={(passwordNotMatch) && "red_border"} type="text" id="re-enter_password" name="re-enter_password" onChange={(e) => handlePasswordCheck(e.target.value)} value={passwordCheck} required></input> 
-                        {passwordNotMatch && <p className="red-text error_text">Passwords don't match!</p>}
-                        <button type="submit">Save</button>
+                        {isEditing && <>
+                            <label htmlFor="current_password">Current Password</label>
+                            <input className={incorrectCurrentPassword && "red_border"} type="text" id="current_password" name="current_password" onChange={(e)=>handleCurrentPassword(e.target.value)} value={currentPassword} required></input> 
+                            {incorrectCurrentPassword && <p className="error_text red-text">Incorrect password</p>}
+                            <label htmlFor="new_password">New Password</label>
+                            <input className={(passwordNotMatch || weakPassword) && "red_border"} type="text" id="new_password" name="new_password" onChange={(e) => handleNewPassword(e.target.value)} value={newPassword} required></input> 
+                            {weakPassword && <p className="red-text error_text">Weak Password</p>}
+                            <div className="password_strength">
+                                <p className={passwordStrength.upperCase ? "green" : "grey-text"}>At least one upper case letter</p>
+                                <p className={passwordStrength.lowerCase ? "green" : "grey-text"}>At least one lower case letter</p>
+                                <p className={passwordStrength.digit ? "green" : "grey-text"}>At least one number</p>
+                                <p className={passwordStrength.length ? "green" : "grey-text"}>At least 8 letter</p>
+                            </div>
+                            <label htmlFor="re-enter_password">Re-enter Password</label>
+                            <input className={(passwordNotMatch) && "red_border"} type="text" id="re-enter_password" name="re-enter_password" onChange={(e) => handlePasswordCheck(e.target.value)} value={passwordCheck} required></input> 
+                            {passwordNotMatch && <p className="red-text error_text">Passwords don't match!</p>}
+                        </>
+                    }
                     </form>
             </div>
             </div>
+
+            {showMessage === true &&
+                <div className="error-message">
+                    <p className={showMessage ? "show red-text" : "hidden"}>
+                        {savedValue.message}
+                    </p>
+                </div>
+            }
+
+            {updated && <>
+                <p className="green"> Details Updated</p>
+            </>}
             
-            {/* <div>
-                <button className="button">Edit</button>
-                <button className="button" onClick={sendUpdatedDetails}>Save</button>
-                <button className="button">Cancel</button>
-            </div> */}
+            <div>
+                {!isEditing && <button className="button" onClick={toggleEditing}>Update</button>}
+                {isEditing && <button className="button" onClick={sendUpdatedDetails}>Save</button>}
+                {isEditing && <button className="button" onClick={toggleEditing}>Cancel</button>}
+            </div>
 
             <button className="delete_account red-text" onClick={() => handleDeleteAccount()}>Delete Account</button>
         </div>

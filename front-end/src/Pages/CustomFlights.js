@@ -174,6 +174,7 @@ function CustomFlight() {
 
     return <main>
         <div className="custom">
+        <button className="button" onClick={handleNew}>Add New Destination</button>
             {(customFlights.length > 0) && 
                 <>
                 {customFlights.map((item, index) => {
@@ -222,7 +223,7 @@ function CustomFlight() {
                 })
                 }
             </div>
-            <button className="button" onClick={handleNew}>Add New Destination</button>
+
         </div>
     </main>
 }

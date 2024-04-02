@@ -305,19 +305,22 @@ app.put("/account", auth, async (req, res, next) => {
     if (req.user.userID) {
 
         // Validate password
-        try {
-            const result = await userDB.checkUser(req.body.email, req.body.currentPassword);
-
-            if (!result.ok)
-            {
-                // Incorrect Password
-                res.status(404).json({ message: "Incorrect password", errorCode: "S106" });
-                return next();
-            }
-        } catch (error)
+        if (req.body.currentPassword.length > 0)
         {
-            console.log(error);
-            res.status(404).json({ message: "Unknown error: Couldn't update user", errorCode: "S100" });
+            try {
+                const result = await userDB.checkUser(req.body.email, req.body.currentPassword);
+    
+                if (!result.ok)
+                {
+                    // Incorrect Password
+                    res.status(404).json({ message: "Incorrect password", errorCode: "S106" });
+                    return next();
+                }
+            } catch (error)
+            {
+                console.log(error);
+                res.status(404).json({ message: "Unknown error: Couldn't update user", errorCode: "S100" });
+            }
         }
 
         // Vaidate email

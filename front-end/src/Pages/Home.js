@@ -2,8 +2,9 @@ import React from "react";
 import SearchForm from "../components/SearchForm";
 import {SearchFlightsWithProps} from "../components/SearchFlights.js";
 import Flight from "../components/Flight.js";
-
+import Gallerry from "../components/Gallery.js";
 import image from "../images/Skyscraper.jpg";
+import FlightShowcase from "../components/FlightsShowcase.js";
 
 // UseContext test
 import { useTopAccess } from "../Tests/TopAccessProvider.js";
@@ -55,9 +56,35 @@ function Home()
         setSearching(false);
     };
 
+    const showcase = [
+        {
+            destination: "Barcelona",
+            imageURL: "../../images/img_01.jpg",
+            price: 20,
+        },
+        {
+            destination: "France",
+            imageURL: "../../images/img_02.jpg",
+            price: 80,
+        },
+        {
+            destination: "Miami",
+            imageURL: "../../images/img_03.jpg",
+            price: 3300,
+        },
+        {
+            destination: "Frankfurt",
+            imageURL: "../../images/img_04.png",
+            price: 50,
+        },
+    ]
+
     return <main>
         <div className="home">
-            <img className="home__image" src={image} alt="Plane and skyscraper image"></img>
+            {/* <img className="home__image" src={image} alt="Plane and skyscraper image"></img> */}
+
+            <Gallerry className="home__image"/>
+            
             <div className="home__search">
                 <SearchForm             
                     origin=""
@@ -94,6 +121,9 @@ function Home()
                 })}          
             </div>
             <div className="home__gallery">
+                {showcase.map((item, index) => {
+                    return <FlightShowcase key={index} item={item}/>;
+                })}
             </div>
         </div>
     </main>
