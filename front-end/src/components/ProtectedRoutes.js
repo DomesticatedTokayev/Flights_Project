@@ -11,7 +11,7 @@ function ProtectedRoutes() {
     
     if (!user.token)
     {
-        return <Navigate to="/sign-in" />;
+        return <Navigate to="/log-in" />;
     } else {
         return <Outlet />;
     }

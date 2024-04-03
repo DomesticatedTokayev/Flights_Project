@@ -9,9 +9,8 @@ import Header from "./components/Header.js";
 import Footer from "./components/Footer.js";
 import SignIn from "./Pages/SignIn.js";
 import Home from "./Pages/Home.js";
-import CustomFlights from "./Pages/CustomFlights.js";
+import CustomFlights from "./Pages/SavedFlights.js";
 import Account from "./Pages/Account.js";
-import AccountSubscription from "./Pages/AccountSubscription.js"
 import AccountDetails from "./Pages/AccountDetails.js"
 
 import FlightData from "./hooks/FlightsProvider.js";
@@ -35,13 +34,14 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/sign-in" element={<SignIn />} />
-            <Route path="/free" element={<AccountSubscription />} />
+            <Route path="/sign-up" element={<SignIn isLogin={false} />} />
+            <Route path="/log-in" element={<SignIn isLogin={true} />} />
             <Route element={<ProtectedRoutes />}>  
-              <Route path="/custom" element={<CustomFlights />} />
-              <Route path="/newFlight" element={<NewFlight />} />
+              <Route path="/saved/flights" element={<CustomFlights />} />
+              <Route path="/saved/flights/new/flight" element={<NewFlight />} />
+              <Route path="/saved/flights/edit/flight" element={<NewFlight />} />
               <Route path="/account" element={<Account />} />
-              <Route path="/accountDetails" element={<AccountDetails/>} />
+              <Route path="/account/details" element={<AccountDetails/>} />
             </Route>
           </Routes>
         </BrowserRouter>  

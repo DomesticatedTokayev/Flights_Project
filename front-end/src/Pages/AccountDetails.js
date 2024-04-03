@@ -45,6 +45,8 @@ function AccountDetails()
     const [isEditing, setIsEditing] = React.useState(false);
     const [updated, setUpdated] = React.useState(false);
 
+    const [isLoading, setIsLoading] = React.useState(false);
+
     function updateDetails(name, value)
     {
         setDetails((prevValue) => ({ ...prevValue, [name]: value }));
@@ -202,6 +204,8 @@ function AccountDetails()
             },
             data: body,
         };
+
+
         await axios(config)
             .then((result) => {
                 updateDetails("forename", result.data.data.forename);
@@ -222,8 +226,7 @@ function AccountDetails()
  
                 const errorCode = error.response.data.errorCode;
                 
-                switch (errorCode)
-                {
+                switch (errorCode) {
                     case "S100": {
                         SetSaved("Couldn't Update Details", false);
                         break;
@@ -237,7 +240,7 @@ function AccountDetails()
                         SetSaved("Incorrect password", false);
                         break;
                     }
-                    case "S120": {       
+                    case "S120": {
                         SetSaved("Password doesn't meet minimum requirements", false);
                         break;
                     }
@@ -251,7 +254,9 @@ function AccountDetails()
                     }
                 }
                 setNewPassword("");
-            })
+            });
+        
+
     };
 
     async function getDetails() {
@@ -263,6 +268,9 @@ function AccountDetails()
             },
         };
 
+        // Set loading data icon
+        setIsLoading(true);
+
         await axios(config)
             .then((result) => {
                 setDetails(result.data);
@@ -270,8 +278,7 @@ function AccountDetails()
             .catch((error) => {
                 const errorCode = error.response.data.errorCode;
                 
-                switch (errorCode)
-                {
+                switch (errorCode) {
                     case "S90": {
                         SetSaved("Failed to load account details", false);
                         break;
@@ -286,7 +293,10 @@ function AccountDetails()
                     }
                 }
             }
-        )
+            );
+
+            // Disable loading icon
+            setIsLoading(false);
     };
 
     async function handleDeleteAccount()
@@ -336,10 +346,14 @@ function AccountDetails()
             <div className="entry__data">   
                 <p className="entry__name">{"Forename"}</p>
                     <form className="entry__form" onSubmit={sendUpdatedDetails}>
-                        {!isEditing ? 
-                           <p className="entry__userdata grey-text">{details.forename.length > 0 ? details.forename : "Not set"}</p>
-                            :
-                            <input type="text" id="forename" onChange={(e) => (updateDetails("forename", e.target.value))} value={details.forename}></input> 
+                        {isLoading ? <div className="loader_slot"><div className="loader"></div></div> :
+                            <>
+                                {!isEditing ? 
+                                    <p className="entry__userdata grey-text">{details.forename.length > 0 ? details.forename : "Not set"}</p>
+                                    :
+                                    <input type="text" id="forename" onChange={(e) => (updateDetails("forename", e.target.value))} value={details.forename}></input> 
+                                }
+                            </>
                         }
                     </form>
             </div>
@@ -349,10 +363,14 @@ function AccountDetails()
             <div className="entry__data">   
                 <p className="entry__name">{"Surname"}</p>
                     <form className="entry__form" onSubmit={sendUpdatedDetails}>
-                        {!isEditing ?
-                            <p className="entry__userdata grey-text">{details.surname.length > 0 ? details.surname : "Not set"}</p>
-                            :
-                            <input type="text" id="surname" onChange={(e) => (updateDetails("surname", e.target.value))} value={details.surname}></input>
+                        {isLoading ? <div className="loader_slot"><div className="loader"></div></div> :
+                            <>
+                                {!isEditing ?
+                                    <p className="entry__userdata grey-text">{details.surname.length > 0 ? details.surname : "Not set"}</p>
+                                    :
+                                    <input type="text" id="surname" onChange={(e) => (updateDetails("surname", e.target.value))} value={details.surname}></input>
+                                }
+                            </>
                         }
                     </form>
             </div>
@@ -362,15 +380,19 @@ function AccountDetails()
             <div className="entry__data">   
                 <p className="entry__name">{"Email"}</p>
                     <form className="entry__form" onSubmit={sendUpdatedDetails}>
-                    {!isEditing ?
-                            <p className="entry__userdata grey-text">{details.email}</p>
-                            :
-                            <>
-                                <input className={invalidEmail && "red_border"} type="text" id="email" onChange={handleNewEmail} value={details.email} required></input>  
-                                {passwordNotMatch && <p className="red-text error_text">Passwords don't match!</p>}
-                                {invalidEmail && <p className="red-text error_text">Invalid Email</p>}
-                            </>
-                        }
+                    {isLoading ? <div className="loader_slot"><div className="loader"></div></div> :
+                        <>
+                            {!isEditing ?
+                                <p className="entry__userdata grey-text">{details.email}</p>
+                                :
+                                <>
+                                    <input className={invalidEmail && "red_border"} type="text" id="email" onChange={handleNewEmail} value={details.email} required></input>  
+                                    {passwordNotMatch && <p className="red-text error_text">Passwords don't match!</p>}
+                                    {invalidEmail && <p className="red-text error_text">Invalid Email</p>}
+                                </>
+                            }
+                        </>
+                    }
                     </form>
             </div>
             </div>
@@ -415,7 +437,8 @@ function AccountDetails()
             </>}
             
             <div>
-                {!isEditing && <button className="button" onClick={toggleEditing}>Update</button>}
+                {!isLoading && <>{!isEditing && <button className="button" onClick={toggleEditing}>Update</button>}</>}
+                
                 {isEditing && <button className="button" onClick={sendUpdatedDetails}>Save</button>}
                 {isEditing && <button className="button" onClick={toggleEditing}>Cancel</button>}
             </div>

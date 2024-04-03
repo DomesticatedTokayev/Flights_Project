@@ -16,9 +16,10 @@ function HeaderLinks()
 
     return <section className="header__navigation">
         <a href="/">Home</a>
-        <a href="/custom">Custom Flights</a>
+        <a href="/saved/flights">Saved Flights</a>
         <a href="/account">Account</a>
-        {auth.token ? <a onClick={() => LogOut()}>Log-out</a> : <a href="/sign-in">Sign-In</a>}
+        {!auth.token && <a href="/sign-up">Sign-up</a>}
+        {auth.token ? <a onClick={() => LogOut()}>Log-out</a> : <a href="/log-in">Log-in</a>}
     </section>;
     
 }

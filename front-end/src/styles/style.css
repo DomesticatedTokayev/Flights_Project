@@ -41,11 +41,16 @@ textarea{
 
     /* STANDARD PADDING */
     --STANDARD_PADDING: 0 20px 0 20px; 
-    --STANDARD_PADDING_HORIZONTAL: 10px; 
+    --STANDARD_PADDING_HORIZONTAL: 15px; 
+    --MAIN_PADDING: 15px 20px;
 
     /* STANDARD MARGIN */
     --STANDARD_MARGIN: 10px 0 10px 0; 
     --STANDARD_MARGIN_HORIZONTAL: 20px; 
+    --STANDARD_HEADERS_BOTTOM_MARGIN: 8px;
+
+    /* STANDARD BORDER_RADIUS */
+    --STANDATD_BORDER_RADIUS: 20px;
 }
 
 /* || BLACK THEME OVERRDES --------------------------------------------------------------*/
@@ -155,7 +160,8 @@ main{
     max-width: 1200px;
     min-height: 100vh;
     margin: 0 auto;
-    padding: 15px 10px;
+    padding: var(--MAIN_PADDING);
+    padding-top: 30px;
 }
 
 footer{
@@ -164,29 +170,34 @@ footer{
     bottom: 0;
 }
 
-h1, h2, h3{
+h1, h2, h3, h4, h5{
     font-family: var(--FF-HEADINGS);
+    margin-bottom: var(--STANDARD_HEADERS_BOTTOM_MARGIN);
 }
 
 h1{
-    font-size: 2rem;
+    font-size: 2.3rem;
 }
 
 h2{
-    font-size: 1.8rem;
+    font-size: 2.1rem;
 }
 
 h3{
+    font-size: 1.9rem;
+}
+
+h4{
     font-size: 1.6rem;
 }
 
-p, a{
-    font-size: 1.2rem;
+p, a, label{
+    font-size: 1.3rem;
 
 }
 
 input, select{
-    font-size: 1.1rem;
+    font-size: 1.3rem;
 }
 
 p, a, button, input, label, select{
@@ -227,7 +238,6 @@ button:active
 /* || HEADER ----------------------------------------------------------------------------*/
 .header__landscape{
     height: 100%;
-
     /* position: absolute; */
 }
 
@@ -245,11 +255,15 @@ button:active
     font-weight: bold;
 }
 
+.header h1:hover, .header:focus-visible{
+    cursor: pointer;
+}
+
 /* || SIDEBAR --------------------------------------------------------------------*/
 .sidebar{
     display: none;
     height: 100%;
-    width: 30%;
+    width: 50%;
     position: fixed;
     z-index: 10;
     top: 0;
@@ -284,7 +298,7 @@ button:active
     justify-content: start;
     align-items: center;
 
-    /* gap: 10px */
+    gap: 20px;
 }
 
 .home__gallery{
@@ -293,18 +307,17 @@ button:active
 }
 
 .home__search{
-    background-color: var(--HEADER_BGCOLOR);
+    /* background-color: var(--HEADER_BGCOLOR); */
     width: 100%;
-    margin: var(--STANDARD_MARGIN);
-    padding-inline: var(--STANDARD_PADDING_HORIZONTAL);
+    /* margin: var(--STANDARD_MARGIN); */
+    /* padding-inline: var(--STANDARD_PADDING_HORIZONTAL); */
 }
 
 .home__destinations{
     background-color: var(--HEADER_BGCOLOR);
     width: 100%;
-    /* min-height: 80px; */
-    /* margin: var(--STANDARD_MARGIN); */
     padding-inline: var(--STANDARD_PADDING_HORIZONTAL);
+    border-radius: var(--STANDATD_BORDER_RADIUS);
 
 }
 
@@ -319,7 +332,6 @@ button:active
     display: block;
 }
 
-
 .home__examples{
     background-color: var(--HEADER_BGCOLOR);
     width: 100%;
@@ -328,10 +340,9 @@ button:active
     padding-inline: var(--STANDARD_PADDING_HORIZONTAL);
 }
 
-
-
 .home__showcase .destinations{
     display: flex;
+    /* display: inline-block; */
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -341,27 +352,34 @@ button:active
 .showcase{
     /* max-width: 45%; */
     max-width: 49.5%;
-    border: 2px solid black;
-    border-radius: 3%;
+    /* border: 2px solid black; */
+    border-radius: var(--STANDATD_BORDER_RADIUS);
     text-align: center;
-    margin-bottom: 10px;
+    padding: 10px;
+    margin-bottom: 20px;
+    background: var(--HEADER_BGCOLOR);
 }
 
-.showcase__header{
-    font-size: 1.5rem;
+.showcase .title{
+    /* font-size: 1.9rem; */
+    margin: 10px 0;
 }
 
 .showcase__img{
-
+    /* max-height: 250px; */
+  width: auto;
+    object-fit: cover;
 }
 
 .showcase_price{
-    font-size: 1.3rem;
+    font-size: 1.8rem;
 }
 
-/* || Gallery -=----------------------------------------------------------------------------*/
-.home__image{
-    border-radius: 10%;
+/* || GALLERY -=----------------------------------------------------------------------------*/
+.gallery{
+    border-radius: var(--STANDATD_BORDER_RADIUS);
+    background: var(--HEADER_BGCOLOR); 
+    padding: 20px;
 }
 
 
@@ -378,7 +396,7 @@ button:active
     flex-direction: column;
     justify-content: space-between;
 
-    border-radius: var(--BORDER_RADIUS);
+    border-radius: var(--STANDATD_BORDER_RADIUS);
 }
 
 .flight div{
@@ -473,13 +491,18 @@ button:active
     padding: 10px;
 }
 
-.flight a, .flight button {
+.flight a .flight__buttons{
     width: 100%;
 }
 
+.flight__buttons button{
+    min-width: 300px;
+}
 
 /* || SEARCH FORM --------------------------------------------------------------------------*/
 .search{
+    background: var(--HEADER_BGCOLOR);
+    border-radius: var(--STANDATD_BORDER_RADIUS);
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -497,10 +520,6 @@ button:active
     display: grid;
 }
 
-.search h2{
-    margin-bottom: 15px;
-}
-
 .search__inputs{
     width: 100%;
 }
@@ -512,7 +531,17 @@ button:active
 .search__inputs input, select{
     margin-bottom: 10px;
     height: 40px;
+
     padding: 5px;
+}
+
+.search__inputs input{
+    width: 100%;
+}
+
+.search .button{
+    width: 300px;
+    align-self: center;
 }
 
 .button{
@@ -521,7 +550,7 @@ button:active
     border-radius: 80px;
     align-content: center;
     margin-top: 10px;
-    padding: 10px;
+    padding: 10px; 
 }
 
 .round_btn{
@@ -532,18 +561,23 @@ button:active
 .custom{
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 10px;
+}
+
+.custom button{
+    max-width: 300px;
 }
 
 .card{
     background: white;
     /* Place into variable -============================================<<<<====================<<<<<<<<<<<<<<<<<<<<<<<<<<< */
     border: 2px solid black; 
-    border-radius: 20px;
+    border-radius: var(--STANDATD_BORDER_RADIUS);
 
     /* margin-bottom: 10px; */
     min-height: 220px;
-
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -627,8 +661,10 @@ button:active
 
 }
 .card__options .button{
-    min-width: 150px;
+    width: 150px;
 }
+
+
 
 /* || Custom SIDE BAR (SEARCHED FLIGHTS) ------------------------------------------------*/
 .custom__sidebar{
@@ -742,7 +778,7 @@ color: green;
 .entry{
     /* position: absolute; */
     border: 3px solid black;
-    border-radius: 10px;
+    border-radius: var(--STANDATD_BORDER_RADIUS);
     padding: 10px;
 
     display: flex;
@@ -784,6 +820,7 @@ color: green;
 }
 
 
+
 /* || MEDIA -----------------------------------------------------------------------------*/
 /* || SMALL */
 @media screen and (max-width: 576px){
@@ -806,6 +843,15 @@ color: green;
         flex-direction: column;
         align-items: center;
     }
+
+    /* .card__options{
+        flex-direction: column;
+        gap: 5px
+    }
+
+    .card__options .button{
+        width: 300px;
+    } */
  
 }
 

@@ -5,13 +5,12 @@ import axios from "axios";
 // const cookies = new Cookies();
 import { useAuth } from "../hooks/AuthProvider";
 
-import LoginDetails from "../components/LoginDetails";
 import { validatePassword, validateEmail } from "../components/EmailPasswordValidation";
 
 // Google Authentication
 // https://medium.com/@sahadmuhammed289/react-js-a-step-by-step-guide-to-google-authentication-926d0d85edbd
 
-function SignIn()
+function SignIn(props)
 {
     const auth = useAuth();
 
@@ -200,54 +199,63 @@ function SignIn()
 
     return <main>
         <div className="login">
-            <h1>Log-in / Register</h1>
+            
+            {/* <h1>Log-in / Register</h1>
             <button>Continue with Google</button>
             <div className="login__divider">
                 <hr></hr>
                 <h3>Or</h3>
                 <hr></hr>
-            </div>
+            </div> */}
 
-            <form className="login__form" onSubmit={(e)=>submitLogin(e)}>
-                <label htmlFor="email">Email</label>
-                <input className={(emailNotFound || incorrectLoginEmail) && "red_border"} type="text" id="email" name="email" required value={login.email} onChange={(e) => handleLogin(e)}></input>
-                {emailNotFound && <p className="error_text red-text">Email not found</p>}
-                {incorrectLoginEmail && <p className="error_text red-text">Invalid email</p>}
-                <label htmlFor="password">Password</label>
-                <input className={incorrectPassword && "red_border"} type="password" id="password" name="password" required value={login.password} onChange={(e) => handleLogin(e)}></input>
-                {incorrectPassword && <p className="error_text red-text">Incorrect password</p>}
-                <p>Forgot Password?</p>
-                <button type="submit" className="button">Log in</button>
-                <p>Don't have an account? Sign-up</p>
-            </form>
+            {props.isLogin ?
+                <>
+                    <h2>Log-in</h2>
+                    <form className="login__form" onSubmit={(e)=>submitLogin(e)}>
+                        <label htmlFor="email">Email</label>
+                        <input className={(emailNotFound || incorrectLoginEmail) && "red_border"} type="text" id="email" name="email" required value={login.email} onChange={(e) => handleLogin(e)}></input>
+                        {emailNotFound && <p className="error_text red-text">Email not found</p>}
+                        {incorrectLoginEmail && <p className="error_text red-text">Invalid email</p>}
+                        <label htmlFor="password">Password</label>
+                        <input className={incorrectPassword && "red_border"} type="password" id="password" name="password" required value={login.password} onChange={(e) => handleLogin(e)}></input>
+                        {incorrectPassword && <p className="error_text red-text">Incorrect password</p>}
+                        <p>Forgot Password?</p>
+                        <button type="submit" className="button">Log in</button>
+                        <p>Don't have an account? <a href="/Sign-up">Sign-up</a></p>
+                    </form>
+                </>
+                :
+                <>  
+                    <h2>Sign-up</h2>
+                    <form className="login__form" onSubmit={(e) => submitRegister(e)}>
+                        <label htmlFor="forename">Forename</label>
+                        <input type="text" name="forename" id="forename" onChange={(e)=>handleRegister(e)} value={register.forename}></input>
+                        <label htmlFor="surname">Surname</label>
+                        <input type="text" name="surname" id="surname"  onChange={(e)=>handleRegister(e)} value={register.surname}></input>
+                        <label htmlFor="email">Email</label>
+                        <input className={(emailAlreadyInUse || invalidRegistrationEmail) ? "red_border" : ""} type="text" id="email" name="email" required value={register.email} onChange={(e) => handleRegister(e)}></input>
+                        {emailAlreadyInUse && <p className="error_text red-text">Email already in use</p>}
+                        {invalidRegistrationEmail && <p className="error_text red-text">Invalid email</p>}
+                        <label htmlFor="password">Password</label>
+                        <input className={(weakPassword) ? "red_border" : ""} type="password" id="password" name="password" required value={register.password} onChange={(e) => handleRegister(e)}></input>        
+                        {weakPassword && <p className="error_text red-text">Weak password</p>}
 
-            
-            <form className="login__form" onSubmit={(e) => submitRegister(e)}>
-                <label htmlFor="forename">Forename</label>
-                <input type="text" name="forename" id="forename" onChange={(e)=>handleRegister(e)} value={register.forename}></input>
-                <label htmlFor="surname">Surname</label>
-                <input type="text" name="surname" id="surname"  onChange={(e)=>handleRegister(e)} value={register.surname}></input>
-                <label htmlFor="email">Email</label>
-                <input className={(emailAlreadyInUse || invalidRegistrationEmail) && "red_border"} type="text" id="email" name="email" required value={register.email} onChange={(e) => handleRegister(e)}></input>
-                {emailAlreadyInUse && <p className="error_text red-text">Email already in use</p>}
-                {invalidRegistrationEmail && <p className="error_text red-text">Invalid email</p>}
-                <label htmlFor="password">Password</label>
-                <input className={(weakPassword) && "red_border"} type="password" id="password" name="password" required value={register.password} onChange={(e) => handleRegister(e)}></input>        
-                {weakPassword && <p className="error_text red-text">Weak password</p>}
-                <div className="password_strength">
-                    <p className={passwordStrength.upperCase ? "green" : "grey-text"}>At least one upper case letter</p>
-                    <p className={passwordStrength.lowerCase ? "green" : "grey-text"}>At least one lower case letter</p>
-                    <p className={passwordStrength.digit ? "green" : "grey-text"}>At least one number</p>
-                    <p className={passwordStrength.length ? "green" : "grey-text"}>At least 8 letter</p>
-                </div>
-                <label htmlFor="password_check">Re-enter Password</label>
-                <input className={(weakPassword || passwordsDontMatch) && "red_border"} type="password" id="password_check" name="password_check" value={register.password_check} onChange={(e)=>handleRegister(e)}></input>
-                {passwordsDontMatch && <p className="error_text red-text">Passwords don't match!</p>}
-                
-                <button type="submit" className="button">Register</button>
+                        <div className="password_strength">
+                            <p className={passwordStrength.upperCase ? "green" : "grey-text"}>At least one upper case letter</p>
+                            <p className={passwordStrength.lowerCase ? "green" : "grey-text"}>At least one lower case letter</p>
+                            <p className={passwordStrength.digit ? "green" : "grey-text"}>At least one number</p>
+                            <p className={passwordStrength.length ? "green" : "grey-text"}>At least 8 letter</p>
+                        </div>
+                        <label htmlFor="password_check">Re-enter Password</label>
+                        <input className={(weakPassword || passwordsDontMatch) ? "red_border" : ""} type="password" id="password_check" name="password_check" value={register.password_check} onChange={(e)=>handleRegister(e)}></input>
+                        {passwordsDontMatch && <p className="error_text red-text">Passwords don't match!</p>}
+                        
+                        <button type="submit" className="button">Register</button>
 
-                <p> Already have an account? Log-in</p>
-            </form>
+                        <p> Already have an account? <a href="/log-in">Log-in</a></p>
+                    </form>
+                </>
+            }
         </div>
     </main>
 }

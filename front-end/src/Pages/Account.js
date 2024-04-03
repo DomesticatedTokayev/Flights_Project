@@ -8,7 +8,7 @@ function Account()
     const navigate = useNavigate();
 
     function navigateToAccountDetails() {
-        navigate("/accountDetails");
+        navigate("/account/details");
     };
 
     return <main>

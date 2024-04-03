@@ -27,9 +27,13 @@ function Header()
         event.stopPropagation();
     }
 
+    function returnHome() {
+        window.location.href = "/";
+    }
+
     return <header className="header">
         <>
-        <h1>This is a Header</h1>
+        <h1 onClick={returnHome}>Flights Finder</h1>
             <div ref={ref} className="sidebar" id="sideBar" onClick={handleHeaderClick}>
                 <button className="button round_btn" onClick={()=>toggleSideMenu("none")}>X</button>
                 <HeaderLinks/>
@@ -47,5 +51,3 @@ function Header()
 }
 
 export default Header;
-
-//<a href="/log-out">Log-out</a>

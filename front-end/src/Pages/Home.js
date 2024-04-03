@@ -3,7 +3,6 @@ import SearchForm from "../components/SearchForm";
 import {SearchFlightsWithProps} from "../components/SearchFlights.js";
 import Flight from "../components/Flight.js";
 import Gallerry from "../components/Gallery.js";
-import image from "../images/Skyscraper.jpg";
 import FlightShowcase from "../components/FlightsShowcase.js";
 
 // UseContext test
@@ -13,7 +12,6 @@ function Home()
 {
     // UseContext test
     const data = useTopAccess();
-    //data.PrintAlert("YEs");
 
     const [flights, setFlights] = React.useState([]);
     const [searching, setSearching] = React.useState(false);
@@ -56,25 +54,50 @@ function Home()
         setSearching(false);
     };
 
+    // Place into own file
+    const images = [
+        {
+            original: "../../images/Plane_1.jpg",
+            description: "",
+        },
+        {
+            original: "../../images/Holiday_Essencials_1.jpg",
+            description: "",
+
+        },
+        {
+            original: "../../images/Portugal_1.jpg",
+            description: "",
+        },
+        {
+            original: "../../images/Suitcase_1.jpg",
+            description: "",
+        },
+        {
+            original: "../../images/Houses_1.jpg",
+            description: "",
+        },
+    ];
+
     const showcase = [
         {
             destination: "Barcelona",
-            imageURL: "../../images/img_01.jpg",
+            imageURL: "../../images/Barcelona.jpg",
             price: 20,
         },
         {
             destination: "France",
-            imageURL: "../../images/img_02.jpg",
+            imageURL: "../../images/France.jpg",
             price: 80,
         },
         {
             destination: "Miami",
-            imageURL: "../../images/img_03.jpg",
+            imageURL: "../../images/Miami.jpg",
             price: 3300,
         },
         {
-            destination: "Frankfurt",
-            imageURL: "../../images/img_04.png",
+            destination: "Switzerland",
+            imageURL: "../../images/Switzerland.jpg",
             price: 50,
         },
     ]
@@ -82,12 +105,8 @@ function Home()
     return <main>
         <div className="home">
             {/* <img className="home__image" src={image} alt="Plane and skyscraper image"></img> */}
-
-            <div className="home__gallery">
-                <Gallerry/>
-            </div>
-            
             <div className="home__search">
+                <h2 className="align-center">Search Flights</h2>
                 <SearchForm             
                     origin=""
                     destination=""
@@ -102,6 +121,7 @@ function Home()
                     isSearching={searching} 
                     />
             </div>
+
             <div className={flights.length > 1 ? "home__destinations grid_layout" : "home__destinations block_layout"}>
                 {(hasSearched === true && flights.length <= 0) && <h3 className="align-center">No flights found!</h3>}
                 {flights && flights.map((item, index) => {
@@ -122,7 +142,19 @@ function Home()
                         />
                 })}          
             </div>
+
+            <div className="home__gallery">
+                <h2 className="align-center">Find the holiday of your dreams</h2>
+                <div className="gallery">
+                    <Gallerry images={images} />
+                </div>
+            </div>
+
+            {/* Add sliding cards */}
+            {/* https://www.google.com/search?client=opera-gx&q=html+sliding+cards&sourceid=opera&ie=UTF-8&oe=UTF-8 */}
+
             <div className="home__showcase">
+                <h2 className="align-center">Popular Destinations</h2>
                 <div className="destinations">
                     {showcase.map((item, index) => {
                         return <FlightShowcase key={index} item={item}/>;

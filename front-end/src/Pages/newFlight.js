@@ -114,7 +114,7 @@ function NewFlight() {
         
         
         // Return to custom flights
-        navigate("/custom");
+        navigate("/saved/flights");
     }
     // When setting flight data, form isn't updated immediatly
     return<>
