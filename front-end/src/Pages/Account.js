@@ -17,7 +17,7 @@ function Account()
             <p className="account_name grey-text">{auth.user ? auth.user : "User Name"}</p>
             <div className="account__links">
                 {/* Use buttons instead of links (Also use navigate instead href: To return back without errors) */}
-                <button  onClick={navigateToAccountDetails}>Account Details</button>
+                <button className="button-link" onClick={navigateToAccountDetails}>Account Details</button>
                 {/* <a href="###">Subscription</a>
                 <a href="###">Payment Details</a>
                 <a href="###">Help</a> */}

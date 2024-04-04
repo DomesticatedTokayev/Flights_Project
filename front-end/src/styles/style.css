@@ -48,7 +48,7 @@ textarea{
     /* STANDARD MARGIN */
     --STANDARD_MARGIN: 10px 0 10px 0; 
     --STANDARD_MARGIN_HORIZONTAL: 20px; 
-    --STANDARD_HEADERS_BOTTOM_MARGIN: 8px;
+    --STANDARD_HEADERS_BOTTOM_MARGIN: 10px;
 
     /* STANDARD BORDER_RADIUS */
     --STANDATD_BORDER_RADIUS: 20px;
@@ -122,9 +122,15 @@ textarea{
     animation: spin 2s linear infinite;
 }
 
-.loader__custom-flight{
+.loader__saved-flight{
     width: 90px;
     height: 90px;
+}
+
+.button-link{
+    padding: 0;
+    border: none;
+    background: none;
 }
 
 /* Safari*/
@@ -149,19 +155,10 @@ header{
     background-color: var(--HEADER_BGCOLOR);
     border-bottom: solid black 5px;
     width: 100%;
-
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    align-content: center;
-    
-    padding: 15px 8px;
 }
 
 main{
     background-color: var(--MAIN_BGCOLOR);
-
     max-width: 1200px;
     min-height: 100vh;
     margin: 0 auto;
@@ -172,6 +169,7 @@ main{
 footer{
     background-color: var(--HEADER_BGCOLOR);
     height: 100px;
+    padding: 20px;
     bottom: 0;
 }
 
@@ -196,7 +194,7 @@ h4{
     font-size: 1.6rem;
 }
 
-p, a, label{
+p, a, label, button.button-link{
     font-size: 1.3rem;
 
 }
@@ -205,12 +203,12 @@ input, select{
     font-size: 1.3rem;
 }
 
-p, a, button, input, label, select{
+p, a, button, input, label, select, button.button-link {
     font-family: var(--FF-HEADINGS);
     color: black;
 }
 
-a
+a, button.button-link
 {
     font-weight: bold;
     text-decoration: none;
@@ -228,6 +226,7 @@ button:focus-visible
 {
     /* color: grey; */
     text-decoration: underline;
+    border: none;
 }
 
 a:active,
@@ -262,6 +261,19 @@ button:active
 
 .header h1:hover, .header:focus-visible{
     cursor: pointer;
+}
+
+.header
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    
+    padding: var(--MAIN_PADDING);
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 /* || SIDEBAR --------------------------------------------------------------------*/
@@ -391,7 +403,7 @@ button:active
 
 .flight{
     border: 2px solid black;
-    background-color: white;
+    background: var(--HEADER_BGCOLOR);
     margin: 10px 10px;
     min-height: 180px;
     padding: 10px;
@@ -567,17 +579,22 @@ button:active
     width: 50px;
 }
 
-/* || Flight Card --------------------------------------------------------------------------*/
-.custom{
+/* || SAVED -------------------------------------------------------------------------------*/
+
+.saved{
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    /* gap: 15px; */
 }
 
-.custom button{
+.saved button{
     max-width: 300px;
+    margin-bottom: 10px;
 }
+
+
+/* || Flight Card --------------------------------------------------------------------------*/
 
 .card{
     background: var(--HEADER_BGCOLOR);
@@ -585,15 +602,13 @@ button:active
     border-radius: var(--STANDATD_BORDER_RADIUS);
 
     /* margin-bottom: 10px; */
-    min-height: 220px;
+    min-height: 200px;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    /* padding: 10px 20px; */
-
-    /* flex-basis: auto; */
+    margin-bottom: 20px; 
 }
 
 .col{
@@ -661,30 +676,17 @@ button:active
 }
 
 .card__options{
-    background: var(--OPTIONS_COLOR);
+    /* background: var(--OPTIONS_COLOR); */
     border-radius: var(--STANDATD_BORDER_RADIUS);
     flex:1;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 20px;
-
+    gap: 5px;
+    height: 100%;
 }
 .card__options .button{
     width: 150px;
-}
-
-/* || CUSTOM ----------------------------------------------------------------------------*/ 
-.custom_button{
-
-}
-
-
-/* || CUSTOM SIDE BAR (SEARCHED FLIGHTS) ------------------------------------------------*/
-.custom__sidebar{
-    /* display: block; */
-    width: 50%;
 }
 
 /* || LOGIN -----------------------------------------------------------------------------*/ 
@@ -771,10 +773,15 @@ color: green;
     margin-top: 15px;
 }
 
+
+
 /* || ACCOUNT_DETAILS -------------------------------------------------------------------*/ 
 .account_details{
     text-align: center;
-    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
 }
 
 .account_details .title{
@@ -785,10 +792,15 @@ color: green;
     min-height: 30px;
 }
 
-.delete_account{
-
+.account_details button.delete_account{
+    color: red;
 }
 
+.account_details .delete_buttons{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
 /* || DETAILS_ENTRY ---------------------------------------------------------------------*/ 
 .entry{
     /* position: absolute; */
@@ -872,15 +884,12 @@ color: green;
         text-align: center;
     }
 
-    .card__directions{
-        /* max-width: 60%; */
-    }
-
     .card__options{
         flex-direction: row;
+
     }
 
-    .custom__sidebar{
+    .saved__sidebar{
         width: 90%;
     }
 
@@ -924,6 +933,12 @@ color: green;
 
     .gap{
         flex-direction: column;
+    }
+
+    .card__options{
+        /* flex-direction: column; */
+        display: grid;
+        grid-template-columns: auto auto;
     }
 
 }

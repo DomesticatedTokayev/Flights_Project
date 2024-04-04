@@ -46,6 +46,9 @@ function AccountDetails()
     const [updated, setUpdated] = React.useState(false);
 
     const [isLoading, setIsLoading] = React.useState(false);
+    const [isSaving, setIsSaving] = React.useState(false);
+
+    const [confirmDelete, setConfirmDelete] = React.useState(false);
 
     function updateDetails(name, value)
     {
@@ -205,6 +208,7 @@ function AccountDetails()
             data: body,
         };
 
+        setIsSaving(true);
 
         await axios(config)
             .then((result) => {
@@ -256,6 +260,7 @@ function AccountDetails()
                 setNewPassword("");
             });
         
+            setIsSaving(false);
 
     };
 
@@ -317,8 +322,7 @@ function AccountDetails()
             .catch(error => {
                 const errorCode = error.response.data.errorCode;
                 
-                switch (errorCode)
-                {
+                switch (errorCode) {
                     case "S110": {
                         // alert(error.response.data.message);
                         SetSaved("Failed to delete account", false);
@@ -335,115 +339,137 @@ function AccountDetails()
                         break;
                     }
                 }
-        })
+            });
+    };
+
+    function toggleConfirmDelete() {
+        setConfirmDelete(!confirmDelete);
     }
 
     return <main>
         <div className="account_details">
-            <h2 className="title">This is Account Details</h2>
-
-            <div className="entry">
-            <div className="entry__data">   
-                <p className="entry__name">{"Forename"}</p>
-                    <form className="entry__form" onSubmit={sendUpdatedDetails}>
-                        {isLoading ? <div className="loader_slot"><div className="loader"></div></div> :
-                            <>
-                                {!isEditing ? 
-                                    <p className="entry__userdata grey-text">{details.forename.length > 0 ? details.forename : "Not set"}</p>
-                                    :
-                                    <input type="text" id="forename" onChange={(e) => (updateDetails("forename", e.target.value))} value={details.forename}></input> 
+            <div>
+                <h2 className="title">This is Account Details</h2>
+                <div className="entry">
+                    <div className="entry__data">   
+                        <p className="entry__name">{"Forename"}</p>
+                            <form className="entry__form" onSubmit={sendUpdatedDetails}>
+                                {isLoading ? <div className="loader_slot"><div className="loader"></div></div> :
+                                    <>
+                                        {!isEditing ? 
+                                            <p className="entry__userdata grey-text">{details.forename.length > 0 ? details.forename : "Not set"}</p>
+                                            :
+                                            <input type="text" id="forename" onChange={(e) => (updateDetails("forename", e.target.value))} value={details.forename}></input> 
+                                        }
+                                    </>
                                 }
-                            </>
-                        }
-                    </form>
-            </div>
-            </div>
+                            </form>
+                    </div>
+                    </div>
 
-            <div className="entry">
-            <div className="entry__data">   
-                <p className="entry__name">{"Surname"}</p>
-                    <form className="entry__form" onSubmit={sendUpdatedDetails}>
-                        {isLoading ? <div className="loader_slot"><div className="loader"></div></div> :
-                            <>
-                                {!isEditing ?
-                                    <p className="entry__userdata grey-text">{details.surname.length > 0 ? details.surname : "Not set"}</p>
-                                    :
-                                    <input type="text" id="surname" onChange={(e) => (updateDetails("surname", e.target.value))} value={details.surname}></input>
+                    <div className="entry">
+                    <div className="entry__data">   
+                        <p className="entry__name">{"Surname"}</p>
+                            <form className="entry__form" onSubmit={sendUpdatedDetails}>
+                                {isLoading ? <div className="loader_slot"><div className="loader"></div></div> :
+                                    <>
+                                        {!isEditing ?
+                                            <p className="entry__userdata grey-text">{details.surname.length > 0 ? details.surname : "Not set"}</p>
+                                            :
+                                            <input type="text" id="surname" onChange={(e) => (updateDetails("surname", e.target.value))} value={details.surname}></input>
+                                        }
+                                    </>
                                 }
-                            </>
-                        }
-                    </form>
-            </div>
-            </div>
-            
-            <div className="entry">
-            <div className="entry__data">   
-                <p className="entry__name">{"Email"}</p>
-                    <form className="entry__form" onSubmit={sendUpdatedDetails}>
-                    {isLoading ? <div className="loader_slot"><div className="loader"></div></div> :
-                        <>
-                            {!isEditing ?
-                                <p className="entry__userdata grey-text">{details.email}</p>
-                                :
+                            </form>
+                    </div>
+                    </div>
+
+                    <div className="entry">
+                    <div className="entry__data">   
+                        <p className="entry__name">{"Email"}</p>
+                            <form className="entry__form" onSubmit={sendUpdatedDetails}>
+                            {isLoading ? <div className="loader_slot"><div className="loader"></div></div> :
                                 <>
-                                    <input className={invalidEmail && "red_border"} type="text" id="email" onChange={handleNewEmail} value={details.email} required></input>  
-                                    {passwordNotMatch && <p className="red-text error_text">Passwords don't match!</p>}
-                                    {invalidEmail && <p className="red-text error_text">Invalid Email</p>}
+                                    {!isEditing ?
+                                        <p className="entry__userdata grey-text">{details.email}</p>
+                                        :
+                                        <>
+                                            <input className={invalidEmail && "red_border"} type="text" id="email" onChange={handleNewEmail} value={details.email} required></input>  
+                                            {passwordNotMatch && <p className="red-text error_text">Passwords don't match!</p>}
+                                            {invalidEmail && <p className="red-text error_text">Invalid Email</p>}
+                                        </>
+                                    }
                                 </>
                             }
-                        </>
-                    }
-                    </form>
-            </div>
-            </div>
-
-            <div className="entry">
-            <div className="entry__data">   
-                <p className="entry__name">{"Password"}</p>
-                    <form className="entry__form" onSubmit={sendUpdatedDetails}>
-                        <p className="entry__userdata grey-text">{"********"}</p>
-                        {isEditing && <>
-                            <label htmlFor="current_password">Current Password</label>
-                            <input className={incorrectCurrentPassword && "red_border"} type="text" id="current_password" name="current_password" onChange={(e)=>handleCurrentPassword(e.target.value)} value={currentPassword} required></input> 
-                            {incorrectCurrentPassword && <p className="error_text red-text">Incorrect password</p>}
-                            <label htmlFor="new_password">New Password</label>
-                            <input className={(passwordNotMatch || weakPassword) && "red_border"} type="text" id="new_password" name="new_password" onChange={(e) => handleNewPassword(e.target.value)} value={newPassword} required></input> 
-                            {weakPassword && <p className="red-text error_text">Weak Password</p>}
-                            <div className="password_strength">
-                                <p className={passwordStrength.upperCase ? "green" : "grey-text"}>At least one upper case letter</p>
-                                <p className={passwordStrength.lowerCase ? "green" : "grey-text"}>At least one lower case letter</p>
-                                <p className={passwordStrength.digit ? "green" : "grey-text"}>At least one number</p>
-                                <p className={passwordStrength.length ? "green" : "grey-text"}>At least 8 letter</p>
-                            </div>
-                            <label htmlFor="re-enter_password">Re-enter Password</label>
-                            <input className={(passwordNotMatch) && "red_border"} type="text" id="re-enter_password" name="re-enter_password" onChange={(e) => handlePasswordCheck(e.target.value)} value={passwordCheck} required></input> 
-                            {passwordNotMatch && <p className="red-text error_text">Passwords don't match!</p>}
-                        </>
-                    }
-                    </form>
-            </div>
-            </div>
-
-            {showMessage === true &&
-                <div className="error-message">
-                    <p className={showMessage ? "show red-text" : "hidden"}>
-                        {savedValue.message}
-                    </p>
+                            </form>
+                    </div>
                 </div>
-            }
 
-            {updated && <>
-                <p className="green"> Details Updated</p>
-            </>}
-            
-            <div>
-                {!isLoading && <>{!isEditing && <button className="button" onClick={toggleEditing}>Update</button>}</>}
-                
-                {isEditing && <button className="button" onClick={sendUpdatedDetails}>Save</button>}
-                {isEditing && <button className="button" onClick={toggleEditing}>Cancel</button>}
+                <div className="entry">
+                <div className="entry__data">   
+                    <p className="entry__name">{"Password"}</p>
+                        <form className="entry__form" onSubmit={sendUpdatedDetails}>
+                            <p className="entry__userdata grey-text">{"********"}</p>
+                            {isEditing && <>
+                                <label htmlFor="current_password">Current Password</label>
+                                <input className={incorrectCurrentPassword && "red_border"} type="text" id="current_password" name="current_password" onChange={(e)=>handleCurrentPassword(e.target.value)} value={currentPassword} required></input> 
+                                {incorrectCurrentPassword && <p className="error_text red-text">Incorrect password</p>}
+                                <label htmlFor="new_password">New Password</label>
+                                <input className={(passwordNotMatch || weakPassword) && "red_border"} type="text" id="new_password" name="new_password" onChange={(e) => handleNewPassword(e.target.value)} value={newPassword} required></input> 
+                                {weakPassword && <p className="red-text error_text">Weak Password</p>}
+                                <div className="password_strength">
+                                    <p className={passwordStrength.upperCase ? "green" : "grey-text"}>At least one upper case letter</p>
+                                    <p className={passwordStrength.lowerCase ? "green" : "grey-text"}>At least one lower case letter</p>
+                                    <p className={passwordStrength.digit ? "green" : "grey-text"}>At least one number</p>
+                                    <p className={passwordStrength.length ? "green" : "grey-text"}>At least 8 letter</p>
+                                </div>
+                                <label htmlFor="re-enter_password">Re-enter Password</label>
+                                <input className={(passwordNotMatch) && "red_border"} type="text" id="re-enter_password" name="re-enter_password" onChange={(e) => handlePasswordCheck(e.target.value)} value={passwordCheck} required></input> 
+                                {passwordNotMatch && <p className="red-text error_text">Passwords don't match!</p>}
+                            </>
+                        }
+                        </form>
+                </div>
+                </div>
+
+                {showMessage === true &&
+                    <div className="error-message">
+                        <p className={showMessage ? "show red-text" : "hidden"}>
+                            {savedValue.message}
+                        </p>
+                    </div>
+                }
+
+                {updated && <>
+                    <p className="green"> Details Updated</p>
+                </>}
+
+                <div>
+                    {!isLoading && <>{!isEditing && <button className="button" onClick={toggleEditing}>Update</button>}</>}
+                    
+                    {!isSaving ?
+                        <>
+                            {isEditing && <button className="button" onClick={sendUpdatedDetails}>Save</button>}
+                            {isEditing && <button className="button" onClick={toggleEditing}>Cancel</button>}
+                        </>
+                        :
+                        <>
+                            <div className="loader_slot"><div className="loader"></div></div>
+                        </>}
+                    
+                </div>
             </div>
-
-            <button className="delete_account red-text" onClick={() => handleDeleteAccount()}>Delete Account</button>
+            
+            <div className="delete_buttons">
+                {!confirmDelete ? 
+                    <button className="delete_account button-link" onClick={toggleConfirmDelete}>Delete Account</button>
+                    :
+                    <>
+                    <button className="delete_account button-link" onClick={() => handleDeleteAccount()}>Confirm to Delete Account</button>
+                    <button className=" button-link" onClick={toggleConfirmDelete}>Cancel</button>
+                    </>
+                }
+            </div>
         </div>
     </main>
 }

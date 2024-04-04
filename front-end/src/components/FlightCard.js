@@ -6,6 +6,7 @@ function FlightCard(props)
 {
     const [id, setID] = React.useState(undefined);
 
+    const [showOptions, setShowOptions] = React.useState(false);
 
     React.useEffect(() => {
         setID(props.id);
@@ -60,6 +61,10 @@ function FlightCard(props)
             props.minStay,
             props.maxStay
         );
+    };
+
+    function toggleOptions() {
+        setShowOptions(prevValue => (!prevValue));
     }
 
     return <div className="card">
@@ -118,7 +123,7 @@ function FlightCard(props)
                 <p className="grey-text">Max Price</p>
               
                 <div className="price">
-                {(props.maxPrice !== null && props.maxPrice !== "null") ? <>
+                {(props.maxPrice !== null && props.maxPrice !== "") ? <>
                         <p>£</p>
                         <p>{props.maxPrice}</p>
                     </> :
@@ -129,18 +134,27 @@ function FlightCard(props)
                 
             </div>
         </div>
-        {/* Determin if user is in edit or new flight: Set titles to appropriate names */}
-        <div className="col card__options">
-            {props.isAddFlight ? 
-                <button className="button full_width" onClick={handleAddFlight}>Add</button> :
+
+
+            <div className="col card__options">
+                {props.isAddFlight ? 
+                    <button className="button full_width" onClick={handleAddFlight}>Add</button> :
                 <>
+                {showOptions ? <>
                     <button className="button" onClick={handleSearch}>Search</button>
                     <button className="button" onClick={handleEdit}>Edit</button>
                     <button className="button" onClick={handleDelete}>Delete</button>
+                    <button className="button" onClick={toggleOptions}>Cancel</button>
                 </>
-            }
+                :
+                <>
+                <div className="col card__options">
+                <button className="button" onClick={toggleOptions}>Options</button>
+                </div>
+                </>}    
+                </>}
             </div>
-    
+             
     </div>
 }
 

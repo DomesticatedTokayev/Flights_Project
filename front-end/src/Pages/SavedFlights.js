@@ -10,7 +10,7 @@ import Flight from "../components/Flight.js";
 import UseOutsideClick from "../components/UseOutsideClick.js";
 import {SearchFlightsWithParam} from "../components/SearchFlights.js";
 
-function CustomFlight() {
+function SavedFlight() {
     const auth = useAuth();
 
     const navigate = useNavigate();
@@ -63,7 +63,7 @@ function CustomFlight() {
     // Put this into its own function (Repeating code!)
     function toggleSideMenu(setting)
     {
-        const sideMenu = document.getElementById("custom__sidebar");
+        const sideMenu = document.getElementById("saved__sidebar");
         sideMenu.style.display = setting;
         
         // On close, delete flight data
@@ -180,12 +180,11 @@ function CustomFlight() {
     // Flight card keeps getting re-rendered when not required
 
     return <main>
-        <div className="custom">
+        <div className="saved">
             <h2 className="align-center">Saved Flights</h2>
-            <button className="button custom_button" onClick={handleNew}>Add New Destination</button>
+            <button className="button saved_button" onClick={handleNew}>Add New Destination</button>
             
             {loadingFlights ? <div className="loader_slot"><div className="loader"></div></div> : ""}
-
             {(savedFlights.length > 0) && 
                 <>
                 {savedFlights.map((item, index) => {
@@ -208,12 +207,12 @@ function CustomFlight() {
                         handleDelete={handleDelete}
                     />
                 })}
-            </>
+                </> 
             }
 
-            <div ref={ref} className="custom__sidebar sidebar" id="custom__sidebar" onClick={handleSideBarClick}>
-                <button className="button round_btn" onClick={() => toggleSideMenu("none")}>X</button>
-                {(flights.length <= 0 && searchComplete === false) && <div className="loader_slot"> <div className="loader loader__custom-flight"></div> </div>}
+            <div ref={ref} className="saved__sidebar sidebar" id="saved__sidebar" onClick={handleSideBarClick}>
+                <button className="button round_btn" onClick={() => toggleSideMenu("none")}><span class="material-symbols-outlined">close</span></button>
+                {(flights.length <= 0 && searchComplete === false) && <div className="loader_slot"> <div className="loader loader__saved-flight"></div> </div>}
                 {(flights.length <= 0 && searchComplete === true) && <div className="loader_slot"> <p>No Flights Found</p></div>}
                 {flights.map((item, index) => {
                     return <Flight
@@ -239,4 +238,4 @@ function CustomFlight() {
     </main>
 }
 
-export default CustomFlight;
+export default SavedFlight;

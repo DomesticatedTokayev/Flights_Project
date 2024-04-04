@@ -65,7 +65,7 @@ function Search(props) {
                 </div>
                 <div>
                     <label htmlFor="to">To</label>
-                    <input onChange={updateSearch} type="date" name="to" id="to" placeholder="To" value={data.to} ></input>
+                    <input onChange={updateSearch} type="date" name="to" id="to" placeholder="To" value={data.to} required></input>
                 </div>
                 <div>
                     <label htmlFor="return">Return</label>

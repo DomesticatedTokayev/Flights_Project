@@ -104,7 +104,7 @@ function SignIn(props)
         axios(configuration)
             .then((result) => {
                 // On registration, redirect to sign-in
-                window.location.href = "/sign-in";
+                window.location.href = "/log-in";
             })
             .catch((error) => {
                 // Error Code 5 = Email already exists

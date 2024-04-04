@@ -31,11 +31,11 @@ function Header()
         window.location.href = "/";
     }
 
-    return <header className="header">
-        <>
+    return <header >
+        <div className="header">
         <h1 onClick={returnHome}>Flights Finder</h1>
             <div ref={ref} className="sidebar" id="sideBar" onClick={handleHeaderClick}>
-                <button className="button round_btn" onClick={()=>toggleSideMenu("none")}>X</button>
+                <button className="button round_btn" onClick={()=>toggleSideMenu("none")}><span class="material-symbols-outlined">close</span></button>
                 <HeaderLinks/>
             </div>
 
@@ -44,9 +44,9 @@ function Header()
             </div>
 
             <div className="open_sidemenu">
-                <button className="button round_btn" onClick={()=>toggleSideMenu("block")}>|||</button>
+                <button className="button round_btn" onClick={()=>toggleSideMenu("block")}><span class="material-symbols-outlined">menu</span></button>
             </div>
-        </>
+        </div>
     </header>
 }
 
