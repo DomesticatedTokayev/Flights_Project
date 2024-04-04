@@ -99,14 +99,14 @@ function FlightCard(props)
             <div className="date_time">
                 <div className="gap">
                     <div className="dates">
-                        <p><span className="grey-text">From: </span>{props.from}</p>
+                        <p className="no-wrap"><span className="grey-text">From: </span>{props.from}</p>
                         <p></p>
-                        <p><span className="grey-text">To:</span> {props.to}</p>
+                        <p className="no-wrap"><span className="grey-text">To:</span> {props.to}</p>
                     </div>
                     {props.return === "return"  && <>
                         <div className="times">
-                        <p><span className="grey-text">Min-nights:</span> {props.minStay}</p>
-                        <p><span className="grey-text">Max-nights:</span> {props.maxStay}</p>
+                        <p><span className="grey-text no-wrap">Min-nights:</span> {props.minStay}</p>
+                        <p><span className="grey-text no-wrap">Max-nights:</span> {props.maxStay}</p>
                     </div>
                     </>}
                    
@@ -134,8 +134,8 @@ function FlightCard(props)
             {props.isAddFlight ? 
                 <button className="button full_width" onClick={handleAddFlight}>Add</button> :
                 <>
-                    <button className="button" onClick={handleEdit}>Edit</button>
                     <button className="button" onClick={handleSearch}>Search</button>
+                    <button className="button" onClick={handleEdit}>Edit</button>
                     <button className="button" onClick={handleDelete}>Delete</button>
                 </>
             }

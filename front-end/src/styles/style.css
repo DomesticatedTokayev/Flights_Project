@@ -34,8 +34,9 @@ textarea{
     --FONT_FLIGHT_SIZE: 1.5rem;
     /* COLORS */
     --HEADER_BGCOLOR: lightblue;
-    --MAIN_BGCOLOR: #31304D;
-    --BGCOLOR: #3f3d63;
+    --MAIN_BGCOLOR: white;
+    --BG_COLOR: white;
+    --OPTIONS_COLOR: lightgray;
     /* BORDERS */
     --BORDER_RADIUS: 10px;
 
@@ -59,6 +60,10 @@ textarea{
 /* || UTILITY CLASSES -------------------------------------------------------------------*/
 .text-gap{
     gap: 7px;
+}
+
+.no-wrap{
+    text-wrap: nowrap;
 }
 
 .break{
@@ -135,7 +140,7 @@ textarea{
 
 /* || GENERAL STYLES --------------------------------------------------------------------*/
 body{
-    background-color: lightgrey;
+    background-color: var(--BG_COLOR);
     padding: 0;
     margin: 0;
 }
@@ -155,7 +160,7 @@ header{
 }
 
 main{
-    background-color: white;
+    background-color: var(--MAIN_BGCOLOR);
 
     max-width: 1200px;
     min-height: 100vh;
@@ -292,7 +297,6 @@ button:active
 .home{
     /* background-color: lightgreen; */
     /* height: 100vh; */
-
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -355,7 +359,7 @@ button:active
     /* border: 2px solid black; */
     border-radius: var(--STANDATD_BORDER_RADIUS);
     text-align: center;
-    padding: 10px;
+    padding: var(--STANDARD_PADDING_HORIZONTAL);
     margin-bottom: 20px;
     background: var(--HEADER_BGCOLOR);
 }
@@ -379,7 +383,7 @@ button:active
 .gallery{
     border-radius: var(--STANDATD_BORDER_RADIUS);
     background: var(--HEADER_BGCOLOR); 
-    padding: 20px;
+    padding: var(--STANDARD_PADDING_HORIZONTAL);
 }
 
 
@@ -453,6 +457,11 @@ button:active
 .countries div p {
     width: 100%;
     text-align: center;
+
+}
+
+.countries div p:last-child{
+    height: 100%;
 }
 
 .city{
@@ -506,7 +515,8 @@ button:active
     width: 100%;
     display: flex;
     flex-direction: column;
-    padding: 10px 20px;
+    /* padding: 10px 20px; */
+    padding: var(--STANDARD_PADDING_HORIZONTAL);
     padding-bottom: 20px;
 }
 
@@ -570,9 +580,8 @@ button:active
 }
 
 .card{
-    background: white;
-    /* Place into variable -============================================<<<<====================<<<<<<<<<<<<<<<<<<<<<<<<<<< */
-    border: 2px solid black; 
+    background: var(--HEADER_BGCOLOR);
+    /* border: 2px solid black;  */
     border-radius: var(--STANDATD_BORDER_RADIUS);
 
     /* margin-bottom: 10px; */
@@ -582,7 +591,7 @@ button:active
     justify-content: space-between;
     align-items: center;
 
-    padding: 10px 20px;
+    /* padding: 10px 20px; */
 
     /* flex-basis: auto; */
 }
@@ -593,6 +602,7 @@ button:active
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: var(--MAIN_PADDING);
 }
 
 .card__directions{
@@ -623,7 +633,7 @@ button:active
 .date_time{
     width: 100%;
     display: flex;
-    flex-direction: column;
+    /* flex-direction: row; */
     justify-content: center;
     align-items: center;
 }
@@ -647,26 +657,31 @@ button:active
 }
 
 .card__price .price p{
-    font-size: 3rem;
+    font-size: 2rem;
 }
 
 .card__options{
+    background: var(--OPTIONS_COLOR);
+    border-radius: var(--STANDATD_BORDER_RADIUS);
     flex:1;
 
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 20px;
-    /* align-content: space-evenly; */
 
 }
 .card__options .button{
     width: 150px;
 }
 
+/* || CUSTOM ----------------------------------------------------------------------------*/ 
+.custom_button{
+
+}
 
 
-/* || Custom SIDE BAR (SEARCHED FLIGHTS) ------------------------------------------------*/
+/* || CUSTOM SIDE BAR (SEARCHED FLIGHTS) ------------------------------------------------*/
 .custom__sidebar{
     /* display: block; */
     width: 50%;
@@ -822,6 +837,69 @@ color: green;
 
 
 /* || MEDIA -----------------------------------------------------------------------------*/
+
+
+/* || MEDIUM */
+@media screen and (max-width: 846px){
+    .open_sidemenu{
+        display: block;
+    }
+
+    .header__landscape{
+        display: none;
+    }
+
+    .home__destinations{
+        display: block;
+        align-items: space-between;
+    }
+
+    .card{
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .card div{
+        width: 100%;
+        /* flex-direction: row; */
+    }
+
+    .card__dates{
+        flex-direction: row;
+    }
+
+    .dates p, .times p{
+        text-align: center;
+    }
+
+    .card__directions{
+        /* max-width: 60%; */
+    }
+
+    .card__options{
+        flex-direction: row;
+    }
+
+    .custom__sidebar{
+        width: 90%;
+    }
+
+    .home__showcase .destinations{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .showcase{
+        max-width: 100%;
+    }
+
+    .gap{
+        flex-direction: row;
+    }
+
+}
+
 /* || SMALL */
 @media screen and (max-width: 576px){
 
@@ -844,72 +922,12 @@ color: green;
         align-items: center;
     }
 
-    /* .card__options{
+    .gap{
         flex-direction: column;
-        gap: 5px
-    }
-
-    .card__options .button{
-        width: 300px;
-    } */
- 
-}
-
-/* || MEDIUM */
-@media screen and (max-width: 846px){
-    .open_sidemenu{
-        display: block;
-    }
-
-    .header__landscape{
-        display: none;
-    }
-
-    .home__destinations{
-        display: block;
-        align-items: space-between;
-    }
-
-    .card{
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    .card div{
-        width: 100%;
-    }
-
-    .card__dates{
-        flex-direction: row;
-    }
-
-    .dates p, .times p{
-        text-align: center;
-    }
-
-    .card__directions{
-        max-width: 60%;
-    }
-
-    .card__options{
-        flex-direction: row;
-    }
-
-    .custom__sidebar{
-        width: 90%;
-    }
-
-    .home__showcase .destinations{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .showcase{
-        max-width: 100%;
     }
 
 }
+
 /* || LARGE */
 @media screen and (min-width: 992px){
     

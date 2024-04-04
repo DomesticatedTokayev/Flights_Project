@@ -15,7 +15,7 @@ function CustomFlight() {
 
     const navigate = useNavigate();
 
-    const [customFlights, setcustomFlights] = useState([]);
+    const [savedFlights, setSavedFlights] = useState([]);
     const [flights, setFlights] = useState([]);
     const [searching, setSearching] = React.useState(false);
     const [searchComplete, setSearchComplete] = React.useState(false);
@@ -30,7 +30,7 @@ function CustomFlight() {
     };
 
     useEffect(() => {
-        setcustomFlights([]);
+        setSavedFlights([]);
         getData();
         
     }, [entryDeleted]); // Run on 'delete flight' only
@@ -50,7 +50,7 @@ function CustomFlight() {
 
         await axios(configuration)
             .then((result) => {
-                setcustomFlights(result.data);
+                setSavedFlights(result.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -182,13 +182,13 @@ function CustomFlight() {
     return <main>
         <div className="custom">
             <h2 className="align-center">Saved Flights</h2>
-            <button className="button" onClick={handleNew}>Add New Destination</button>
+            <button className="button custom_button" onClick={handleNew}>Add New Destination</button>
             
             {loadingFlights ? <div className="loader_slot"><div className="loader"></div></div> : ""}
 
-            {(customFlights.length > 0) && 
+            {(savedFlights.length > 0) && 
                 <>
-                {customFlights.map((item, index) => {
+                {savedFlights.map((item, index) => {
                     return <FlightCard 
                         key={item.id}
                         id={item.id}
