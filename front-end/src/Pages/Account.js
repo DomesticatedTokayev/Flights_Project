@@ -14,10 +14,13 @@ function Account()
     return <main>
         <div className="account">
             <h2>My Account</h2>
-            <p className="account_name grey-text">{auth.user ? auth.user : "User Name"}</p>
+            <p className="account_name grey-text text-overflow">{auth.user ? auth.user : "User Name"}</p>
             <div className="account__links">
                 {/* Use buttons instead of links (Also use navigate instead href: To return back without errors) */}
                 <button className="button-link" onClick={navigateToAccountDetails}>Account Details</button>
+                <button className="button-link disabled" onClick={null}>Subscription</button>
+                <button className="button-link disabled" onClick={null}>Help</button>
+                <button className="button-link disabled" onClick={null}>Contact Us</button>
                 {/* <a href="###">Subscription</a>
                 <a href="###">Payment Details</a>
                 <a href="###">Help</a> */}

@@ -47,7 +47,7 @@ function Flight(props) {
                     </div>
                 </div>
                 {props.return && <>
-                    <div className="break">
+                <div className="break">
                     <hr className="line-break"></hr>
                 </div>
                 <div className="countries text-gap">
