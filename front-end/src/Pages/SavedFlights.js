@@ -173,16 +173,15 @@ function SavedFlight() {
             .catch(error => {
                 console.log(error);
         })
-
-    }
+    };
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     // Flight card keeps getting re-rendered when not required
 
     return <main>
         <div className="saved">
-            <h2 className="align-center">Saved Flights</h2>
             <button className="button saved_button" onClick={handleNew}>Add New Destination</button>
+            <h2 className="align-center">Saved Flights</h2>
             
             {loadingFlights ? <div className="loader_slot"><div className="loader"></div></div> : ""}
             {(savedFlights.length > 0) && 
@@ -211,7 +210,7 @@ function SavedFlight() {
             }
 
             <div ref={ref} className="saved__sidebar sidebar" id="saved__sidebar" onClick={handleSideBarClick}>
-                <button className="button round_btn" onClick={() => toggleSideMenu("none")}><span class="material-symbols-outlined">close</span></button>
+                <button className="button round_btn" onClick={() => toggleSideMenu("none")}><span className="material-symbols-outlined">close</span></button>
                 {(flights.length <= 0 && searchComplete === false) && <div className="loader_slot"> <div className="loader loader__saved-flight"></div> </div>}
                 {(flights.length <= 0 && searchComplete === true) && <div className="loader_slot"> <p>No Flights Found</p></div>}
                 {flights.map((item, index) => {

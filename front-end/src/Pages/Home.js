@@ -104,7 +104,6 @@ function Home()
 
     return <main>
         <div className="home">
-            {/* <img className="home__image" src={image} alt="Plane and skyscraper image"></img> */}
             <div className="home__search">
                 <h2 className="align-center">Search Flights</h2>
                 <SearchForm             

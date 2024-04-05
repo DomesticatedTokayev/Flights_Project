@@ -349,7 +349,7 @@ function AccountDetails()
     return <main>
         <div className="account_details">
             <div>
-                <h2 className="title">This is Account Details</h2>
+                <h2 className="title">Account Details</h2>
                 <div className="entry">
                     <div className="entry__data">   
                         <p className="entry__name">{"Forename"}</p>
@@ -445,13 +445,13 @@ function AccountDetails()
                 </>}
 
                 <div>
-                    {!isLoading && <>{!isEditing && <button className="button" onClick={toggleEditing}>Update</button>}</>}
+                    {!isLoading && <>{!isEditing && <button className="button account__details_button" onClick={toggleEditing}>Update</button>}</>}
                     
                     {!isSaving ?
-                        <>
-                            {isEditing && <button className="button" onClick={sendUpdatedDetails}>Save</button>}
-                            {isEditing && <button className="button" onClick={toggleEditing}>Cancel</button>}
-                        </>
+                        <div className="save_buttons">
+                            {isEditing && <button className="button account__details_button" onClick={sendUpdatedDetails}>Save</button>}
+                            {isEditing && <button className="button account__details_button" onClick={toggleEditing}>Cancel</button>}
+                        </div>
                         :
                         <>
                             <div className="loader_slot"><div className="loader"></div></div>
@@ -462,10 +462,10 @@ function AccountDetails()
             
             <div className="delete_buttons">
                 {!confirmDelete ? 
-                    <button className="delete_account button-link" onClick={toggleConfirmDelete}>Delete Account</button>
+                    <button className="delete_account button-link account__details_button" onClick={toggleConfirmDelete}>Delete Account</button>
                     :
                     <>
-                    <button className="delete_account button-link" onClick={() => handleDeleteAccount()}>Confirm to Delete Account</button>
+                    <button className="delete_account button-link account__details_button" onClick={() => handleDeleteAccount()}>Confirm to Delete Account</button>
                     <button className=" button-link" onClick={toggleConfirmDelete}>Cancel</button>
                     </>
                 }

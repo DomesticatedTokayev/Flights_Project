@@ -120,7 +120,8 @@ function NewFlight() {
     return<>
     <main>
         <div className="custom_flight">
-            <div className="custom_flight__search">
+                <div className="custom_flight__search">
+                <h2 className="align-center">Search Flights</h2>
                 <SearchForm
                     origin={searchParams.get('origin') || ""} 
                     destination={searchParams.get('destination') || ""} 
@@ -137,11 +138,10 @@ function NewFlight() {
                 </div>
                 <div className="custom_flight__found-flights">
                 {(flights.length <= 0 && searchingComplete) && <p className="align-center">No Flights found</p>}
-                    {/* Add to any city only */}
                 {(flights && searchingComplete) && <>
                     {(flights.length > 0) && 
                         <>
-                        <p className="align-center">Any City</p>
+                        <h3 className="align-center">Any City</h3>
                         <FlightCard 
                             originCountry = {flights[0].originCountry}
                             destinationCountry = {flights[0].destinationCountry}
@@ -156,8 +156,7 @@ function NewFlight() {
                             />
                         </>
                     }
-                    {/* Section for specific cities */}
-                    <p className="align-center">Specific Cities</p>
+                        <h3 className="align-center">Specific Cities</h3>
                         {flights.map((item, index) => {
                         return <FlightCard
                             key={index}

@@ -75,10 +75,10 @@ function FlightCard(props)
                         {props.originCity && <p className="city grey-text">{props.originCity}</p>}
                         <p className="country ">{props.originCountry ? props.originCountry : "Origin"}</p>
                     </div>
-                    <span className="arrow material-symbols-outlined grey-text">east</span>
+                    <span className="arrow material-symbols-outlined grey-text arrow">east</span>
                     <div>
-                        {props.destinationCity &&  <p className="city grey-text">{props.destinationCity}</p>}   
-                        <p className="country ">{props.destinationCountry ? props.destinationCountry : "Origin"}</p>
+                        {props.destinationCity && <p className="city grey-text">{props.destinationCity}</p>}   
+                        <p className="country ">{props.destinationCountry ? props.destinationCountry : "Origin"}</p>        
                     </div>
                 </div>
                 {props.return === "return" && <>
@@ -87,13 +87,13 @@ function FlightCard(props)
                     </div>
                 <div className="countries text-gap">
                         <div>
-                        {props.destinationCity && <p className="city grey-text">{props.destinationCity}</p>}
-                        <p className="country ">{props.destinationCountry ? props.destinationCountry : "Origin"}</p>
+                            {props.destinationCity && <p className="city grey-text">{props.destinationCity}</p>}
+                            <p className="country ">{props.destinationCountry ? props.destinationCountry : "Origin"}</p> 
                     </div>
                     <span className="arrow material-symbols-outlined grey-text">east</span>
                         <div>
-                        {props.originCity && <p className="city grey-text">{props.originCity}</p>}
-                        <p className="country ">{props.originCountry ? props.originCountry : "Origin"}</p>
+                            {props.originCity && <p className="city grey-text">{props.originCity}</p>}
+                            <p className="country ">{props.originCountry ? props.originCountry : "Origin"}</p>
                     </div>
                 </div>
                 </>}
@@ -148,7 +148,7 @@ function FlightCard(props)
                 </>
                 :
                 <>
-                <div className="col card__options">
+                <div className="col">
                 <button className="button" onClick={toggleOptions}>Options</button>
                 </div>
                 </>}    
