@@ -49,6 +49,7 @@ function Search(props) {
     }
 
     return <form className="search" onSubmit={(e) => (submitSearch(e))}>
+    
         <div>
             <div className="search__inputs">
                 <div>
@@ -88,7 +89,7 @@ function Search(props) {
                 </div>
             </div>
         </div>
-        <button className="button" type="submit">{props.isSearching ?<div className="loader_slot"><div className="loader"></div></div> : "Search"}</button>
+        <button className="button scaled_button" type="submit">{props.isSearching ?<div className="loader_slot"><div className="loader"></div></div> : "Search"}</button>
 
     </form>;
 }

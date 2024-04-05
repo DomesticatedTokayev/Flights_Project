@@ -210,7 +210,7 @@ function SavedFlight() {
             }
 
             <div ref={ref} className="saved__sidebar sidebar" id="saved__sidebar" onClick={handleSideBarClick}>
-                <button className="button round_btn" onClick={() => toggleSideMenu("none")}><span className="material-symbols-outlined">close</span></button>
+                <button className="button-link" onClick={() => toggleSideMenu("none")}><span className="material-symbols-outlined">close</span></button>
                 {(flights.length <= 0 && searchComplete === false) && <div className="loader_slot"> <div className="loader loader__saved-flight"></div> </div>}
                 {(flights.length <= 0 && searchComplete === true) && <div className="loader_slot"> <p>No Flights Found</p></div>}
                 {flights.map((item, index) => {

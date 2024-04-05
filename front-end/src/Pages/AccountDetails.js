@@ -425,10 +425,10 @@ function AccountDetails()
                                 <p className="entry__userdata grey-text">{"********"}</p>
                                 {isEditing && <>
                                     <label htmlFor="current_password">Current Password</label>
-                                    <input className={incorrectCurrentPassword && "red_border"} type="text" id="current_password" name="current_password" onChange={(e)=>handleCurrentPassword(e.target.value)} value={currentPassword} required></input> 
+                                    <input className={incorrectCurrentPassword && "red_border"} type="password" id="current_password" name="current_password" onChange={(e)=>handleCurrentPassword(e.target.value)} value={currentPassword} required></input> 
                                     {incorrectCurrentPassword && <p className="error_text red-text">Incorrect password</p>}
                                     <label htmlFor="new_password">New Password</label>
-                                    <input className={(passwordNotMatch || weakPassword) && "red_border"} type="text" id="new_password" name="new_password" onChange={(e) => handleNewPassword(e.target.value)} value={newPassword} required></input> 
+                                    <input className={(passwordNotMatch || weakPassword) && "red_border"} type="password" id="new_password" name="new_password" onChange={(e) => handleNewPassword(e.target.value)} value={newPassword} required></input> 
                                     {weakPassword && <p className="red-text error_text">Weak Password</p>}
                                     <div className="password_strength">
                                         <p className={passwordStrength.upperCase ? "green" : "grey-text"}>At least one upper case letter</p>
@@ -437,15 +437,14 @@ function AccountDetails()
                                         <p className={passwordStrength.length ? "green" : "grey-text"}>At least 8 letter</p>
                                     </div>
                                     <label htmlFor="re-enter_password">Re-enter Password</label>
-                                    <input className={(passwordNotMatch) && "red_border"} type="text" id="re-enter_password" name="re-enter_password" onChange={(e) => handlePasswordCheck(e.target.value)} value={passwordCheck} required></input> 
+                                    <input className={(passwordNotMatch) && "red_border"} type="password" id="re-enter_password" name="re-enter_password" onChange={(e) => handlePasswordCheck(e.target.value)} value={passwordCheck} required></input> 
                                     {passwordNotMatch && <p className="red-text error_text">Passwords don't match!</p>}
                                 </>
                             }
                             </form>
                         </div>
                     </div>
-                </div>
-                {showMessage === true &&
+                    {showMessage === true &&
                     <div className="error-message">
                         <p className={showMessage ? "show red-text" : "hidden"}>
                             {savedValue.message}
@@ -458,12 +457,12 @@ function AccountDetails()
                 </>}
 
                 <div>
-                    {!isLoading && <>{!isEditing && <button className="button account__details_button" onClick={toggleEditing}>Update</button>}</>}
+                    {!isLoading && <>{!isEditing && <button className="button scaled_button" onClick={toggleEditing}>Update</button>}</>}
                     
                     {!isSaving ?
                         <div className="save_buttons">
-                            {isEditing && <button className="button account__details_button" onClick={sendUpdatedDetails}>Save</button>}
-                            {isEditing && <button className="button account__details_button" onClick={toggleEditing}>Cancel</button>}
+                            {isEditing && <button className="button scaled_button" onClick={sendUpdatedDetails}>Save</button>}
+                            {isEditing && <button className="button scaled_button" onClick={toggleEditing}>Cancel</button>}
                         </div>
                         :
                         <>
@@ -471,14 +470,16 @@ function AccountDetails()
                         </>}
                     
                 </div>
+                </div>
+                
             </div>
             
             <div className="delete_buttons">
                 {!confirmDelete ? 
-                    <button className="delete_account button-link account__details_button" onClick={toggleConfirmDelete}>Delete Account</button>
+                    <button className="delete_account button-link scaled_button" onClick={toggleConfirmDelete}>Delete Account</button>
                     :
                     <>
-                    <button className="delete_account button-link account__details_button" onClick={() => handleDeleteAccount()}>Confirm to Delete Account</button>
+                    <button className="delete_account button-link scaled_button" onClick={() => handleDeleteAccount()}>Confirm to Delete Account</button>
                     <button className="delete_cancel  button-link" onClick={toggleConfirmDelete}>Cancel</button>
                     </>
                 }

@@ -73,12 +73,12 @@ function FlightCard(props)
                 <div className="countries">
                     <div>
                         {props.originCity && <p className="city grey-text">{props.originCity}</p>}
-                        <p className="country ">{props.originCountry ? props.originCountry : "Origin"}</p>
+                        <p className="country ">{props.originCountry ? props.originCountry : ""}</p>
                     </div>
                     <span className="arrow material-symbols-outlined grey-text arrow">east</span>
                     <div>
                         {props.destinationCity && <p className="city grey-text">{props.destinationCity}</p>}   
-                        <p className="country ">{props.destinationCountry ? props.destinationCountry : "Origin"}</p>        
+                        <p className="country ">{props.destinationCountry ? props.destinationCountry : ""}</p>        
                     </div>
                 </div>
                 {props.return === "return" && <>
@@ -88,12 +88,12 @@ function FlightCard(props)
                 <div className="countries text-gap">
                         <div>
                             {props.destinationCity && <p className="city grey-text">{props.destinationCity}</p>}
-                            <p className="country ">{props.destinationCountry ? props.destinationCountry : "Origin"}</p> 
+                            <p className="country ">{props.destinationCountry ? props.destinationCountry : ""}</p> 
                     </div>
                     <span className="arrow material-symbols-outlined grey-text">east</span>
                         <div>
                             {props.originCity && <p className="city grey-text">{props.originCity}</p>}
-                            <p className="country ">{props.originCountry ? props.originCountry : "Origin"}</p>
+                            <p className="country ">{props.originCountry ? props.originCountry : ""}</p>
                     </div>
                 </div>
                 </>}
@@ -125,7 +125,7 @@ function FlightCard(props)
                 <div className="price">
                 {(props.maxPrice !== null && props.maxPrice !== "") ? <>
                         <p>£</p>
-                        <p>{props.maxPrice}</p>
+                        <p>{Math.round(props.maxPrice)}</p>
                     </> :
                     <p>Any</p>}
                 </div>
@@ -138,10 +138,10 @@ function FlightCard(props)
 
             <div className="col card__options">
                 {props.isAddFlight ? 
-                    <button className="button full_width" onClick={handleAddFlight}>Add</button> :
+                <button className="button full_width" onClick={handleAddFlight}>Add</button> :
                 <>
                 {showOptions ? <>
-                    <button className="button" onClick={handleSearch}>Search</button>
+                    <button className="button scaled_button" onClick={handleSearch}>Search</button>
                     <button className="button" onClick={handleEdit}>Edit</button>
                     <button className="button" onClick={handleDelete}>Delete</button>
                     <button className="button" onClick={toggleOptions}>Cancel</button>

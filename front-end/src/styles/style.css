@@ -67,6 +67,10 @@ textarea{
 
     /* STANDARD BORDER_RADIUS */
     --STANDARD_BORDER_RADIUS: 10px;
+
+    /* STANDARD SHADOW*/
+    --STANDARD_BOX_SHADOW: 1px 10px 10px grey;
+    --HEADER_BOX_SHADOW: 0 1px 10px rgb(109, 109, 109);
 }
 
 /* || BLACK THEME OVERRDES --------------------------------------------------------------*/
@@ -152,6 +156,11 @@ textarea{
     width: 50px;
 }
 
+.scaled_button{
+    width: 100%;
+    max-width: 300px;
+}
+
 /* || LOADER ----------------------------------------------------------------------------*/
 
 .loader_slot{
@@ -192,22 +201,38 @@ textarea{
 }
 
 /* || GENERAL STYLES --------------------------------------------------------------------*/
+html {
+    --s: 37px; /* control the size */
+    
+    --c:#0000,white .5deg 119.5deg,#0000 120deg;
+    --g1:conic-gradient(from  60deg at 56.25% calc(425%/6),var(--c));
+    --g2:conic-gradient(from 180deg at 43.75% calc(425%/6),var(--c));
+    --g3:conic-gradient(from -60deg at 50%   calc(175%/12),var(--c));
+    background:
+      var(--g1),var(--g1) var(--s) calc(1.73*var(--s)),
+      var(--g2),var(--g2) var(--s) calc(1.73*var(--s)),
+      var(--g3) var(--s) 0,var(--g3) 0 calc(1.73*var(--s)) 
+      hsla(0, 0%, 41%, 0.02);
+    background-size: calc(2*var(--s)) calc(3.46*var(--s));
+  }
+  
+
 body{
-    background-color: var(--BG_COLOR);
+    /* background-color: var(--BG_COLOR); */
     padding: 0;
     margin: 0;
 }
 
 header{
     background-color: var(--HEADER_BGCOLOR);
-    border-bottom: solid black 3px;
     width: 100%;
-    /* box-shadow: 10px 0px 3px red; */
+    box-shadow: var(--HEADER_BOX_SHADOW);
+    /* box-shadow: var(--STANDARD_BOX_SHADOW); */
 }
 
 main{
-    background-color: var(--MAIN_BGCOLOR);
-    max-width: 1200px;
+    /* background-color: var(--MAIN_BGCOLOR); */
+    max-width: 900px;
     min-height: 100vh;
     margin: 0 auto;
     padding: var(--MAIN_PADDING);
@@ -219,6 +244,7 @@ footer{
     height: 100px;
     padding: 20px;
     bottom: 0;
+    box-shadow: var(--HEADER_BOX_SHADOW);
 }
 
 h1, h2, h3, h4, h5{
@@ -228,28 +254,34 @@ h1, h2, h3, h4, h5{
 }
 
 h1{
-    font-size: 2.0rem;
+    /* font-size: 2.3rem; */
+    font-size: clamp(1.8rem, 5.5vw, 3rem)
 }
 
 h2{
     font-size: 1.8rem;
+    font-size: clamp(1.6rem, 4.5vw, 2.7rem);
 }
 
 h3{
     font-size: 1.6rem;
+    font-size: clamp(1.0rem, 4.5vw, 2.0rem);
 }
 
 h4{
-    font-size: 1.3rem;
+    /* font-size: 1.3rem; */
+    font-size: clamp(0.9rem, 4.5vw, 2.3rem);
 }
 
 p, a, label, button.button-link{
     font-size: 1.0rem;
+    font-size: clamp(0.5vw, 4.5vw, 1.0rem);
 
 }
 
 input, select{
     font-size: 1.0rem;
+    font-size: clamp(0.7rem, 4.5vw, 1.0rem);
 }
 
 p, a, button, input, label, select, button.button-link {
@@ -320,7 +352,7 @@ button:active
     align-content: center;
     
     padding: var(--MAIN_PADDING);
-    max-width: 1300px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
@@ -426,6 +458,8 @@ button:active
     padding: var(--STANDARD_PADDING_HORIZONTAL);
     margin-bottom: 20px;
     background: var(--BODY_COLOR);
+
+    box-shadow: var(--STANDARD_BOX_SHADOW);
 }
 
 .showcase .title{
@@ -441,6 +475,7 @@ button:active
 
 .showcase_price{
     font-size: 1.8rem;
+    font-size: clamp(1.0rem, 4.5vw, 1.8rem);
 }
 
 /* || GALLERY -=----------------------------------------------------------------------------*/
@@ -449,6 +484,7 @@ button:active
     border-radius: var(--STANDARD_BORDER_RADIUS);
     background: var(--BODY_COLOR); 
     padding: var(--STANDARD_PADDING_HORIZONTAL);
+    box-shadow: var(--STANDARD_BOX_SHADOW);
 }
 
 /* || CUSTOM FLIGHTS -----------------------------------------------------------------------*/
@@ -474,12 +510,12 @@ button:active
     justify-content: space-between;
 
     border-radius: var(--STANDARD_BORDER_RADIUS);
+    box-shadow: var(--STANDARD_BOX_SHADOW);
 }
 
 .flight div{
     display: flex;
     justify-content: center;
-    width: 100%;
 }
 
 .flight__dates{
@@ -490,12 +526,13 @@ button:active
 
 .flight__dates .date p, .one-way_date{
     /* font-size: var(--FONT_FLIGHT_SIZE); */
-    font-size: 1.4rem;
-    /* font-size: clamp(0.1rem, 4vw + 0.5rem 1.4rem); */
+    /* font-size: 1.4rem; */
+    font-size: clamp(1.0rem, 5.5vw, 1.4rem);
 }
 
 .flight__dates .nights p{
     font-size: 1rem;
+
 }
 
 .flight__info{
@@ -542,7 +579,8 @@ button:active
 
 .city{
     /* font-size: clamp(var(--FONT_FLIGHT_SIZE), 1.5vw, 3rem); */
-     font-size: 0.9rem;
+     /* font-size: 0.9rem; */
+     font-size: clamp(0.8rem, 3.5vw, 0.9rem);
      height: 100%;
 }
 
@@ -559,6 +597,7 @@ button:active
     justify-content: center;
     gap: 7.5rem;
     font-size: 1.4rem;
+    font-size: clamp(0.9rem, 4.5vw, 1.4rem);
 }
 
 .flight__cost{
@@ -577,12 +616,16 @@ button:active
     padding: 10px;
 }
 
-.flight a .flight__buttons{
-    width: 100%;
+.flight .flight__buttons a{
+    /* width: 100%; */
+    align-self: center;
+    /* background-color: red; */
+    display: flex;
+    justify-content: cen;
 }
 
 .flight__buttons button{
-    min-width: 300px;
+    /* max-width: 300px; */
 }
 
 /* || SEARCH FORM --------------------------------------------------------------------------*/
@@ -596,6 +639,7 @@ button:active
     /* padding: 10px 20px; */
     padding: var(--STANDARD_PADDING_HORIZONTAL);
     padding-bottom: 20px;
+    box-shadow: var(--STANDARD_BOX_SHADOW);
 }
 
 .search__inputs{
@@ -633,7 +677,7 @@ button:active
 }
 
 .search .button{
-    width: 300px;
+    max-width: 300px;
     align-self: center;
 }
 
@@ -667,6 +711,7 @@ button:active
     align-items: center;
 
     margin-bottom: 20px; 
+    box-shadow: var(--STANDARD_BOX_SHADOW);
 }
 
 .col{
@@ -755,6 +800,7 @@ button:active
     display: flex;
     flex-direction: column;
     align-items: center;
+
 }
 
 .login > button{
@@ -766,6 +812,7 @@ button:active
     border: var(--STANDARD_BORDER);
     border-radius: var(--STANDARD_BORDER_RADIUS);
     padding: var(--STANDARD_PADDING_HORIZONTAL);
+    box-shadow: var(--STANDARD_BOX_SHADOW);
 }
 
 .login__form button{
@@ -777,6 +824,8 @@ button:active
     margin-top: 5px;
     margin-bottom: 5px;
 }
+
+
 
 .login, .login__form * {
     width: 100%;
@@ -822,10 +871,15 @@ color: green;
     flex-direction: column;
     align-items: center;
     width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
 }
 
+
 .account__links{
+    padding: 10px;
     gap: 10px;
+    box-shadow: var(--STANDARD_BOX_SHADOW);
 }
 
 .account__links a{
@@ -876,6 +930,7 @@ color: green;
 .account_details__border{
     border: var(--STANDARD_BORDER);
     border-radius: var(--STANDARD_BORDER_RADIUS);
+    box-shadow: var(--STANDARD_BOX_SHADOW);
     padding: 10px;
 }
 
@@ -913,10 +968,7 @@ color: green;
     gap: 20px;
 }
 
-.account__details_button{
-    width: 100%;
-    max-width: 300px;
-}
+
 /* || DETAILS_ENTRY ---------------------------------------------------------------------*/ 
 .entry{
     /* position: absolute; */
@@ -961,6 +1013,9 @@ color: green;
     margin-inline: 5px;
 }
 
+.entry__form input, .entry__form p{
+    margin-top: 5px;
+}
 
 
 /* || MEDIA -----------------------------------------------------------------------------*/

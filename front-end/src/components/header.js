@@ -35,7 +35,7 @@ function Header()
         <div className="header">
         <h1 onClick={returnHome}>Flights Finder</h1>
             <div ref={ref} className="sidebar" id="sideBar" onClick={handleHeaderClick}>
-                <button className="button-link" onClick={()=>toggleSideMenu("none")}><span class="material-symbols-outlined">close</span></button>
+                <button className="button-link" onClick={()=>toggleSideMenu("none")}><span className="material-symbols-outlined">close</span></button>
                 <HeaderLinks/>
             </div>
 
@@ -44,7 +44,7 @@ function Header()
             </div>
 
             <div className="open_sidemenu">
-                <button className="button-link" onClick={()=>toggleSideMenu("block")}><span class="material-symbols-outlined">menu</span></button>
+                <button className="button-link" onClick={()=>toggleSideMenu("block")}><span className="material-symbols-outlined">menu</span></button>
             </div>
         </div>
     </header>

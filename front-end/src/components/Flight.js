@@ -72,7 +72,7 @@ function Flight(props) {
             </div>
         </div>
         <div className="flight__buttons text-gap">
-            <a href={props.link} target="_blank" rel="noreferrer noopener"><button className="button">View Flight</button></a>
+            <a className="scaled_button" href={props.link} target="_blank" rel="noreferrer noopener"><button className="button scaled_button">View Flight</button></a>
             {/* <a><button className="button">Save</button></a> */}
         </div>
     </div>
