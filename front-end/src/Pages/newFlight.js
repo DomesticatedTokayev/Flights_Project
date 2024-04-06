@@ -120,66 +120,83 @@ function NewFlight() {
     return<>
     <main>
         <div className="custom_flight">
-                <div className="custom_flight__search">
-                <h2 className="align-center">Search Flights</h2>
-                <SearchForm
-                    origin={searchParams.get('origin') || ""} 
-                    destination={searchParams.get('destination') || ""} 
+            {searchParams.get("id") !== null ? 
+            <div>
+                <h3 className="align-center grey-text">Current Flight</h3>
+                <FlightCard 
+                    originCountry = {searchParams.get('origin') || ""} 
+                    destinationCountry = {searchParams.get('destination') || ""} 
                     from={searchParams.get('from') || ""} 
-                    to={searchParams.get('to') || ""} 
-                    return={searchParams.get('withreturn') || ""} 
-                    maxPrice={searchParams.get('maxprice') || ""} 
+                    to={searchParams.get('to') || ""}
                     minStay={searchParams.get('minstay') || ""} 
                     maxStay={searchParams.get('maxstay') || ""} 
-                    outputLimit={10}
-                    onSearch={handleSearch}
-                    isSearching={searching}
-                />
-                </div>
-                <div className="custom_flight__found-flights">
-                {(flights.length <= 0 && searchingComplete) && <p className="align-center">No Flights found</p>}
-                {(flights && searchingComplete) && <>
-                    {(flights.length > 0) && 
-                        <>
-                        <h3 className="align-center">Any City</h3>
-                        <FlightCard 
-                            originCountry = {flights[0].originCountry}
-                            destinationCountry = {flights[0].destinationCountry}
-                            from={searchData.from}
-                            to={searchData.to}
-                            minStay={searchData.minStay}
-                            maxStay={searchData.maxStay}
-                            return={searchData.return}
-                            maxPrice={searchData.maxPrice}
-                            isAddFlight={true}
-                            handleAddFlight={handleAddEditFlight}
-                            />
-                        </>
-                    }
-                        <h3 className="align-center">Specific Cities</h3>
-                        {flights.map((item, index) => {
-                        return <FlightCard
-                            key={index}
-                            originCountry={item.originCountry}
-                            originCity={item.originCity}
-                            destinationCountry={item.destinationCountry}
-                            destinationCity={item.destinationCity}
-                            from={searchData.from}
-                            to={searchData.to}
-                            minStay={searchData.minStay}
-                            maxStay={searchData.maxStay}
-                            return={searchData.return}
-                            maxPrice={searchData.maxPrice}
-                            isAddFlight={true}
-                            handleAddFlight={handleAddEditFlight}
+                    return={searchParams.get('withreturn') || ""} 
+                    maxPrice={searchParams.get('maxprice') || ""} 
+                    isAddFlight={false}
+                    hideOptions={true}
+                    />
+            </div>
+                    : <>
+                        <h3 className="align-center grey-text">New Flight</h3>
+                </>}
+            
+            <div className="custom_flight__search">
+            <h2 className="align-center">Search Flights</h2>
+            <SearchForm
+                origin={searchParams.get('origin') || ""} 
+                destination={searchParams.get('destination') || ""} 
+                from={searchParams.get('from') || ""} 
+                to={searchParams.get('to') || ""} 
+                return={searchParams.get('withreturn') || ""} 
+                maxPrice={searchParams.get('maxprice') || ""} 
+                minStay={searchParams.get('minstay') || ""} 
+                maxStay={searchParams.get('maxstay') || ""} 
+                outputLimit={10}
+                onSearch={handleSearch}
+                isSearching={searching}
+            />
+            </div>
+            <div className="custom_flight__found-flights">
+            {(flights.length <= 0 && searchingComplete) && <p className="align-center">No Flights found</p>}
+            {(flights && searchingComplete) && <>
+                {(flights.length > 0) && 
+                    <>
+                    <h3 className="align-center">Any City</h3>
+                    <FlightCard 
+                        originCountry = {flights[0].originCountry}
+                        destinationCountry = {flights[0].destinationCountry}
+                        from={searchData.from}
+                        to={searchData.to}
+                        minStay={searchData.minStay}
+                        maxStay={searchData.maxStay}
+                        return={searchData.return}
+                        maxPrice={searchData.maxPrice}
+                        isAddFlight={true}
+                        handleAddFlight={handleAddEditFlight}
                         />
-                    })
-                    }
-                    </>}
-                    
-                    
-                </div>
-                 
+                    </>
+                }
+                    <h3 className="align-center">Specific Cities</h3>
+                    {flights.map((item, index) => {
+                    return <FlightCard
+                        key={index}
+                        originCountry={item.originCountry}
+                        originCity={item.originCity}
+                        destinationCountry={item.destinationCountry}
+                        destinationCity={item.destinationCity}
+                        from={searchData.from}
+                        to={searchData.to}
+                        minStay={searchData.minStay}
+                        maxStay={searchData.maxStay}
+                        return={searchData.return}
+                        maxPrice={searchData.maxPrice}
+                        isAddFlight={true}
+                        handleAddFlight={handleAddEditFlight}
+                    />
+                })
+                }
+                </>}    
+            </div>    
         </div>
     </main>
     </>

@@ -376,12 +376,14 @@ button:active
     transform: 0.5s;
     padding: 20px;
     border-left: 2px solid black; 
+    /* gap: 10px; */
 }
 
 .sidebar .header__navigation{
     display: flex;
     flex-direction: column;
     align-items: end;
+
 }
 
 .open_sidemenu{
@@ -420,6 +422,10 @@ button:active
 
 }
 
+.home__destinations.flights_container{
+    margin-top: 10px;
+}
+
 .grid_layout{
     display: grid;
     grid-template-areas: "a a";
@@ -429,7 +435,9 @@ button:active
 }
 
 .block_layout{
-    display: block;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .home__examples{
@@ -527,7 +535,7 @@ button:active
 .flight__dates .date p, .one-way_date{
     /* font-size: var(--FONT_FLIGHT_SIZE); */
     /* font-size: 1.4rem; */
-    font-size: clamp(1.0rem, 5.5vw, 1.4rem);
+    font-size: clamp(0.8rem, 5.5vw, 1.4rem);
 }
 
 .flight__dates .nights p{
@@ -596,8 +604,16 @@ button:active
     display: flex;
     justify-content: center;
     gap: 7.5rem;
-    font-size: 1.4rem;
-    font-size: clamp(0.9rem, 4.5vw, 1.4rem);
+    /* font-size: 1.4rem; */
+
+}
+
+.country{
+    font-size: clamp(0.9rem, 4.5vw, 1.3rem);
+}
+
+.destinations .time{
+    font-size: clamp(0.4rem, 4.5vw, 0.9rem);
 }
 
 .flight__cost{
@@ -729,10 +745,12 @@ button:active
 
 .card__directions .city{
     font-size: 0.9rem;
+    font-size: clamp(0.8rem, 3.5vw, 0.9rem);
 }
 
 .card__directions .country{
     font-size: 1.2rem;
+    font-size: clamp(0.9rem, 4.5vw, 1.4rem);
 }
 
 .card__dates{

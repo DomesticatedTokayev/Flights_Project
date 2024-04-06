@@ -121,8 +121,9 @@ function Home()
                     />
             </div>
 
-            <div className={flights.length > 1 ? "home__destinations grid_layout" : "home__destinations block_layout"}>
+            <div className="home__destinations flights_container block_layout">
                 {(hasSearched === true && flights.length <= 0) && <h3 className="align-center">No flights found!</h3>}
+                {(hasSearched === true && flights.length > 0) && <h3 className="align-center">Available Flights</h3>}
                 {flights && flights.map((item, index) => {
                     return <Flight
                         key={index}

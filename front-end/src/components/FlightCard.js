@@ -7,9 +7,11 @@ function FlightCard(props)
     const [id, setID] = React.useState(undefined);
 
     const [showOptions, setShowOptions] = React.useState(false);
+    const [hideOptions, setHideOptions] = React.useState(false);
 
     React.useEffect(() => {
         setID(props.id);
+        setHideOptions(props.hideOptions)
     }, []);
 
 
@@ -135,7 +137,7 @@ function FlightCard(props)
             </div>
         </div>
 
-
+        {!hideOptions ? 
             <div className="col card__options">
                 {props.isAddFlight ? 
                 <button className="button full_width" onClick={handleAddFlight}>Add</button> :
@@ -148,13 +150,15 @@ function FlightCard(props)
                 </>
                 :
                 <>
-                <div className="col">
-                <button className="button" onClick={toggleOptions}>Options</button>
-                </div>
+                    <div className="col">
+                        <button className="button" onClick={toggleOptions}>Options</button>
+                    </div>
                 </>}    
                 </>}
             </div>
-             
+            : <>
+            </>}
+        
     </div>
 }
 
