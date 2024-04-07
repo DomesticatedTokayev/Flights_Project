@@ -16,7 +16,6 @@ function FlightCard(props)
 
 
     function handleDelete() {
-        // Send flight data (So additional api calls are not required)
         props.handleDelete(props.id);
     }
 

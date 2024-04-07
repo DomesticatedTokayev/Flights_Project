@@ -28,12 +28,7 @@ textarea{
 
 /* || VARIABLES -------------------------------------------------------------------------*/
 :root{
-    /* FONTS */
-    /* --FONT_FAMILY: 'Courier New', Courier, monospace; */ 
-    /* --FONT_FAMILY: "Noto Serif", serif; */
     --FONT_FAMILY: "Merriweather", serif;
-    /* --FF-HEADINGS: "Fugaz One", cursive; */
-    /* --FF-HEADINGS: "Noto Serif", serif; */
     --FF-HEADINGS: "Merriweather", serif;
     --FONT_WEIGHT_HEADINGS: 600;
     --FONT_WEIGHT: 700;
@@ -51,7 +46,6 @@ textarea{
     --BUTTON_HOVER_COLOR: rgb(184, 119, 0);
     --LINK_HOVER_COLOR: grey;
     /* BORDERS */
-    /* --BORDER_RADIUS: 5px; */
     --STANDARD_BORDER: 1px solid lightgray;
 
     /* STANDARD PADDING */
@@ -218,7 +212,6 @@ html {
   
 
 body{
-    /* background-color: var(--BG_COLOR); */
     padding: 0;
     margin: 0;
 }
@@ -227,11 +220,9 @@ header{
     background-color: var(--HEADER_BGCOLOR);
     width: 100%;
     box-shadow: var(--HEADER_BOX_SHADOW);
-    /* box-shadow: var(--STANDARD_BOX_SHADOW); */
 }
 
 main{
-    /* background-color: var(--MAIN_BGCOLOR); */
     max-width: 900px;
     min-height: 100vh;
     margin: 0 auto;
@@ -254,7 +245,6 @@ h1, h2, h3, h4, h5{
 }
 
 h1{
-    /* font-size: 2.3rem; */
     font-size: clamp(1.8rem, 5.5vw, 3rem)
 }
 
@@ -269,7 +259,6 @@ h3{
 }
 
 h4{
-    /* font-size: 1.3rem; */
     font-size: clamp(0.9rem, 4.5vw, 2.3rem);
 }
 
@@ -322,7 +311,6 @@ button:active
 /* || HEADER ----------------------------------------------------------------------------*/
 .header__landscape{
     height: 100%;
-    /* position: absolute; */
 }
 
 .header__navigation{
@@ -376,7 +364,6 @@ button:active
     transform: 0.5s;
     padding: 20px;
     border-left: 2px solid black; 
-    /* gap: 10px; */
 }
 
 .sidebar .header__navigation{
@@ -395,8 +382,6 @@ button:active
 
 /* || HOME ------------------------------------------------------------------------------*/
 .home{
-    /* background-color: lightgreen; */
-    /* height: 100vh; */
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -417,7 +402,6 @@ button:active
 .home__destinations{
     background-color: var(--MAIN_BGCOLOR);
     width: 100%;
-    /* padding-inline: var(--STANDARD_PADDING_HORIZONTAL); */
     border-radius: var(--STANDARD_BORDER_RADIUS);
 
 }
@@ -450,7 +434,6 @@ button:active
 
 .home__showcase .destinations{
     display: flex;
-    /* display: inline-block; */
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -458,7 +441,6 @@ button:active
 
 /* || Home Showcase ------------------------------------------------------------------------*/
 .showcase{
-    /* max-width: 45%; */
     max-width: 49.5%;
     border: var(--STANDARD_BORDER);
     border-radius: var(--STANDARD_BORDER_RADIUS);
@@ -471,12 +453,10 @@ button:active
 }
 
 .showcase .title{
-    /* font-size: 1.9rem; */
     margin: 10px 0;
 }
 
 .showcase__img{
-    /* max-height: 250px; */
   width: auto;
     object-fit: cover;
 }
@@ -533,8 +513,6 @@ button:active
 }
 
 .flight__dates .date p, .one-way_date{
-    /* font-size: var(--FONT_FLIGHT_SIZE); */
-    /* font-size: 1.4rem; */
     font-size: clamp(0.8rem, 5.5vw, 1.4rem);
 }
 
@@ -551,7 +529,6 @@ button:active
 }
 
 .destinations{
-    /* display: flex; */
     flex-direction: column;
     flex-grow: 3;
 }
@@ -575,10 +552,6 @@ button:active
 .countries div p {
     width: 100%;
     text-align: center;
-    /* line-height: 1.5; */
-    /* display: inline-block; */
-    /* vertical-align: middle; */
-
 }
 
 .countries div p:last-child{
@@ -586,8 +559,6 @@ button:active
 }
 
 .city{
-    /* font-size: clamp(var(--FONT_FLIGHT_SIZE), 1.5vw, 3rem); */
-     /* font-size: 0.9rem; */
      font-size: clamp(0.8rem, 3.5vw, 0.9rem);
      height: 100%;
 }
@@ -604,8 +575,6 @@ button:active
     display: flex;
     justify-content: center;
     gap: 7.5rem;
-    /* font-size: 1.4rem; */
-
 }
 
 .country{
@@ -633,15 +602,9 @@ button:active
 }
 
 .flight .flight__buttons a{
-    /* width: 100%; */
     align-self: center;
-    /* background-color: red; */
     display: flex;
     justify-content: cen;
-}
-
-.flight__buttons button{
-    /* max-width: 300px; */
 }
 
 /* || SEARCH FORM --------------------------------------------------------------------------*/
@@ -652,7 +615,6 @@ button:active
     width: 100%;
     display: flex;
     flex-direction: column;
-    /* padding: 10px 20px; */
     padding: var(--STANDARD_PADDING_HORIZONTAL);
     padding-bottom: 20px;
     box-shadow: var(--STANDARD_BOX_SHADOW);
@@ -703,7 +665,6 @@ button:active
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* gap: 15px; */
 }
 
 .saved button{
@@ -719,7 +680,6 @@ button:active
     border: var(--STANDARD_BORDER); 
     border-radius: var(--STANDARD_BORDER_RADIUS);
 
-    /* margin-bottom: 10px; */
     min-height: 200px;
     width: 100%;
     display: flex;
@@ -762,14 +722,12 @@ button:active
 }
 
 .card_dates p{
-    /* width: 100%; */
     height: 100%;
 }
 
 .date_time{
     width: 100%;
     display: flex;
-    /* flex-direction: row; */
     justify-content: center;
     align-items: center;
 }
@@ -797,7 +755,6 @@ button:active
 }
 
 .card__options{
-    /* background: var(--OPTIONS_COLOR); */
     border-radius: var(--STANDARD_BORDER_RADIUS);
     flex:1;
     display: flex;
@@ -812,13 +769,11 @@ button:active
 
 /* || LOGIN -----------------------------------------------------------------------------*/ 
 .login{
-    /* background: red; */
     max-width: 320px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-
 }
 
 .login > button{
@@ -842,8 +797,6 @@ button:active
     margin-top: 5px;
     margin-bottom: 5px;
 }
-
-
 
 .login, .login__form * {
     width: 100%;
@@ -989,17 +942,12 @@ color: green;
 
 /* || DETAILS_ENTRY ---------------------------------------------------------------------*/ 
 .entry{
-    /* position: absolute; */
-    /* border: var(--STANDARD_BORDER); */
-    /* border-radius: var(--STANDARD_BORDER_RADIUS); */
     padding: 10px;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* width: 100%; */
-    /* max-width: 280px; */
     min-height: 60px;
     margin-bottom: 10px;
 
@@ -1015,7 +963,6 @@ color: green;
     overflow: hidden;
 }
 
-/* Hide buttons when not editing */
 .entry__form input{
     text-align: center;
 }
@@ -1061,7 +1008,6 @@ color: green;
 
     .card div{
         width: 100%;
-        /* flex-direction: row; */
     }
 
     .card__dates{
@@ -1127,7 +1073,6 @@ color: green;
     }
 
     .card__options{
-        /* flex-direction: column; */
         display: grid;
         grid-template-columns: auto auto;
     }

@@ -3,30 +3,25 @@ import React from "react";
 function DetailsEntry(props) {
 
     const [value, setValue] = React.useState("");
-    const [validationValue, setValidationValue] = React.useState(""); // Change this to include new and re-enter 
+    const [validationValue, setValidationValue] = React.useState("");
 
     const [editing, setEditing] = React.useState(false);
     const [validationReq, setValidationReq] = React.useState(false);
     const [validationError, setValidationError] = React.useState(false);
     const [isInvalid, setIsInvalid] = React.useState(true);
 
-    // const [wasSaved, setWasSaved] = React.useState(false);
-
     React.useEffect(() => {
         setValidationReq(props.validationRequired);
-        // setWasSaved(props.handleWasSaved)
     });
 
 
     function toggleEdit()
     {
         setEditing((prevValue) => { return !prevValue });
-        // setWasSaved(false);
     }
 
     function stopEditing() {
         setEditing(false);
-        // setWasSaved(false);
         setValue("");
         setValidationValue("");
     }
@@ -73,7 +68,6 @@ function DetailsEntry(props) {
                     </div>
                 </form>
             </div>
-                {/* <p className={wasSaved ? "show" : "hide"}>Succesfully Updated!</p> */}
                 </div>
                 
                 <div className="entry__edit">

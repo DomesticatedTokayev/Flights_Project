@@ -17,11 +17,8 @@ function NewFlight() {
     const navigate = useNavigate();
 
     const [id, setID] = React.useState();
-    //let [isEditing, setEditing] = React.useState("");
 
     React.useEffect(() => {
-        // Check if editing or creating new flight
-        //setEditing(searchParams.get("type"));
         setID(searchParams.get("id"));
     }, []);
     
@@ -116,7 +113,7 @@ function NewFlight() {
         // Return to custom flights
         navigate("/saved/flights");
     }
-    // When setting flight data, form isn't updated immediatly
+
     return<>
     <main>
         <div className="custom_flight">

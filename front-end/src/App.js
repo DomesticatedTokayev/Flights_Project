@@ -18,11 +18,6 @@ import FlightData from "./hooks/FlightsProvider.js";
 import TopAccess from "./Tests/TopAccessProvider.js";
 import NewFlight from "./Pages/newFlight.js";
 
-//  Resources used to link back-end and front-end
-//https://dev.to/miracool/how-to-manage-user-authentication-with-react-js-3ic5
-//https://www.freecodecamp.org/news/how-to-build-a-fullstack-authentication-system-with-react-express-mongodb-heroku-and-netlify/#how-to-login-a-user
-//https://www.npmjs.com/package/jsonwebtoken#usage
-
 const baseURL = "http://localhost:4000";
 
 function App() {
@@ -52,27 +47,3 @@ function App() {
 }
 
 export default App;
-  //const [data, setData] = useState(null);
-
-  // useEffect(() => {
-  //   axios.get(`${baseURL}/`).then((res) => {
-  //     setData(res.data);
-  //   }).catch(err => {
-  //     console.log(err);
-  //   });
-  // }, []);
-  
-  // useEffect(() => {
-  //   const data = {
-  //     name: "Tita",
-  //     body: "To the server!"
-  //   }
-
-  //   axios.post(`${baseURL}/data`, data).then((res) => {
-  //     console.log(res.data);
-  //     setData(res.data);
-  //   }).catch(err => {
-  //     console.log(err);
-  //   })
-  // }, []);
-

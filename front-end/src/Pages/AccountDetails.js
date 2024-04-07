@@ -324,17 +324,14 @@ function AccountDetails()
                 
                 switch (errorCode) {
                     case "S110": {
-                        // alert(error.response.data.message);
                         SetSaved("Failed to delete account", false);
                         break;
                     }
                     case "U10": {
-                        // alert("Unknown error");
                         SetSaved("Error Deleting Account", false);
                         break;
                     }
                     default: {
-                        // alert("Unknown error");
                         SetSaved("Error Deleting Account", false);
                         break;
                     }
@@ -489,38 +486,3 @@ function AccountDetails()
 }
 
 export default AccountDetails;
-
-
-{/* <DetailsEntry 
-                    entryName={"Email"}
-                    entryValue={details.email}
-                    handleSave={handleNewEmail}
-                />
-                <DetailsEntry 
-                    entryName={"Password"}
-                    entryValue={"********"}
-                    validationRequired={true}
-                    handleSave={handleNewPassword}
-                />
-                <DetailsEntry
-                    entryName={"Forename"}
-                    entryValue={details.forename} 
-                    handleSave={handleNewForename}
-                    />
-                <DetailsEntry
-                    entryName={"Surname"}
-                    entryValue={details.surname}
-                    handleSave={handleNewSurname}
-                /> */}
-
-                
-    // function validateEmail(email) {
-    //     const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-    //     return regex.test(email);
-    // }
-
-        // // Insert into own component
-    // function validatePassword(password) {
-    //     const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-    //     return regex.test(password);
-    // };

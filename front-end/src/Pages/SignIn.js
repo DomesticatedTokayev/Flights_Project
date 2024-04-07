@@ -77,7 +77,6 @@ function SignIn(props)
                 passwordStrength.lowerCase &&
                 passwordStrength.digit && 
                 passwordStrength.length)) {
-                //console.log("Password doesn't meet minimum requirements");
                 setWeakPassword(true);
                 return false;
             }
@@ -103,16 +102,13 @@ function SignIn(props)
 
         axios(configuration)
             .then((result) => {
-                // On registration, redirect to sign-in
                 window.location.href = "/log-in";
             })
             .catch((error) => {
                 // Error Code 5 = Email already exists
                 if (error.response.data.errorCode === "A5") {
-                    //alert("Email already in use");
                     setEmailAlreadyInUse(true);
                 }else {
-                    //alert("Unknown error");
                     setEmailAlreadyInUse(true);
                 }
             });
@@ -127,8 +123,6 @@ function SignIn(props)
             setIncorrectLoginEmail(true);
             return;
         }
-        // If email is incorrect, show error
-        //setIncorrectLoginEmail(true);
 
         const configuration = {
             method: "post",
@@ -141,7 +135,6 @@ function SignIn(props)
 
         axios(configuration)
             .then((result) => {
-                //console.log(result.data);
                 //  Set the cookie (Makes the cookie available at "/" path. Thus, all pages)
                 auth.storeToken(result.data.token, result.data.email);
                 //cookies.set("TOKEN", result.data.token, { path: "/" });
@@ -150,10 +143,8 @@ function SignIn(props)
             .catch((err) => {
                 const errorCode = err.response.data.errorCode;
                 if (errorCode === "A10") {
-                    //alert("Email not Found");
                     setEmailNotFound(true);
                 } else if (errorCode === "A20") {
-                    //alert("Incorrect password");
                     setIncorrectPassword(true);
                 } else {
                     alert("Unknown error");
@@ -199,15 +190,6 @@ function SignIn(props)
 
     return <main>
         <div className="login">
-            
-            {/* <h1>Log-in / Register</h1>
-            <button>Continue with Google</button>
-            <div className="login__divider">
-                <hr></hr>
-                <h3>Or</h3>
-                <hr></hr>
-            </div> */}
-
             {props.isLogin ?
                 <>
                     <h2>Log-in</h2>

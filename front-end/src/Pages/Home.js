@@ -152,7 +152,6 @@ function Home()
 
             {/* Add sliding cards */}
             {/* https://www.google.com/search?client=opera-gx&q=html+sliding+cards&sourceid=opera&ie=UTF-8&oe=UTF-8 */}
-
             <div className="home__showcase">
                 <h2 className="align-center">Popular Destinations</h2>
                 <div className="destinations">

@@ -6,11 +6,6 @@ import UseOutsideClick from "./UseOutsideClick";
 
 function Header()
 {
-    // Use link as button
-    // Also has menu sliding
-    //https://www.w3schools.com/howto/howto_js_sidenav.asp
-
-    // Put this into its own script (Share with custom flights search)
     function toggleSideMenu(setting)
     {
         const sideMenu = document.getElementById("sideBar");

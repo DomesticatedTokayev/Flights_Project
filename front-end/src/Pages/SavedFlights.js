@@ -33,7 +33,7 @@ function SavedFlight() {
         setSavedFlights([]);
         getData();
         
-    }, [entryDeleted]); // Run on 'delete flight' only
+    }, [entryDeleted]);
 
     async function getData() {
 
@@ -84,7 +84,6 @@ function SavedFlight() {
     const ref = UseOutsideClick(closeSideMenu);
 
     const handleSideBarClick = (event) => {
-        // console.log(event);
         // Doesn't Work
         //event.stopPropogation();
     }
@@ -174,9 +173,6 @@ function SavedFlight() {
                 console.log(error);
         })
     };
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Flight card keeps getting re-rendered when not required
 
     return <main>
         <div className="saved">
